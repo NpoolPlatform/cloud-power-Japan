@@ -16,7 +16,7 @@ export default defineComponent({
   mounted: function () {
     window.onloadCallback = this.onloadCallback
     var script = document.createElement("script")
-    script.src = 'https://www.google.com/recaptcha/api.js?onload=onloadCallback&render=explicit&lang=en'
+    script.src = 'https://www.google.com/recaptcha/api.js?onload=onloadCallback&render=explicit'
     document.head.appendChild(script);
   },
 
@@ -44,3 +44,6 @@ export default defineComponent({
   },
 })
 </script>
+
+<style scoped>
+</style>

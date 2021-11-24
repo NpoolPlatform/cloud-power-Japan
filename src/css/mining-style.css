@@ -1,0 +1,257 @@
+.content {
+  min-width: 640px;
+  max-width: 1280px;
+  margin: 0 72px;
+  padding: 0 24px;
+}
+
+.content p:not([class]) {
+  font-size: 18px;
+  font-weight: 300;
+  line-height: 36px;
+}
+
+.title {
+  margin-top: 12px;
+  background: linear-gradient(to left, #54e280 0, #1ec498 50%);
+  background-clip: border-box;
+  filter: contrast(2);
+  font-size: 28px;
+  font-weight: 400;
+  margin: 36px auto;
+  padding: 0 0 8px 0;
+  position: relative;
+  text-transform: uppercase;
+  -webkit-background-clip: text;
+  -webkit-box-decoration-break: clone;
+  -webkit-text-fill-color: transparent;
+}
+
+.title::after {
+  background: linear-gradient(
+    to right,
+    transparent 0,
+    #e1eeef 10%,
+    transparent 30%
+  );
+  display: block;
+  content: "";
+  position: absolute;
+  left: -16px;
+  bottom: -4px;
+  height: 1px;
+  width: 100%;
+}
+
+.earn-box {
+  display: flex;
+}
+
+.earn-box-item {
+  display: flex;
+  flex-direction: column;
+  padding: 0 36px;
+  text-align: center;
+  min-width: 240px;
+  width: 30%;
+}
+
+.price {
+  font-size: 36px;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.unit {
+  color: #1ec498;
+  font-size: 18px;
+  font-weight: 700;
+  margin: 0 0 0 2px;
+  text-transform: uppercase;
+}
+
+.subtitle {
+  font-size: 18px;
+  text-transform: uppercase;
+  font-weight: 600;
+  margin: 12px 0;
+}
+
+.hr {
+  background: linear-gradient(
+    to right,
+    transparent 10%,
+    #1ec498 60%,
+    transparent 90%
+  );
+  opacity: 0.7;
+  height: 2px;
+  width: 100%;
+}
+
+.hr-t {
+  background: linear-gradient(
+    to right,
+    transparent 10%,
+    #e85f1a 40%,
+    #ffe91d 50%,
+    #1ec498 60%,
+    transparent 90%
+  );
+  margin: 48px 0;
+  opacity: 0.7;
+  height: 2px;
+  width: 100%;
+}
+
+.dashboard {
+  background: linear-gradient(
+    to bottom right,
+    rgba(225, 238, 239, 0.2) 0,
+    rgba(161, 208, 208, 0.2) 100%
+  );
+  box-shadow: 16px 16px 20px 0 #23292b;
+  border-radius: 12px;
+  color: #e1eeef;
+  padding: 24px;
+  margin: 24px;
+}
+
+.mining-column::after {
+  background: linear-gradient(
+    to right,
+    transparent -10%,
+    #e1eeef 50%,
+    transparent 110%
+  );
+  display: block;
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  height: 1px;
+  width: 100%;
+}
+
+.dashbord-title {
+  color: #e1eeef;
+  font-size: 36px;
+  font-weight: 700;
+  margin: 0;
+  text-transform: uppercase;
+}
+
+.mining-column {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  margin: 16px 0;
+  position: relative;
+}
+
+.column-item {
+  font-size: 24px;
+  margin: 0 0 16px 0;
+  color: #e1eeef;
+  font-family: "Barlow", sans-serif;
+}
+
+.mining-icon {
+  margin: 0 8px 0 0;
+  width: 20px;
+  height: 42px;
+}
+
+.column-item-title {
+  font-weight: 200;
+}
+
+.column-item-number {
+  font-weight: 700;
+}
+
+.additions {
+  font-size: 16px;
+}
+
+.detailed-summary {
+  font-size: 16px;
+}
+
+.detailed-summary .line {
+  border-bottom: 1px dashed #a1d0d0;
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: nowrap;
+  padding: 8px 0;
+}
+
+.detailed-summary .label {
+  font-weight: 200;
+}
+
+.detailed-summary .value {
+  font-weight: 500;
+}
+
+.bottom-button {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 20px;
+}
+
+.export,
+.purchase {
+  background: linear-gradient(to bottom right, #ff964a 0, #ce5417 100%);
+  border: 0;
+  color: #e4f4f0;
+  cursor: pointer;
+  font-family: "Barlow", sans-serif;
+  font-weight: 600;
+  text-shadow: 1px 1px 1px #ce5417;
+  transition: all ease-in-out 0.1s;
+  border-radius: 8px;
+  font-size: 14px;
+  height: auto;
+  padding: 8px 20px;
+  margin: 0 10px;
+}
+
+.export:hover,
+.purchase:hover {
+  border-radius: 2px;
+  filter: contrast(1.5);
+}
+
+.export {
+  background: none;
+  border: 1px solid #ff964a;
+  color: #ff964a;
+  text-shadow: 1px 1px 1px #27424c;
+}
+
+.add-mining {
+  background: linear-gradient(
+    to bottom right,
+    rgba(225, 238, 239, 0.2) 0,
+    rgba(161, 208, 208, 0.2) 100%
+  );
+  border-radius: 12px;
+  cursor: pointer;
+  display: flex;
+  align-content: center;
+  justify-content: center;
+  font-size: 48px;
+  margin: 64px auto;
+  padding: 24px;
+  opacity: 0.5;
+  height: 160px;
+  width: 480px;
+  width: 480px;
+  transition: all ease-in-out 0.1s;
+}
+
+.add-mining:hover {
+  box-shadow: 8px 8px 20px 0 #23292b;
+  opacity: 0.8;
+}

@@ -5,10 +5,11 @@ export default {
     Japanese: 'Japanese',
   },
   Header: {
-    Why: 'WHY PROCYON',
-    Products: 'PRODUCTS',
-    Support: 'SUPPORT',
-    Signin: 'SIGN IN'
+    Home: 'Home',
+    Services: 'Services',
+    About: 'About',
+    Signin: 'SIGN IN',
+    Contact: 'Contact'
   },
   Footer: {
     First: {
@@ -29,7 +30,7 @@ export default {
     },
     Forth: {
       Title: 'CONTACT INFO',
-      Address: 'Addres',
+      Address: 'Address',
       Email: 'Email',
     },
   },
@@ -115,5 +116,114 @@ export default {
     Click: 'Click here to sign in.',
     Login: 'Login',
     LoginTitle: 'User Login',
+  },
+
+  Drawer: {
+    Mining: 'MINING',
+    Wallet: 'WALLET',
+    Account: 'ACCOUNT',
+  },
+
+  Mining: {
+    Column1: {
+      Title: 'EARNINGS',
+      Total: 'TOTAL EARNING',
+      Yesterday: 'YESTERDAY\'S EARNINGS',
+      Current: 'CURRENT BALANCE',
+    },
+
+    Column2: {
+      Title: 'MINING DASHBOARD',
+      Earning: 'Earnings: ',
+      Last24: 'Last 24 hours: ',
+      Capacity: 'Capacity: ',
+      DailyOutput: 'Daily Output (30 day avg.)',
+      TechnicalServiceFee: 'Technical Service Fee:',
+      NetDailyOutput: 'Net daily output (30 day avg.):',
+      TotalDaysMining: 'Total days mining:',
+      Hashrate: 'Hashrate (30 day avg.):',
+      NetworkDailyOutput: 'Network Daily Ouput:',
+      Export: 'Export Daily Output(CSV)',
+      Purchase: 'Purchase Capacity',
+    },
+  },
+
+  Wallet: {
+    Title: 'ACCOUNT BALANCE',
+    CurrentUSDT: 'CURRENT BALANCE (USDT)',
+    CurrentBalance: 'CURRENT BALANCE (JPY)',
+    Assets: {
+      Title: 'ASSETS',
+      Export: 'Export History(CSV)',
+      Name: 'Name',
+      Balance: 'Balance',
+      Change: '24 Hour Change',
+      MarketValueUSDT: 'Market Value(USDT)',
+      MarketValueBalance: 'Market Value(JPY)',
+      Transfer: 'Transfer',
+    },
+
+    Transactions: {
+      Title: 'TRANSACTIONS',
+      Name: 'Name',
+      Date: 'Date',
+      Amount: 'Amount',
+      Status: 'Status',
+      Type: 'Type',
+      Details: 'Details',
+    },
+
+    Guide: {
+      Title: 'GUIDE & FAQ',
+      subtitle1: 'HOW CAN I WITHDRAW MY ASSETS?',
+      sub1: 'In Assets Dashboard, click the transfer button for the asset which you would like to transfer. You must enter a valid wallet address. Entering an invalid address will result in the permanent loss of your funds.',
+      subtitle2: 'HOW LONG DOES A TRANSACTION TAKE?',
+      sub2: 'For small amounts (as determined by the network) the transactions is approved automatically and should take a few minutes but can take a much as 24 hours, depending on network congestions and gas fees. Large amounts (as determined by the network) will require manual processing, which takes up to 24 hours or more depending on the amount of transactions at the moment.',
+      subtitle3: 'WHERE CAN I GET A SPACEMESH WALLER?',
+      sub3: 'Spacemesh will	listed on big exchanges such as Coinbase and Binance. Be sure to use a Spacemesh wallet address to transfer your funds. Using an incorrect address will result in a loss of your SMH!',
+    },
+  },
+
+  Account: {
+    Title: 'Account',
+    PersonalDetails: {
+      Title: 'Personal Details',
+      FirstName: 'First Name',
+      LastName: 'Last Name',
+      StreetAddress1: 'Street Address 1',
+      StreetAddress2: 'Street Address 2',
+      City: 'City',
+      Province: 'Province / Prefecture',
+      Country: 'Country',
+      Save: 'Save Changes',
+    },
+    SecuritySetting: {
+      Title: 'SECURITY SETTINGS',
+      ChangePassword: 'Change Password',
+      ChangePasswordContent: 'Your password must be at least 8 characters in length and must include numbers and letters.',
+      ChangePasswordBtn: 'Change Password',
+      Email: 'E-mail Address',
+      EmailContent: 'Make sure you e-mail address is up to date.',
+      EmailBtn: 'Update E-mail Address',
+      Mobile: 'Mobile Authentication',
+      MobileContent: 'Enable mobile authentication to confirm logins, transfers, and changes to security settings.',
+      MobileBtn: 'Update Phone Number',
+      Google: 'Google Authentication',
+      GoogleContent: 'Two-factor Authetication (2FA) secures your account against by adding confirmation for transfers.',
+      GoogleBtn: 'Enable Two-factor Authentication',
+      IDVerification: 'ID Verification',
+      IDVerificationContent: 'Upload a photo ID to verify your identity.',
+      IDVerificationBtn: 'Verify ID',
+      Verify: ' is verified',
+      NotVerify: 'Not verified',
+      Enable: 'Enabled',
+      NotEnable: 'Not Enabled',
+    },
+    History: {
+      Title: 'RECENT LOGIN HISTORY',
+      Date: 'Date/Time',
+      IP: 'IP Address',
+      Location: 'Location',
+    },
   },
 }

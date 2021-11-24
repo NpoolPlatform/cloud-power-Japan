@@ -64,6 +64,8 @@
 <script>
 import { defineComponent, ref, reactive } from 'vue';
 import RecaptchaVue from 'src/components/Recaptcha.vue';
+import { useStore } from 'vuex'
+
 export default defineComponent({
   components: { RecaptchaVue },
   setup () {
@@ -71,6 +73,8 @@ export default defineComponent({
     const verifyCode = ref('')
     const password = ref('')
     const registerInput = reactive({ email, verifyCode, password })
+
+    const $store = userStore()
     return {
       registerInput,
       isPwd: ref(true),
