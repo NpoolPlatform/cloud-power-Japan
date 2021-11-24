@@ -77,7 +77,9 @@ export default defineComponent({
   },
 
   methods: {
-    signIn: function () { },
+    signIn: function () {
+      this.$router.push('/login')
+    },
     goTo: function () {
       this.$router.push({
         path: '#why-procyon'

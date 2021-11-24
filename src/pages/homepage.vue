@@ -8,7 +8,10 @@
         </div>
         <div class="title-2">{{ $t('Homepage.Title.Subtitle') }}</div>
         <div class="btn-list">
-          <q-btn class="btn-register">{{ $t('Homepage.Title.Register') }}</q-btn>
+          <q-btn
+            @click="$router.push('/register')"
+            class="btn-register"
+          >{{ $t('Homepage.Title.Register') }}</q-btn>
           <router-link to="#why-procyon">
             <q-btn class="alt">{{ $t('Homepage.Title.Why') }}</q-btn>
           </router-link>
