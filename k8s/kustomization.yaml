@@ -1,0 +1,6 @@
+commonLabels:
+  # app: cloud-power-webui
+
+resources:
+  - 01-cloud-power-webui.yaml
+  - 02-ingress.yaml

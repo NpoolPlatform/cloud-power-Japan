@@ -1,0 +1,20 @@
+apiVersion: networking.k8s.io/v1beta1
+kind: Ingress
+metadata:
+  name: cloud-power-webui-ingress
+  namespace: kube-system
+  annotations:
+    k8s.kuboard.cn/displayName: cloud-power-webui
+    k8s.kuboard.cn/workload: cloud-power-webui
+    kubernetes.io/ingress.class: "traefik-internet"
+    traefik.ingress.kubernetes.io/router.entrypoints: web,websecure
+
+spec:
+  rules:
+    - host: www.npool.top
+      http:
+        paths:
+          - path: /
+            backend:
+              serviceName: cloud-power-webui
+              servicePort: 80

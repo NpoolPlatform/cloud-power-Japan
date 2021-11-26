@@ -152,9 +152,9 @@ module.exports = configure(function (ctx) {
       },
 
       manifest: {
-        name: `Cloud Power`,
-        short_name: `Cloud Power`,
-        description: `Npool Cloud Power`,
+        name: `Cloud Power Japan`,
+        short_name: `Cloud Power Japan`,
+        description: `Cloud Power Japan`,
         display: 'standalone',
         orientation: 'portrait',
         background_color: '#ffffff',
