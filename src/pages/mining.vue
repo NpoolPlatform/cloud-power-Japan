@@ -80,7 +80,7 @@
           </div>
 
           <div class="line">
-            <span class="label">{{ $t('Mining.Column2.Hasrate') }}</span>
+            <span class="label">{{ $t('Mining.Column2.Hashrate') }}</span>
             <span class="value">950 MH/s</span>
           </div>
 

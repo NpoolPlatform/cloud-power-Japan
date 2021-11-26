@@ -7,17 +7,24 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
+  position: absolute;
+  top: 0;
 }
 
 .header-title {
   width: 150px;
 }
 
+.avator {
+  width: 41px;
+  height: 41px;
+}
+
 /* header right */
 .header-right {
   display: flex;
   justify-content: space-around;
-  align-items: baseline;
+  align-items: flex-end;
 }
 
 /* header left */

@@ -24,6 +24,7 @@ module.exports = configure(function (ctx) {
     boot: [
       'i18n',
       'axios',
+      'notify-defaults',
     ],
 
     // https://quasar.dev/quasar-cli/quasar-conf-js#Property%3A-css
@@ -76,14 +77,22 @@ module.exports = configure(function (ctx) {
 
     // Full list of options: https://quasar.dev/quasar-cli/quasar-conf-js#Property%3A-devServer
     devServer: {
+      proxy: {
+        '/api': {
+          target: 'http://api.npool.top:30080',
+          pathRewrite: {
+            '^/api': ''
+          },
+          changeOrigin: true
+        }
+      },
       https: false,
-      port: 8080,
+      port: 8081,
       open: true // opens browser window automatically
     },
 
     // https://quasar.dev/quasar-cli/quasar-conf-js#Property%3A-framework
     framework: {
-      config: {},
 
       // iconSet: 'material-icons', // Quasar icon set
       // lang: 'en-US', // Quasar language pack
@@ -96,7 +105,10 @@ module.exports = configure(function (ctx) {
       // directives: [],
 
       // Quasar plugins
-      plugins: []
+      plugins: [
+        'Notify',
+        'Cookies'
+      ]
     },
 
     // animations: 'all', // --- includes all animations
@@ -142,7 +154,7 @@ module.exports = configure(function (ctx) {
       manifest: {
         name: `Cloud Power`,
         short_name: `Cloud Power`,
-        description: `A Cloud Power app`,
+        description: `Npool Cloud Power`,
         display: 'standalone',
         orientation: 'portrait',
         background_color: '#ffffff',
@@ -207,7 +219,7 @@ module.exports = configure(function (ctx) {
       builder: {
         // https://www.electron.build/configuration/configuration
 
-        appId: 'cloud-power-webui'
+        appId: 'deer-webui'
       },
 
       // "chain" is a webpack-chain object https://github.com/neutrinojs/webpack-chain

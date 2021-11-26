@@ -27,7 +27,7 @@
               :rules="[val => val && val.length > 0 || $t('Register.EmailVerifyCodeInpuWarning')]"
             >
               <template v-slot:append>
-                <q-btn flat rounded>{{ $t('Register.SendCode') }}</q-btn>
+                <q-btn flat rounded @click="sendCode">{{ $t('Register.SendCode') }}</q-btn>
               </template>
             </q-input>
 
@@ -78,7 +78,7 @@
               lazy-rules
             ></q-input>
 
-            <q-checkbox v-model="registerInput.agree"></q-checkbox>
+            <q-checkbox v-model="agree"></q-checkbox>
             <span class="text-style">
               {{ $t('Register.Agree1') }}
               <a href class="link">{{ $t('Register.Policy') }}</a>
@@ -86,7 +86,7 @@
               <a href class="link">{{ $t('Register.User') }}</a>
             </span>
 
-            <q-btn class="register-btn">{{ $t('Register.Register') }}</q-btn>
+            <q-btn class="register-btn" @click="onRegister">{{ $t('Register.Register') }}</q-btn>
 
             <p class="text-style">
               {{ $t('Register.Have') }}
@@ -101,6 +101,8 @@
 
 <script>
 import { defineComponent, ref, reactive } from 'vue';
+import { api } from 'boot/axios'
+import { success, fail, waiting } from '../notify/notify'
 
 export default defineComponent({
   setup () {
@@ -109,8 +111,7 @@ export default defineComponent({
     const password = ref('')
     const confirmPassword = ref('')
     const invitationCode = ref('')
-    const agree = ref(false)
-    const registerInput = reactive({ email, verifyCode, password, confirmPassword, invitationCode, agree })
+    const registerInput = reactive({ email, verifyCode, password, confirmPassword, invitationCode })
     return {
       registerInput,
       isPwd: ref(true),
@@ -118,8 +119,55 @@ export default defineComponent({
     }
   },
 
+  data () {
+    return {
+      agree: false,
+    }
+  },
+
   methods: {
-    onRegister: function () { },
+    sendCode: function () {
+      if (this.registerInput.email === '') {
+        fail(undefined, 'email is null', null)
+      }
+      const notif = waiting("send code successfully")
+      var failToSend = "fail to send code"
+
+      var thiz = this
+      api.post('/verification-door/v1/send/email', {
+        Email: this.registerInput.email
+      })
+        .then(function (resp) {
+          const msg = "code has been sent" + thiz.registerInput.email + ', ' + "please check your email"
+          success(notif, msg)
+        })
+        .catch(function (error) {
+          fail(notif, failToSend, error)
+        })
+    },
+
+    onRegister: function () {
+      if (!this.agree) {
+        fail(undefined, "please check agree", null)
+        return
+      }
+      var thiz = this
+      var failToRegister = "fail to register"
+
+      api.post('/user-management/v1/signup', {
+        Password: this.registerInput.password,
+        EmailAddress: this.registerInput.email,
+        Code: this.registerInput.verifyCode,
+      })
+        .then(function (resp) {
+          thiz.$router.push({
+            path: '/login',
+          })
+        })
+        .catch(function (error) {
+          fail(undefined, failToRegister, error)
+        })
+    },
   },
 })
 </script>

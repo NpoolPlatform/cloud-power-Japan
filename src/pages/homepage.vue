@@ -4,7 +4,7 @@
       <div id="content-title">
         <div class="title-1">
           {{ $t('Homepage.Title.Title') }}
-          <strong>Procyon</strong>
+          <strong>&nbsp;Procyon</strong>
         </div>
         <div class="title-2">{{ $t('Homepage.Title.Subtitle') }}</div>
         <div class="btn-list">

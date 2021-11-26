@@ -5,25 +5,34 @@
         <router-link :to="{ path: '/' }">
           <q-img :src="url" class="header-title"></q-img>
         </router-link>
-        <div v-if="drawerOpen" class="hr"></div>
+        <div v-if="openSide" class="hr"></div>
       </div>
 
       <div class="header-right">
-        <a class="nav-link" @click="goTo()">{{ $t('Header.Home') }}</a>
-        <a class="nav-link" href>{{ $t('Header.Services') }}</a>
-        <a class="nav-link" href>{{ $t('Header.About') }}</a>
-        <a class="nav-link" href>{{ $t('Header.Contact') }}</a>
-        <q-btn class="alt" @click="signIn">{{ $t('Header.Signin') }}</q-btn>
+        <a class="nav-link" @click="$router.push('/')">{{ $t('Header.Home') }}</a>
+        <a v-if="!logined" class="nav-link" href>{{ $t('Header.Services') }}</a>
+        <a v-if="!logined" class="nav-link" href>{{ $t('Header.About') }}</a>
+        <a v-if="!logined" class="nav-link" href>{{ $t('Header.Contact') }}</a>
+        <a
+          v-if="logined"
+          class="nav-link"
+          @click="$router.push('/wallet')"
+        >{{ $t('Header.Wallet') }}</a>
+        <a
+          v-if="logined"
+          class="nav-link"
+          @click="$router.push('/mining')"
+        >{{ $t('Header.Mining') }}</a>
+        <q-btn v-if="!logined" class="alt" flat @click="signIn">{{ $t('Header.Signin') }}</q-btn>
+        <q-img v-if="logined" class="avator" :src="userImg" @click="onAvatorClick"></q-img>
       </div>
     </q-header>
 
     <q-drawer
       style="background: linear-gradient(to bottom right, #1f293a 0, #23292b 100%); box-shadow: 0px 0px 60px 15px #051319; text-align: center;"
       class="drawer-style text-white"
-      width="200"
-      v-model="open"
-      side="left"
-      bordered
+      :width="200"
+      v-model="openSide"
     >
       <div class="drawer-items">
         <router-link href class="drawer-item" :to="{ path: '/mining' }">
@@ -34,10 +43,10 @@
           <q-img :src="walletImg" class="drawer-item-img"></q-img>
           <span class="drawer-item-span">{{ $t('Drawer.Wallet') }}</span>
         </router-link>
-        <a href class="drawer-item">
+        <router-link href class="drawer-item" :to="{ path: '/account' }">
           <q-img :src="accountImg" class="drawer-item-img"></q-img>
           <span class="drawer-item-span">{{ $t('Drawer.Account') }}</span>
-        </a>
+        </router-link>
       </div>
     </q-drawer>
 
@@ -92,34 +101,69 @@
 </template>
 
 <script>
-import { defineComponent, ref } from 'vue';
+import { defineComponent, computed } from 'vue';
 import { useI18n } from 'vue-i18n';
+import { useStore } from 'vuex'
+
 export default defineComponent({
   name: "MainPage",
   setup () {
     const { locale } = useI18n({ useScope: 'global' })
-    const leftDrawerOpen = ref(true)
-    const toggle = ref("background: linear-gradient(to bottom right, #1f293a 0, #23292b 100%) no-repeat; background-size: 200px; border-bottom: 240px #a1d0d0;")
+    const $store = useStore()
 
+    const openSide = computed({
+      get: () => $store.state.router.router.open,
+      set: val => {
+        $store.commit('router/setOpenSide', val)
+      }
+    })
+
+    const logined = computed({
+      get: () => $store.state.user.user.logined
+    })
     return {
-      url: require('/src/assets/procyon-light.svg'),
       locale: 'en-US',
-      leftDrawerOpen,
-      toggle,
+      openSide,
+      logined,
     }
+  },
+
+  mounted: function () {
+
   },
 
   data () {
     return {
+      url: require('/src/assets/procyon-light.svg'),
       miningImg: require('/src/assets/icon-mining.svg'),
       walletImg: require('/src/assets/icon-wallet.svg'),
       accountImg: require('/src/assets/icon-account.svg'),
-      open: this.leftDrawerOpen,
-      drawerOpen: this.leftDrawerOpen,
+      toggleStyle: 'background: linear-gradient(to bottom right, #1f293a 0, #23292b 100%) no-repeat; background-size: 200px; border-bottom: 240px #a1d0d0;',
+      toggle: null,
+      userImg: require('/src/assets/icon-user.svg'),
     }
   },
 
-  computed: {},
+  watch: {
+    openSide: {
+      deep: true,
+      immediate: true,
+      handler: function (n, o) {
+        if (n) {
+          this.toggle = this.toggleStyle
+        } else {
+          this.toggle = null
+        }
+      },
+    },
+
+    logined: {
+      deep: true,
+      immediate: true,
+      handler: function (n, o) {
+      },
+    },
+  },
 
   methods: {
     signIn: function () {
@@ -129,6 +173,10 @@ export default defineComponent({
       this.$router.push({
         path: '#why-procyon'
       })
+    },
+
+    onAvatorClick: function () {
+      this.$router.push('/account')
     },
   },
 })

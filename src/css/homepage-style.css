@@ -140,7 +140,7 @@ a:not([class]):hover {
   font-weight: 600;
   height: 48px;
   margin: 24px 24px 24px 0;
-  padding: 12px 24px;
+  padding: 0 24px;
   text-shadow: 1px 1px 1px #ce5417;
   transition: all ease-in-out 0.1s;
   text-align: center;

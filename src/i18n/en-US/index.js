@@ -9,7 +9,9 @@ export default {
     Services: 'Services',
     About: 'About',
     Signin: 'SIGN IN',
-    Contact: 'Contact'
+    Contact: 'Contact',
+    Wallet: 'Wallet',
+    Mining: 'Mining Dashboard',
   },
   Footer: {
     First: {
@@ -36,7 +38,7 @@ export default {
   },
   Homepage: {
     Title: {
-      Title: 'SHOOT FOR THE STARS WITH',
+      Title: 'SHOOT FOR THE STARS WITH ',
       Subtitle: 'Your global constellation of cryptocurrencies',
       Register: 'Register',
       Why: 'Why Procyon',
@@ -92,6 +94,20 @@ export default {
         'China team with 12 years of experience since the beginning of crypto in 2009',
       ],
     },
+  },
+
+  FirstSetPassword: {
+    Title: 'Set Your Password',
+    Email: 'E-mail Address',
+    EmailInputWarning: 'Please input correct email address',
+    EmailVerifyCode: 'E-mail Verification Code',
+    EmailVerifyCodeInpuWarning: 'Please input a verification code',
+    SendCode: 'Send Code',
+    Password: 'Password',
+    PasswordInputWarning: 'Please input your password',
+    ConfirmPassword: 'ConfirmPassword',
+    ConfirmInputWarning1: 'Please input your confirm password',
+    ConfirmBtn: 'Confirm',
   },
 
   Register: {
@@ -218,12 +234,28 @@ export default {
       NotVerify: 'Not verified',
       Enable: 'Enabled',
       NotEnable: 'Not Enabled',
+      LoginVerification: 'Login Verification',
+      LoginVerificationContent: 'Enalbe verification methods to add verification when login',
+      GALogin: 'Google Authentication',
+      Submit: 'Submit Change',
     },
     History: {
       Title: 'RECENT LOGIN HISTORY',
       Date: 'Date/Time',
       IP: 'IP Address',
       Location: 'Location',
+    },
+  },
+
+  Dialog: {
+    ChangePassword: {
+      Old: 'Please input your old passwrod',
+      OldLabel: 'Old Password',
+      Password: 'Please input your password',
+      PasswordLabel: 'Password',
+      ConfirmPassword: 'Please confirm your password',
+      ConfirmPasswordLabel: 'Confirm Password',
+      Change: 'Change',
     },
   },
 }

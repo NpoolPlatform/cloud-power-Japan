@@ -9,6 +9,8 @@ const routes = [
       { path: 'login', component: () => import('pages/login.vue') },
       { path: 'mining', component: () => import('pages/mining.vue') },
       { path: 'wallet', component: () => import('pages/wallet.vue') },
+      { path: 'account', component: () => import('pages/account.vue') },
+      { path: 'firstsetpassword', component: () => import('pages/firstsetpassword.vue') },
     ]
   },
 

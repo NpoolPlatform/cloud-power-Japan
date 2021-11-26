@@ -4,6 +4,7 @@
       <q-card class="register-card">
         <q-card-section class="card-title">
           <span>{{ $t('Register.LoginTitle') }}</span>
+          <q-btn @click="gaDialog = true">open dialog</q-btn>
         </q-card-section>
         <q-card-section>
           <q-form class="register-form">
@@ -11,7 +12,7 @@
               class="register-input"
               outlined
               bg-color="blue-grey-1"
-              v-model="registerInput.email"
+              v-model="loginInput.email"
               :label="$t('Register.Username')"
               lazy-rules
               :rules="[val => val && val.length > 0 || $t('Register.UsernameInputwarning')]"
@@ -21,13 +22,13 @@
               class="register-input"
               outlined
               bg-color="blue-grey-1"
-              v-model="registerInput.verifyCode"
+              v-model="loginInput.verifyCode"
               :label="$t('Register.EmailVerifyCode')"
               lazy-rules
               :rules="[val => val && val.length > 0 || $t('Register.EmailVerifyCodeInpuWarning')]"
             >
               <template v-slot:append>
-                <q-btn flat rounded @click="sendCode()">{{ $t('Register.SendCode') }}</q-btn>
+                <q-btn flat rounded @click="sendCode">{{ $t('Register.SendCode') }}</q-btn>
               </template>
             </q-input>
 
@@ -35,7 +36,7 @@
               class="register-input"
               outlined
               bg-color="blue-grey-1"
-              v-model="registerInput.password"
+              v-model="loginInput.password"
               :label="$t('Register.Password')"
               :type="isPwd ? 'password' : 'text'"
               lazy-rules
@@ -58,26 +59,60 @@
         </q-card-section>
       </q-card>
     </div>
+
+    <q-dialog v-model="gaDialog">
+      <q-card>
+        <q-card-section>
+          <span class="card-title text-black">Google Verify</span>
+        </q-card-section>
+        <q-card-section>
+          <verifycode-input @callback="verifyCallback"></verifycode-input>
+        </q-card-section>
+      </q-card>
+    </q-dialog>
   </div>
 </template>
 
 <script>
-import { defineComponent, ref, reactive } from 'vue';
+import { defineComponent, ref, reactive, computed } from 'vue';
 import RecaptchaVue from 'src/components/Recaptcha.vue';
 import { useStore } from 'vuex'
+import { api } from 'src/boot/axios';
+import { success, fail, waiting } from '../notify/notify'
+import { gaVerify } from 'src/utils/utils';
+import VerifycodeInput from 'src/components/VerifycodeInput.vue';
 
 export default defineComponent({
-  components: { RecaptchaVue },
+  components: { RecaptchaVue, VerifycodeInput },
   setup () {
     const email = ref('')
     const verifyCode = ref('')
     const password = ref('')
-    const registerInput = reactive({ email, verifyCode, password })
+    const loginInput = reactive({ email, verifyCode, password })
 
-    const $store = userStore()
+    const $store = useStore()
+
+    const user = computed({
+      get: () => $store.state.user.user,
+      set: val => {
+        $store.commit('user/updateUserInfo', val)
+      }
+    })
+
     return {
-      registerInput,
+      loginInput,
       isPwd: ref(true),
+      user,
+    }
+  },
+
+  watch: {
+    finish: {
+      deep: true,
+      immediate: true,
+      handler: function (n, o) {
+        console.log("finish is", n)
+      },
     }
   },
 
@@ -85,12 +120,69 @@ export default defineComponent({
     return {
       siteKey: '6LdlXU4dAAAAAJz1WqVn2xkIwQrSH38x6tYRAD_m',
       response: null,
+      gaVerifyCode: '',
+      gaDialog: false,
+      authCode: '',
+      finish: '',
     }
   },
 
   methods: {
-    sendCode: function () { },
-    login: function () { },
+    sendCode: function () {
+      if (this.loginInput.email === '') {
+        fail(undefined, 'email is null', null)
+      }
+      const notif = waiting("send code successfully")
+      var failToSend = "fail to send code"
+
+      var thiz = this
+      api.post('/verification-door/v1/send/email', {
+        Email: this.loginInput.email
+      })
+        .then(function (resp) {
+          const msg = "code has been sent" + thiz.loginInput.email + ', ' + "please check your email"
+          success(notif, msg)
+        })
+        .catch(function (error) {
+          fail(notif, failToSend, error)
+        })
+    },
+
+    login: function () {
+      var failToLogin = 'error login'
+      let self = this
+      api.post('/login-door/v1/login', {
+        Username: self.loginInput.email,
+        Password: self.loginInput.password,
+        VerifyCode: self.loginInput.verifyCode,
+        GoogleRecaptchaResponse: self.response,
+      }).then(resp => {
+        if (resp.data.Info.UserAppInfo.UserApplicationInfo.GALogin) {
+          self.gaDialog = true;
+        }
+        for (let i = 0; i > 0; i++) {
+          if (self.gaDialog) {
+            continue
+          }
+        }
+        self.user = {
+          logined: true,
+          info: resp.data.Info,
+        }
+        self.$router.push({
+          path: '/',
+        })
+      }).catch(error => {
+        fail(undefined, failToLogin, error)
+      })
+    },
+
+    verifyCallback: function (resp) {
+      if (resp === 'pass') {
+        this.gaDialog = false
+      }
+    },
+
     callback: function (resp) {
       switch (resp) {
         case "expired":
@@ -104,7 +196,6 @@ export default defineComponent({
           console.log(resp)
           break;
       }
-      console.log("main response is", this.response)
     },
   },
 })
