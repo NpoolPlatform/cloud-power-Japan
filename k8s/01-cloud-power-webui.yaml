@@ -1,21 +1,21 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: cloud-power-webui
+  name: japan-webui
   namespace: kube-system
 spec:
   replicas: 2
   selector:
     matchLabels:
-      app: cloud-power-webui
+      app: japan-webui
   template:
     metadata:
       labels:
-        app: cloud-power-webui
+        app: japan-webui
     spec:
       containers:
-        - name: cloud-power-webui
-          image: entropypool/cloud-power-webui:latest
+        - name: japan-webui
+          image: entropypool/japan-webui:latest
           imagePullPolicy: Always
           env:
             - name: ENV_ENVIRONMENT_TARGET
@@ -42,7 +42,7 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: cloud-power-webui
+  name: japan-webui
   namespace: kube-system
 spec:
   ports:
@@ -50,4 +50,4 @@ spec:
       port: 80
       targetPort: 80
   selector:
-    app: cloud-power-webui
+    app: japan-webui

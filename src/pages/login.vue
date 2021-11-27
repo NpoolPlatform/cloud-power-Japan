@@ -55,6 +55,19 @@
             </div>
 
             <q-btn class="register-btn" @click="login()">{{ $t('Register.Login') }}</q-btn>
+            <div class="bottom-style">
+              <router-link
+                class="link-style"
+                :to="{ path: '/forgetpassword' }"
+              >{{ $t('Login.Forget') }}</router-link>
+              <div>
+                <span>{{ $t('Login.NoAccount') }}</span>
+                <router-link
+                  class="link-style"
+                  :to="{ path: '/register' }"
+                >{{ $t('Login.Register') }}</router-link>
+              </div>
+            </div>
           </q-form>
         </q-card-section>
       </q-card>
@@ -78,8 +91,7 @@ import { defineComponent, ref, reactive, computed } from 'vue';
 import RecaptchaVue from 'src/components/Recaptcha.vue';
 import { useStore } from 'vuex'
 import { api } from 'src/boot/axios';
-import { success, fail, waiting } from '../notify/notify'
-import { gaVerify } from 'src/utils/utils';
+import notify, { success, fail, waiting } from '../notify/notify'
 import VerifycodeInput from 'src/components/VerifycodeInput.vue';
 
 export default defineComponent({
@@ -149,8 +161,10 @@ export default defineComponent({
     },
 
     login: function () {
-      var failToLogin = 'error login'
       let self = this
+
+      var notif = waiting(this.$t('Notify.Login.Wait'))
+
       api.post('/login-door/v1/login', {
         Username: self.loginInput.email,
         Password: self.loginInput.password,
@@ -164,16 +178,18 @@ export default defineComponent({
           if (self.gaDialog) {
             continue
           }
+          break
         }
         self.user = {
           logined: true,
           info: resp.data.Info,
         }
+        success(notif, self.$t('Notify.Login.Success'))
         self.$router.push({
           path: '/',
         })
       }).catch(error => {
-        fail(undefined, failToLogin, error)
+        fail(undefined, self.$t('Notify.Login.Fail'), error)
       })
     },
 
@@ -202,4 +218,17 @@ export default defineComponent({
 </script>
 
 <style scoped src="../css/register-style.css">
+</style>
+<style scoped>
+.bottom-style {
+  display: flex;
+  font-size: 14px;
+  justify-content: space-between;
+}
+
+.link-style {
+  color: #1ec498;
+  border-bottom: none;
+  text-decoration: none;
+}
 </style>

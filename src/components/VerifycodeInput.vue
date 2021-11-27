@@ -1,8 +1,6 @@
 <template>
   <div>
-    <div
-      class="google-content"
-    >You have choose to verify login by google authenticate. Please enter your verify code in your google authenticator.</div>
+    <div class="google-content">{{ $t('GoogleVerify.Content') }}</div>
     <div class="row-center captcha_input_wrapper">
       <input
         v-for="(item,index) in captchas"
@@ -19,7 +17,7 @@
     </div>
     <q-inner-loading
       :showing="visible"
-      label="Please wait..."
+      :label="$t('GoogleVerify.PleaseWait')"
       label-class="text-teal"
       label-style="font-size: 1.1em"
     />
@@ -28,7 +26,7 @@
 
 <script>
 import { gaVerify } from 'src/utils/utils';
-import { success, fail, waiting } from '../notify/notify'
+import { success, fail } from '../notify/notify'
 
 
 export default {
@@ -87,10 +85,10 @@ export default {
           console.log(code);
           var pass = gaVerify(code)
           if (!pass) {
-            fail(undefined, "fail to verify google authenticator", "")
+            fail(undefined, self.$t('Norify.GaVerify.Fail'), "")
             return
           }
-          success(undefined, "successfully login")
+          success(undefined, self.$t('Notify.GaVerify.Success'))
           self.$emit('callback', 'pass')
           self.visible = false
         }

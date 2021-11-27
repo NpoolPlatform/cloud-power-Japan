@@ -9,20 +9,10 @@
       </div>
 
       <div class="header-right">
-        <a class="nav-link" @click="$router.push('/')">{{ $t('Header.Home') }}</a>
-        <a v-if="!logined" class="nav-link" href>{{ $t('Header.Services') }}</a>
-        <a v-if="!logined" class="nav-link" href>{{ $t('Header.About') }}</a>
-        <a v-if="!logined" class="nav-link" href>{{ $t('Header.Contact') }}</a>
-        <a
-          v-if="logined"
-          class="nav-link"
-          @click="$router.push('/wallet')"
-        >{{ $t('Header.Wallet') }}</a>
-        <a
-          v-if="logined"
-          class="nav-link"
-          @click="$router.push('/mining')"
-        >{{ $t('Header.Mining') }}</a>
+        <router-link class="nav-link" :to="{ path: '/' }">{{ $t('Header.Home') }}</router-link>
+        <router-link class="nav-link" :to="{ path: '/' }">{{ $t('Header.Blog') }}</router-link>
+        <router-link class="nav-link" :to="{ path: '/faq' }">{{ $t('Header.Support') }}</router-link>
+        <router-link class="nav-link" :to="{ path: '/' }">{{ $t('Header.Contact') }}</router-link>
         <q-btn v-if="!logined" class="alt" flat @click="signIn">{{ $t('Header.Signin') }}</q-btn>
         <q-img v-if="logined" class="avator" :src="userImg" @click="onAvatorClick"></q-img>
       </div>
@@ -66,17 +56,35 @@
             <div class="content-items">
               <h4>{{ $t('Footer.Second.Title') }}</h4>
               <div class="item-links">
-                <a class="footer-link">{{ $t('Footer.Second.Home') }}</a>
-                <a class="footer-link">{{ $t('Footer.Second.Products') }}</a>
-                <a class="footer-link">{{ $t('Footer.Second.WhySpacemesh') }}</a>
-                <a class="footer-link">{{ $t('Footer.Second.WhyProcyon') }}</a>
+                <router-link
+                  class="footer-link nav-link"
+                  :to="{ path: '/' }"
+                >{{ $t('Footer.Second.Home') }}</router-link>
+                <router-link
+                  class="footer-link nav-link"
+                  :to="{ path: '/' }"
+                >{{ $t('Footer.Second.Products') }}</router-link>
+                <router-link
+                  class="footer-link nav-link"
+                  :to="{ path: '/' }"
+                >{{ $t('Footer.Second.Blog') }}</router-link>
               </div>
             </div>
             <div class="content-items">
               <h4>{{ $t('Footer.Third.Title') }}</h4>
               <div class="item-links">
-                <a class="footer-link">{{ $t('Footer.Third.Faqs') }}</a>
-                <a class="footer-link">{{ $t('Footer.Third.Support') }}</a>
+                <router-link
+                  class="footer-link nav-link"
+                  :to="{ path: '/faq' }"
+                >{{ $t('Footer.Third.Faqs') }}</router-link>
+                <router-link
+                  class="footer-link nav-link"
+                  :to="{ path: '/faq' }"
+                >{{ $t('Footer.Third.Support') }}</router-link>
+                <router-link
+                  class="footer-link nav-link"
+                  :to="{ path: '/legal' }"
+                >{{ $t('Footer.Third.Legal') }}</router-link>
               </div>
             </div>
             <div class="content-items">

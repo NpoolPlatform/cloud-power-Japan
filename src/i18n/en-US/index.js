@@ -1,3 +1,5 @@
+import accountVue from "src/pages/account.vue";
+
 export default {
   Lang: {
     English: 'English',
@@ -6,12 +8,10 @@ export default {
   },
   Header: {
     Home: 'Home',
-    Services: 'Services',
-    About: 'About',
-    Signin: 'SIGN IN',
+    Blog: 'BLOG',
+    Support: 'SUPPORT & FAQ',
     Contact: 'Contact',
-    Wallet: 'Wallet',
-    Mining: 'Mining Dashboard',
+    Signin: 'Sign in',
   },
   Footer: {
     First: {
@@ -22,13 +22,13 @@ export default {
       Title: 'LINKS',
       Home: 'Home',
       Products: 'Products',
-      WhySpacemesh: 'Why Spacemesh',
-      WhyProcyon: 'Why Procyon',
+      Blog: 'Blog',
     },
     Third: {
       Title: 'HELP',
       Faqs: 'FAQs',
       Support: 'Support',
+      Legal: 'Legal',
     },
     Forth: {
       Title: 'CONTACT INFO',
@@ -68,11 +68,16 @@ export default {
     },
 
     Why: {
-      Title: 'WHY PROCYON?',
-      Content1: 'The adoption of cryptocurrencies has steadily progressed across the globe. Countries such as China and the United States have become centers for cryptocurrency mining. However, the location and language of these mining pools has excluded some Japanese crypto enthusiasts.',
-      Content2: 'Enter Procyon.',
-      Content3: 'Procyon is the first Japan-centric mining platform that bridges the gap between location, language, and software. The',
-      Content4: 'team and vision behind Procyon are what make it unique.', 
+      Title: 'WHY CHOOSE PROCYON?',
+      Content1: 'Procyon is the first Japan-centric, one-stop, multidimensional asset management marketplace. We bring',
+      Content2: 'first-to-market products and IDOs',
+      Content3: 'to our clients. Our unique market insights and our extensive network in the crypto space allows us to provide our clients with exclusive',
+      Content4: 'investment opportunities that cannot be found on the open market.', 
+      Content5: 'Our unique positioning is our strength and your gain!',
+      Content6: 'Japan boasts the highest investment per capita in Asia. The endless possibilities of the',
+      Content7: 'Japanese market attract many global players,',
+      Content8: 'however Japan suffers from a language and cultural barrier that insulates the country from global markets. This hurdle can result in missed opportunities and a lack of diversity in investment products. At Procyon we lead our exclusive communities of investors to the global stage.',
+
     },
 
     IndustryConnections: {
@@ -257,5 +262,85 @@ export default {
       ConfirmPasswordLabel: 'Confirm Password',
       Change: 'Change',
     },
+  },
+
+  GoogleVerify: {
+    Content: 'You have choose to verify login by google authenticate. Please enter your verify code in your google authenticator.',
+    PleaseWait: 'Please wait for verify... ...',
+  },
+
+  Notify: {
+    SendCode: {
+      WaitSend: 'sending email... ...',
+      SendTo: 'code has been sent to',
+      CheckEmail: 'please check your email',
+      Fail: 'fail to send code',
+    },
+
+    GaVerify: {
+      CantNull: 'verify code can\'t be null',
+      Success: 'successfully verify google authentication',
+      Fail: 'fail to verify google authentication',
+      FailToGetImg: 'fail to get google authentication QR code image',
+    },
+
+    Goods: {
+      Fail: 'fail to get goods info',
+    },
+
+    User: {
+      Fail: 'fail to get user info',
+      PleaseLogin: 'please login first',
+    },
+
+    ChangePassword: {
+      Fail1: 'password and confirm password not same',
+      Fail2: 'fail to change password:',
+      Success: 'successfully change your pasword',
+    },
+
+    SubmitLoginVerify: {
+      Success: 'submit user login verfy with google authentication successfully',
+      Fail: 'fail to submit user login verify: ',
+    },
+
+    ChangeUserInfo: {
+      Success: 'successfully update personal details',
+      Fail: 'fail to update user info',
+    },
+
+    Login: {
+      Wait: 'wait logining... ...',
+      Success: 'Login successfully',
+      Fail: 'Fail to login',
+    },
+
+    ForgetPassword: {
+      Waiting: 'Password set successfully, waiting login... ...',
+      Success: 'Set new password successfully',
+      Fail1: 'password and confirm password is not same',
+      Fail2: 'fail to set new password: ',
+    },
+  },
+
+  Login: {
+    Forget: 'Forget Password?',
+    NoAccount: 'Doesn\'t have account,',
+    Register: 'Click to register',
+  },
+
+  ForgetPassword: {
+    Title: 'Forget Password',
+    Username: 'E-mail Address',
+    UsernameInputwarning: 'Please input correct email address',
+    SendCode: 'Send Code',
+    EmailVerifyCode: 'E-mail Verification Code',
+    EmailVerifyCodeInpuWarning: 'Please input a verification code',
+    Password: 'Password',
+    PasswordInputWarning: 'Please input your password',
+    Confirm: 'Confirm Password',
+    ConfirmInputWarning1: 'Please input your confirm password',
+    ConfirmInputWarning2: 'password and confirm password not equal',
+    ConfirmBtn: 'Confirm',
   },
 }

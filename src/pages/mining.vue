@@ -103,11 +103,28 @@
 </template>
 
 <script>
-import { defineComponent } from 'vue'
+import { defineComponent, computed } from 'vue';
+import { api } from 'src/boot/axios';
+import { useStore } from 'vuex';
+import { success, fail, waiting } from '../notify/notify'
+import { useQuasar } from 'quasar';
 
 export default defineComponent({
   setup () {
+    const $store = useStore()
+    const orders = computed({
+      get: () => $store.state.orders.orders,
+      set: val => {
+        $store.commit('orders/updateOrders', val)
+      }
+    })
 
+    const q = useQuasar()
+
+    return {
+      orders,
+      q,
+    }
   },
 
   data () {
@@ -115,7 +132,30 @@ export default defineComponent({
       spacemeshImg: require('/src/assets/product-spacemesh.svg'),
       plusImg: require('/src/assets/icon-plus.svg')
     }
-  }
+  },
+
+  created: function () {
+    var userid = this.q.cookies.get('UserID')
+    if (userid === null || userid === undefined || userid === '') {
+      fail(undefined, this.$t('Notify.User.PleaseLogin'), "")
+      this.$router.push('/login')
+    }
+  },
+
+  mounted: function () {
+    var userid = this.q.cookies.get('UserID')
+    var appid = this.q.cookies.get('AppID')
+    var self = this
+
+    api.post('/cloud-hashing-apis/v1/get/orders/detail/by/app/user', {
+      AppID: appid,
+      UserID: userid,
+    }).then(resp => {
+      self.orders = resp.data
+    }).catch(error => {
+      fail(undefined, 'fail to get user order details', error)
+    })
+  },
 })
 </script>
 

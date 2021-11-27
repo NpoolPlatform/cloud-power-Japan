@@ -5,18 +5,18 @@ export function sendCode(email) {
   if (email === "") {
     fail(undefined, "email is null", null);
   }
-  const notif = waiting("send code successfully");
-  var failToSend = "fail to send code";
+  const notif = waiting($t('Notify.SendCode.WaitSend'));
+  var failToSend = $t('Notify.SendCode.Fail');
   api
     .post("/verification-door/v1/send/email", {
       Email: email,
     })
     .then(function (resp) {
       const msg =
-        "code has been sent" +
+        $t('Notify.SendCode.SendTo') +
         email +
         ", " +
-        "please check your email";
+        $t('Notify.SendCode.CheckEmail');
       success(notif, msg);
     })
     .catch(function (error) {
@@ -26,17 +26,17 @@ export function sendCode(email) {
 
 export function gaVerify(code) {
   if (code === '') {
-    fail(undefined, "verify code can't be null", "")
+    fail(undefined, $t('Notify.GaVerify.CantNull'), "")
     return false
   }
 
   api.post('/verification-door/v1/verify/google/auth', {
     Code: code,
   }).then(resp => {
-    success(undefined, "successfully verify google authentication")
+    success(undefined, $t('Notify.GaVerify.Success'))
     return true
   }).catch(error => {
-    fail(undefined, "fail to verify google authentication", error)
+    fail(undefined, $t('Notify.GaVerify.Fail'), error)
     return false
   })
   return false

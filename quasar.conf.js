@@ -24,7 +24,7 @@ module.exports = configure(function (ctx) {
     boot: [
       'i18n',
       'axios',
-      'notify-defaults',
+      'notify-defaults'
     ],
 
     // https://quasar.dev/quasar-cli/quasar-conf-js#Property%3A-css
@@ -49,6 +49,7 @@ module.exports = configure(function (ctx) {
     // Full list of options: https://quasar.dev/quasar-cli/quasar-conf-js#Property%3A-build
     build: {
       vueRouterMode: 'hash', // available values: 'hash', 'history'
+      env: require('./EnvParse.js')(),
 
       // transpile: false,
       // publicPath: '/',
@@ -79,20 +80,23 @@ module.exports = configure(function (ctx) {
     devServer: {
       proxy: {
         '/api': {
-          target: 'http://api.npool.top:30080',
+          target: 'http://www.npool.top:30080',
           pathRewrite: {
-            '^/api': ''
+            '^/api': '/api' 
           },
           changeOrigin: true
         }
       },
       https: false,
-      port: 8081,
+      port: 8080,
       open: true // opens browser window automatically
     },
 
     // https://quasar.dev/quasar-cli/quasar-conf-js#Property%3A-framework
     framework: {
+      config: {
+        notify: {}
+      },
 
       // iconSet: 'material-icons', // Quasar icon set
       // lang: 'en-US', // Quasar language pack
@@ -152,9 +156,9 @@ module.exports = configure(function (ctx) {
       },
 
       manifest: {
-        name: `Cloud Power Japan`,
-        short_name: `Cloud Power Japan`,
-        description: `Cloud Power Japan`,
+        name: `Cloud Power`,
+        short_name: `Cloud Power`,
+        description: `Japan Cloud Power`,
         display: 'standalone',
         orientation: 'portrait',
         background_color: '#ffffff',
@@ -219,7 +223,7 @@ module.exports = configure(function (ctx) {
       builder: {
         // https://www.electron.build/configuration/configuration
 
-        appId: 'deer-webui'
+        appId: 'japan-webui'
       },
 
       // "chain" is a webpack-chain object https://github.com/neutrinojs/webpack-chain

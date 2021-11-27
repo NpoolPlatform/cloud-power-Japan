@@ -11,6 +11,9 @@ const routes = [
       { path: 'wallet', component: () => import('pages/wallet.vue') },
       { path: 'account', component: () => import('pages/account.vue') },
       { path: 'firstsetpassword', component: () => import('pages/firstsetpassword.vue') },
+      { path: 'forgetpassword', component: () => import('pages/forgetpassword.vue') },
+      { path: 'faq', component: () => import('pages/faq.vue') },
+      { path: 'legal', component: () => import('pages/legal.vue') },
     ]
   },
 

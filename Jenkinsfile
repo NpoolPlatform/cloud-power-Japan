@@ -42,7 +42,7 @@ pipeline {
       }
       steps {
         sh(returnStdout: true, script: '''
-          images=`docker images | grep entropypool | grep cloud-power-webui | awk '{ print $3 }'`
+          images=`docker images | grep entropypool | grep japan-webui | awk '{ print $3 }'`
           for image in $images; do
             docker rmi $image
           done
@@ -52,7 +52,7 @@ pipeline {
     	    version=latest
 	  fi
 	  set -e 
-	  docker build -t entropypool/cloud-power-webui:$version .
+	  docker build -t entropypool/japan-webui:$version .
         '''.stripIndent())
       }
     }
@@ -69,7 +69,7 @@ pipeline {
     	    version=latest
 	  fi
 	  set -e 
-          docker push entropypool/cloud-power-webui:$version
+          docker push entropypool/japan-webui:$version
         '''.stripIndent())
       }
     }

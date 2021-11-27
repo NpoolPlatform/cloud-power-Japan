@@ -55,20 +55,20 @@ export default defineComponent({
           this.open = false
         }
 
-        var session = this.q.cookies.get('AppSession')
-        var userid = this.q.cookies.get('UserID')
-        var sessionCondition = session === '' || session === null || session === undefined
-        var useridCondition = userid === '' || userid === null || userid === undefined
-        if (sessionCondition || useridCondition) {
-          this.$router.push('/')
-          return
-        }
+        // var session = this.q.cookies.get('AppSession')
+        // var userid = this.q.cookies.get('UserID')
+        // var sessionCondition = session === '' || session === null || session === undefined
+        // var useridCondition = userid === '' || userid === null || userid === undefined
+        // if (sessionCondition || useridCondition) {
+        //   this.$router.push('/')
+        //   return
+        // }
       },
     }
   },
 
   created: function () {
-    var appID = 'a750f653-4e53-42a9-b91a-5131f24da28b'
+    var appID = 'ff2c5d50-be56-413e-aba5-9c7ad888a769'
     this.q.cookies.set('AppID', appID)
   },
 
@@ -92,7 +92,7 @@ export default defineComponent({
       let self = this
       var appid = this.q.cookies.get('AppID')
       var userid = this.q.cookies.get('UserID')
-      var failToGetUserinfo = 'fail to get user info'
+      var failToGetUserinfo = this.$t('Notify.User.Fail')
       api.post('/user-management/v1/get/user/details', {
         AppID: appid,
         UserID: userid,
@@ -103,6 +103,7 @@ export default defineComponent({
         }
       }).catch(error => {
         fail(undefined, failToGetUserinfo, error)
+        self.$router.push('/')
       })
     },
   },

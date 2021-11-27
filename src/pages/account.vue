@@ -10,7 +10,7 @@
             <q-input
               style="width: 400px; margin-top: 10px;"
               outlined
-              v-model="user.info.UserBasicInfo.FirstName"
+              v-model="firstname"
               bg-color="blue-grey-1"
             ></q-input>
           </div>
@@ -20,7 +20,7 @@
             <q-input
               style="width: 400px; margin-top: 10px;"
               outlined
-              v-model="user.info.UserBasicInfo.lastName"
+              v-model="lastname"
               bg-color="blue-grey-1"
             ></q-input>
           </div>
@@ -32,7 +32,7 @@
             <q-input
               style="width: 400px; margin-top: 10px;"
               outlined
-              v-model="user.info.UserBasicInfo.streetAddress1"
+              v-model="street1"
               bg-color="blue-grey-1"
             ></q-input>
           </div>
@@ -42,7 +42,7 @@
             <q-input
               style="width: 400px; margin-top: 10px;"
               outlined
-              v-model="user.info.UserBasicInfo.streetAddress2"
+              v-model="street2"
               bg-color="blue-grey-1"
             ></q-input>
           </div>
@@ -54,7 +54,7 @@
             <q-input
               style="width: 400px; margin-top: 10px;"
               outlined
-              v-model="user.info.UserBasicInfo.city"
+              v-model="city"
               bg-color="blue-grey-1"
             ></q-input>
           </div>
@@ -64,7 +64,7 @@
             <q-input
               style="width: 400px; margin-top: 10px;"
               outlined
-              v-model="user.info.UserBasicInfo.province"
+              v-model="province"
               bg-color="blue-grey-1"
             ></q-input>
           </div>
@@ -76,7 +76,7 @@
             <q-input
               style="width: 400px; margin-top: 10px;"
               outlined
-              v-model="user.info.UserBasicInfo.country"
+              v-model="country"
               bg-color="blue-grey-1"
             ></q-input>
           </div>
@@ -149,13 +149,14 @@
               </div>
               <div class="setting-content">{{ $t('Account.SecuritySetting.GoogleContent') }}</div>
               <div class="verify-content">
-                <q-img class="verify-img" :src="enabledGoogle ? passImg : notpassImg"></q-img>
-                <span :v-if="enabledGoogle"></span>
-                {{ enabledGoogle ? $t('Account.SecuritySetting.Verify') : $t('Account.SecuritySetting.NotVerify') }}
+                <q-img class="verify-img" :src="enableGoogleAuthentication ? passImg : notpassImg"></q-img>
+                <span :v-if="enableGoogleAuthentication"></span>
+                {{ enableGoogleAuthentication ? $t('Account.SecuritySetting.Verify') : $t('Account.SecuritySetting.NotVerify') }}
               </div>
               <q-btn
                 class="account-btn setting-btn google-btn btn-position"
                 style="top: 5px;"
+                @click="onGoogleVerificationBtnClick"
               >{{ $t('Account.SecuritySetting.GoogleBtn') }}</q-btn>
             </div>
           </div>
@@ -186,7 +187,18 @@
                 class="setting-content"
               >{{ $t('Account.SecuritySetting.LoginVerificationContent') }}</div>
               <div class="verify-content">
-                <q-toggle v-model="enableLoginGA" color="green" />
+                <q-toggle
+                  v-model="userGALogin"
+                  color="green"
+                  :disable="!enableGoogleAuthentication"
+                >
+                  <q-tooltip
+                    anchor="top middle"
+                    self="bottom middle"
+                    :offset="[10, 10]"
+                    v-if="!enableGoogleAuthentication"
+                  >please do google authenticate verify first!!!</q-tooltip>
+                </q-toggle>
                 <span>{{ $t('Account.SecuritySetting.GALogin') }}</span>
               </div>
 
@@ -232,6 +244,23 @@
         </q-card>
       </q-dialog>
 
+      <q-dialog v-model="openGaVerify">
+        <q-card>
+          <q-card-section>
+            <div class="text-h6">Inception</div>
+          </q-card-section>
+
+          <q-card-section>
+            <q-img :src="userGoogleImg"></q-img>
+          </q-card-section>
+
+          <q-card-actions align="right" class="text-primary">
+            <q-btn flat label="Open another dialog" @click="secondDialog = true" />
+            <q-btn flat label="Close" v-close-popup />
+          </q-card-actions>
+        </q-card>
+      </q-dialog>
+
       <div>
         <div class="title">{{ $t('Account.History.Title') }}</div>
         <q-markup-table class="table-box" wrap-cells flat>
@@ -261,31 +290,100 @@
 import { api } from 'src/boot/axios'
 import { defineComponent, computed } from 'vue'
 import { useStore } from 'vuex'
-import { success, fail, waiting } from '../notify/notify'
+import { success, fail } from '../notify/notify'
 import { useQuasar } from 'quasar'
 
 export default defineComponent({
   setup () {
-    const store = useStore()
+    const $store = useStore()
     const user = computed({
-      get: () => store.state.user.user,
+      get: () => $store.state.user.user,
+      set: val => {
+        $store.commit('user/updateUserInfo', val)
+      }
+    })
+
+    const firstname = computed({
+      get: () => $store.state.user.user.info.UserBasicInfo.FirstName,
+      set: val => {
+        $store.commit('user/updateFirstname', val)
+      }
+    })
+
+    const lastname = computed({
+      get: () => $store.state.user.user.info.UserBasicInfo.LastName,
+      set: val => {
+        $store.commit('user/updateLastname', val)
+      }
+    })
+
+    const street1 = computed({
+      get: () => $store.state.user.user.info.UserBasicInfo.StreetAddress1,
+      set: val => {
+        $store.commit('user/updateStreet1', val)
+      }
+    })
+
+    const street2 = computed({
+      get: () => $store.state.user.user.info.UserBasicInfo.StreetAddress2,
+      set: val => {
+        $store.commit('user/updateStreet2', val)
+      }
+    })
+
+    const city = computed({
+      get: () => $store.state.user.user.info.UserBasicInfo.City,
+      set: val => {
+        $store.commit('user/updateCity', val)
+      }
+    })
+
+    const province = computed({
+      get: () => $store.state.user.user.info.UserBasicInfo.Province,
+      set: val => {
+        $store.commit('user/updateProvince', val)
+      }
+    })
+
+    const country = computed({
+      get: () => $store.state.user.user.info.UserBasicInfo.Country,
+      set: val => {
+        $store.commit('user/updateCountry', val)
+      }
+    })
+
+    const enableGoogleAuthentication = computed({
+      get: () => $store.state.user.user.info.UserAppInfo.UserApplicationInfo.GAVerify,
+      set: val => {
+        $store.commit('user/updateGA', val)
+      }
+    })
+
+    const userGALogin = computed({
+      get: () => $store.state.user.user.info.UserAppInfo.UserApplicationInfo.GALogin,
+      set: val => {
+        $store.commit('user/updateUserLoginVerify', val)
+      }
     })
     const q = useQuasar()
     return {
       user,
+      userGALogin,
+      firstname,
+      lastname,
+      street1,
+      street2,
+      city,
+      province,
+      country,
+      enableGoogleAuthentication,
       q,
-      store,
     }
   },
 
   data () {
     return {
       changePassword: false,
-      updateEmail: false,
-      updatePhone: false,
-      enableGoogle: false,
-      verifyID: false,
-      enableLoginGA: this.enableLoginWithGA,
       passwordImg: require('/src/assets/icon-password.svg'),
       emailImg: require('/src/assets/icon-email.svg'),
       mobileImg: require('/src/assets/icon-mobile.svg'),
@@ -293,6 +391,9 @@ export default defineComponent({
       verificationImg: require('/src/assets/icon-id.svg'),
       passImg: require('/src/assets/icon-pass.svg'),
       notpassImg: require('/src/assets/icon-notpass.svg'),
+      userGoogleImg: '',
+      openGaVerify: false,
+      secondDialog: false,
 
       userLoginHistory: [
         {
@@ -325,11 +426,15 @@ export default defineComponent({
     }
   },
 
-  computed: {
-    enabledGoogle: function () {
-      return this.user.info.UserAppInfo.UserApplicationInfo.GAVerify
-    },
+  created: function () {
+    var userid = this.q.cookies.get('UserID')
+    if (userid === null || userid === undefined || userid === '') {
+      fail(undefined, this.$t('Notify.User.PleaseLogin'), "")
+      this.$router.push('/login')
+    }
+  },
 
+  computed: {
     enabledEmail: function () {
       if (this.user.info.UserBasicInfo.EmailAddress !== '') {
         return true
@@ -345,74 +450,45 @@ export default defineComponent({
     enabledID: function () {
       return false
     },
-
-    enableLoginWithGA: function () {
-      if (this.user.info.UserAppInfo.UserApplicationInfo.GALogin) {
-        return false
-      } else {
-        return this.user.info.UserAppInfo.UserApplicationInfo.GALogin
-      }
-    },
   },
 
   methods: {
     onChangePassword: function () {
-      var appid = this.q.cookies.get('AppID')
-      var userid = this.q.cookies.get('UserID')
-
-      var appidCondition = (appid === '' || appid === null || appid === undefined)
-      var useridCondition = (userid === '' || userid === null || userid === undefined)
-      if (appidCondition || useridCondition) {
-        fail(undefined, "fail to opearate, please login first", "failed")
-        this.$router.push('/login')
-        return
-      }
+      var self = this
 
       if (this.changePasswordInput.password !== this.changePasswordInput.confirmPassword) {
-        fail(undefined, "password and confirm password not same", "error")
+        fail(undefined, self.$t('Notify.ChangePassword.Fail1'), "")
         this.changePassword = false
         return
       }
-
-      var self = this
 
       api.post('/user-management/v1/change/password', {
         OldPassword: self.changePasswordInput.old,
         Password: self.changePasswordInput.password,
       }).then(resp => {
-        success(undefined, 'successfully change your pasword')
+        success(undefined, self.$t('Notify.ChangePassword.Success'))
         self.changePassword = false
         return
       }).catch(error => {
-        fail(undefined, "fail to change password:", error)
+        fail(undefined, self.$t('Notify.ChangePasword.Fail2'), error)
         return
       })
     },
 
     submitLoginVerify: function () {
       var self = this
-
       var appid = this.q.cookies.get('AppID')
       var userid = this.q.cookies.get('UserID')
-
-      var appidCondition = (appid === '' || appid === null || appid === undefined)
-      var useridCondition = (userid === '' || userid === null || userid === undefined)
-      if (appidCondition || useridCondition) {
-        fail(undefined, "fail to opearate, please login first", "failed")
-        this.$router.push('/login')
-        return
-      }
 
       api.post('/application-management/v1/set/ga/login', {
         AppID: appid,
         UserID: userid,
-        set: self.enableLoginGA,
+        set: self.userGALogin,
       }).then(resp => {
-        success(undefined, "submit user login verfy with google authentication successfully")
-        self.store.commit('user/updateUserLoginVerify', self.enableLoginGA)
+        success(undefined, self.$t('Notify.SubmitLoginVerify.Success'))
         return
       }).catch(error => {
-        fail(undefined, "fail to submit user login verify: ", error)
+        fail(undefined, self.$t('Notify.SubmitLoginVerify.Fail'), error)
         return
       })
     },
@@ -421,25 +497,27 @@ export default defineComponent({
       var appid = this.q.cookies.get('AppID')
       var userid = this.q.cookies.get('UserID')
 
-      var appidCondition = (appid === '' || appid === null || appid === undefined)
-      var useridCondition = (userid === '' || userid === null || userid === undefined)
-      if (appidCondition || useridCondition) {
-        fail(undefined, "fail to opearate, please login first", "failed")
-        this.$router.push('/login')
-        return
-      }
-
       var self = this
       api.post('/user-management/v1/update/user', {
         AppID: appid,
         UserID: userid,
         Info: self.user.info.UserBasicInfo,
       }).then(resp => {
-        success(undefined, "successfully update personal details")
-        self.store.commit('user/updateUserInfo', self.user)
-        return
+        success(undefined, self.$t('Notify.ChangeUserInfo.Success'))
       }).catch(error => {
-        fail(undefined, "fail to update user info", error)
+        fail(undefined, self.$t('Notify.ChangeUserInfo.Fail'), error)
+      })
+    },
+
+    onGoogleVerificationBtnClick: function () {
+      var self = this
+      api.post('verification-door/v1/get/qrcode/url', {
+        Username: self.user.info.UserBasicInfo.Username,
+      }).then(resp => {
+        self.userGoogleImg = resp.data.Info
+        console.log('google img is', self.userGoogleImg);
+      }).catch(error => {
+        fail(undefined, self.$t('Notify.GaVerify.FailToGetImg'), error)
       })
     },
   },
