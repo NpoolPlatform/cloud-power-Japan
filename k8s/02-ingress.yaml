@@ -1,11 +1,11 @@
 apiVersion: networking.k8s.io/v1beta1
 kind: Ingress
 metadata:
-  name: cloud-power-webui-ingress
+  name: japan-webui-ingress
   namespace: kube-system
   annotations:
-    k8s.kuboard.cn/displayName: cloud-power-webui
-    k8s.kuboard.cn/workload: cloud-power-webui
+    k8s.kuboard.cn/displayName: japan-webui
+    k8s.kuboard.cn/workload: japan-webui
     kubernetes.io/ingress.class: "traefik-internet"
     traefik.ingress.kubernetes.io/router.entrypoints: web,websecure
 
@@ -16,5 +16,5 @@ spec:
         paths:
           - path: /
             backend:
-              serviceName: cloud-power-webui
+              serviceName: japan-webui
               servicePort: 80
