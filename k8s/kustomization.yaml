@@ -1,6 +1,6 @@
 commonLabels:
-  # app: cloud-power-webui
+  # app: japan-webui
 
 resources:
-  - 01-cloud-power-webui.yaml
+  - 01-japan-webui.yaml
   - 02-ingress.yaml
