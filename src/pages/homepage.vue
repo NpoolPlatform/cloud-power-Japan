@@ -204,20 +204,8 @@ export default defineComponent({
     this.getGoodsList()
   },
 
-  mounted: function () {
-    // var self = this
-    // var failword = this.$t('Notify.Goods.Fail')
-    // const $store = useStore()
-
-    // api.post('/cloud-hashing-apis/v1/get/goods/detail', {}).then(resp => {
-    //   self.$nextTick(function () {
-    //     $store.commit('goods/updateGoods', resp.data)
-    //   })
-    //   return
-    // }).catch(error => {
-    //   fail(undefined, failword, error)
-    //   return
-    // })
+  beforeUnmount: function () {
+    this.emitter.off('get_goods_list')
   },
 
   computed: {
@@ -226,7 +214,7 @@ export default defineComponent({
       for (let i = 0; i < 3 && i < this.myGoods.length; i++) {
         goods.push(this.myGoods[i])
       }
-      for (let i = goods.length; i < 3; i++) {
+      for (let i = goods.length; i < 3 && goods.length > 0; i++) {
         goods.push(goods[i - goods.length])
       }
       return goods
@@ -236,6 +224,7 @@ export default defineComponent({
   methods: {
     onGetGoodsList: function (goods) {
       this.myGoods = goods
+      this.goods = this.myGoods
     },
 
     getGoodsList: function () {
@@ -250,6 +239,7 @@ export default defineComponent({
         return
       })
     },
+
     timestampToDate: function (timestamp) {
       var date = new Date(timestamp * 1000)
       var Y = date.getFullYear() + '-';

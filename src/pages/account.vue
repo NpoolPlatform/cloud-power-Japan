@@ -156,6 +156,7 @@
               <q-btn
                 class="account-btn setting-btn google-btn btn-position"
                 style="top: 5px;"
+                :disable="enableGoogleAuthentication"
                 @click="onGoogleVerificationBtnClick"
               >{{ $t('Account.SecuritySetting.GoogleBtn') }}</q-btn>
             </div>
@@ -268,6 +269,13 @@
           </q-card-actions>
         </q-card>
       </q-dialog>
+
+      <q-inner-loading
+        :showing="visible"
+        :label="$t('GoogleVerify.PleaseWait')"
+        label-class="text-teal"
+        label-style="font-size: 1.1em"
+      />
 
       <q-dialog v-model="secondDialog">
         <q-card>
@@ -415,6 +423,7 @@ export default defineComponent({
       userGoogleImg: '',
       openGaVerify: false,
       secondDialog: false,
+      visible: false,
 
       userLoginHistory: [
         {
@@ -546,7 +555,23 @@ export default defineComponent({
     verifyCallback: function (resp) {
       if (resp === 'pass') {
         this.secondDialog = false
-        this.enableGoogleAuthentication = true
+        this.visible = true
+        var appid = this.q.cookies.get('AppID')
+        var userid = this.q.cookies.get('UserID')
+
+        var self = this
+        api.post('/application-management/v1/update/user/ga/status', {
+          UserID: userid,
+          AppID: appid,
+          Status: true,
+        }).then(resp => {
+          success(undefined, "successfully set user google verify")
+          this.enableGoogleAuthentication = true
+
+        }).catch(error => {
+          fail(undefined, 'fail to set user google verify', error)
+        })
+        this.visible = false
         this.openGaVerify = false
       }
     },

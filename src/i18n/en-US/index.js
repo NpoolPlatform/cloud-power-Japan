@@ -147,7 +147,7 @@ export default {
 
     Column2: {
       Title: 'MINING DASHBOARD',
-      Earning: 'Earnings: ',
+      Earning: 'Total: ',
       Last24: 'Last 24 hours: ',
       Capacity: 'Capacity: ',
       DailyOutput: 'Daily Output (30 day avg.)',

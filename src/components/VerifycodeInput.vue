@@ -100,7 +100,6 @@ export default {
         Code: code,
       }).then(resp => {
         success(undefined, successMsg)
-        success(undefined, successMsg)
         self.$emit('callback', 'pass')
         self.visible = false
       }).catch(error => {

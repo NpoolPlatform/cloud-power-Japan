@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div v-if="visible">
     <div class="content">
       <div class="title">{{ $t('Mining.Column1.Title') }}</div>
 
@@ -35,63 +35,52 @@
       <div class="hr-t"></div>
 
       <div class="title">{{ $t('Mining.Column2.Title') }}</div>
-      <div class="dashboard">
-        <div class="dashbord-title">
-          <q-img class="mining-icon" :src="spacemeshImg"></q-img>SPACEMESH
-        </div>
-        <div class="mining-column">
-          <div class="column-item">
-            <span class="column-item-title">{{ $t('Mining.Column2.Earning') }}</span>
-            <span class="column-item-number">10 SMH</span>
-            <span class="additions">(5000 USDT)</span>
+
+      <div class="dashboard" v-for="(order, index) in myOrders" :key="index">
+        <div v-if="order.good != undefined">
+          <div class="dashbord-title">
+            <!-- <q-img class="mining-icon" :src="order.CoinInfo.Logo" v-if="order.CoinInfo.Logo !== ''"></q-img> -->
+            <q-img class="mining-icon" :src="spacemeshImg"></q-img>
+            {{ order.good.Title }}
+          </div>
+          <div class="mining-column">
+            <div class="column-item">
+              <span class="column-item-title">{{ $t('Mining.Column2.Earning') }}</span>
+              <span
+                class="column-item-number"
+              >{{ order.order.Payment.Amount }} {{ order.order.Payment.CoinInfo.Unit }}</span>
+              <span class="additions">({{ order.order.Units }})</span>
+            </div>
+
+            <div class="column-item" v-if="order.order.Discount !== 0">
+              <span class="column-item-title">{{ $t('Mining.Column2.Last24') }}</span>
+              <span class="column-item-number">.5 SMH</span>
+              <span class="additions">(250 USDT)</span>
+            </div>
+
+            <div class="column-item">
+              <span class="column-item-title">{{ $t('Mining.Column2.Capacity') }}</span>
+              <span
+                class="column-item-number"
+              >{{ order.good.UnitPower * order.order.Units }} {{ order.good.Unit }}</span>
+            </div>
           </div>
 
-          <div class="column-item">
-            <span class="column-item-title">{{ $t('Mining.Column2.Last24') }}</span>
-            <span class="column-item-number">.5 SMH</span>
-            <span class="additions">(250 USDT)</span>
-          </div>
+          <div class="detailed-summary">
+            <div class="line">
+              <span class="label">{{ $t('Mining.Column2.TechnicalServiceFee') }}</span>
+              <span class="value">0.2 SMH (20%)</span>
+            </div>
 
-          <div class="column-item">
-            <span class="column-item-title">{{ $t('Mining.Column2.Capacity') }}</span>
-            <span class="column-item-number">100 TB</span>
+            <div class="line">
+              <span class="label">{{ $t('Mining.Column2.TotalDaysMining') }}</span>
+              <span class="value">{{ order.good.DurationDays }} Days</span>
+            </div>
           </div>
-        </div>
-
-        <div class="detailed-summary">
-          <div class="line">
-            <span class="label">{{ $t('Mining.Column2.DailyOutput') }}</span>
-            <span class="value">1 SMH</span>
+          <div class="bottom-button">
+            <q-btn class="export">{{ $t('Mining.Column2.Export') }}</q-btn>
+            <q-btn class="purchase">{{ $t('Mining.Column2.Purchase') }}</q-btn>
           </div>
-
-          <div class="line">
-            <span class="label">{{ $t('Mining.Column2.TechnicalServiceFee') }}</span>
-            <span class="value">.2 SMH (20%)</span>
-          </div>
-
-          <div class="line">
-            <span class="label">{{ $t('Mining.Column2.NetDailyOutput') }}</span>
-            <span class="value">.8 SMH</span>
-          </div>
-
-          <div class="line">
-            <span class="label">{{ $t('Mining.Column2.TotalDaysMining') }}</span>
-            <span class="value">150 days</span>
-          </div>
-
-          <div class="line">
-            <span class="label">{{ $t('Mining.Column2.Hashrate') }}</span>
-            <span class="value">950 MH/s</span>
-          </div>
-
-          <div class="line">
-            <span class="label">{{ $t('Mining.Column2.NetworkDailyOutput') }}</span>
-            <span class="value">1,000,000 SMH</span>
-          </div>
-        </div>
-        <div class="bottom-button">
-          <q-btn class="export">{{ $t('Mining.Column2.Export') }}</q-btn>
-          <q-btn class="purchase">{{ $t('Mining.Column2.Purchase') }}</q-btn>
         </div>
       </div>
 
@@ -103,7 +92,7 @@
 </template>
 
 <script>
-import { defineComponent, computed } from 'vue';
+import { defineComponent, computed, ref } from 'vue';
 import { api } from 'src/boot/axios';
 import { useStore } from 'vuex';
 import { success, fail, waiting } from '../notify/notify'
@@ -119,10 +108,15 @@ export default defineComponent({
       }
     })
 
+    const goods = computed({
+      get: () => $store.state.goods.goods,
+    })
+
     const q = useQuasar()
 
     return {
       orders,
+      goods,
       q,
     }
   },
@@ -130,7 +124,10 @@ export default defineComponent({
   data () {
     return {
       spacemeshImg: require('/src/assets/product-spacemesh.svg'),
-      plusImg: require('/src/assets/icon-plus.svg')
+      plusImg: require('/src/assets/icon-plus.svg'),
+      myOrders: ref([]),
+      orderGoods: ref({}),
+      visible: false,
     }
   },
 
@@ -139,11 +136,9 @@ export default defineComponent({
     if (userid === null || userid === undefined || userid === '') {
       fail(undefined, this.$t('Notify.User.PleaseLogin'), "")
       this.$router.push('/login')
+      return
     }
-  },
 
-  mounted: function () {
-    var userid = this.q.cookies.get('UserID')
     var appid = this.q.cookies.get('AppID')
     var self = this
 
@@ -152,9 +147,68 @@ export default defineComponent({
       UserID: userid,
     }).then(resp => {
       self.orders = resp.data
+      console.log("self.orders", self.orders.Details)
+      resp.data.Details.forEach(order => {
+        self.getOrderGood(order)
+      });
     }).catch(error => {
       fail(undefined, 'fail to get user order details', error)
     })
+  },
+
+  mounted: function () {
+    // var userid = this.q.cookies.get('UserID')
+    // var appid = this.q.cookies.get('AppID')
+    // var self = this
+
+    // api.post('/cloud-hashing-apis/v1/get/orders/detail/by/app/user', {
+    //   AppID: appid,
+    //   UserID: userid,
+    // }).then(resp => {
+    //   self.orders = resp.data
+    //   console.log("self.orders", self.orders.Details)
+    //   resp.data.Details.forEach(order => {
+    //     var good = self.getGoodsByID(order.GoodID)
+    //     self.orderGoods.order = order
+    //     self.orderGoods.good = good
+    //     self.myOrders.push(self.orderGoods)
+    //   });
+    //   console.log("self.myOrders", self.myOrders);
+    // }).catch(error => {
+    //   fail(undefined, 'fail to get user order details', error)
+    // })
+  },
+
+  methods: {
+    getOrdersDetail: function () {
+      var userid = this.q.cookies.get('UserID')
+      var appid = this.q.cookies.get('AppID')
+      var self = this
+
+      api.post('/cloud-hashing-apis/v1/get/orders/detail/by/app/user', {
+        AppID: appid,
+        UserID: userid,
+      }).then(resp => {
+        self.orders = resp.data
+        console.log(self.orders.Details);
+      }).catch(error => {
+        fail(undefined, 'fail to get user order details', error)
+      })
+    },
+
+    getOrderGood: function (order) {
+      var self = this
+      api.post('/cloud-hashing-apis/v1/get/good/detail', {
+        ID: order.GoodID,
+      }).then(resp => {
+        self.orderGoods.order = order
+        self.orderGoods.good = resp.data.Detail
+        self.myOrders.push(self.orderGoods)
+        self.visible = true
+      }).catch(error => {
+        fail(undefined, 'fail to get good detail', error)
+      })
+    },
   },
 })
 </script>
