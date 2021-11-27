@@ -25,18 +25,21 @@ export function sendCode(email) {
 }
 
 export function gaVerify(code) {
+  const fail1 = $t('Notify.GaVerify.CantNull')
+  const fail2 = $t('Notify.GaVerify.Fail')
+  const successMsg = $t('Notify.GaVerify.Success')
   if (code === '') {
-    fail(undefined, $t('Notify.GaVerify.CantNull'), "")
+    fail(undefined, fail1, "")
     return false
   }
 
   api.post('/verification-door/v1/verify/google/auth', {
     Code: code,
   }).then(resp => {
-    success(undefined, $t('Notify.GaVerify.Success'))
+    success(undefined, successMsg)
     return true
   }).catch(error => {
-    fail(undefined, $t('Notify.GaVerify.Fail'), error)
+    fail(undefined, fail2, error)
     return false
   })
   return false

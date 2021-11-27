@@ -1,5 +1,3 @@
-import accountVue from "src/pages/account.vue";
-
 export default {
   Lang: {
     English: 'English',
@@ -15,7 +13,7 @@ export default {
   },
   Footer: {
     First: {
-      Title: 'SHOOT FOR THE STARS',
+      Title: 'SHOOT FOR THE STARS WITH PROCYON',
       Content: 'YOUR GLOBAL CONSTELLATION OF CRYPTOCURRENCIES',
     },
     Second: {
@@ -38,10 +36,9 @@ export default {
   },
   Homepage: {
     Title: {
-      Title: 'SHOOT FOR THE STARS WITH ',
+      Title: 'SHOOT FOR THE STARS WITH PROCYON',
       Subtitle: 'Your global constellation of cryptocurrencies',
       Register: 'Register',
-      Why: 'Why Procyon',
     },
 
     Content: {
@@ -58,13 +55,12 @@ export default {
     },
 
     Feature: {
-      Title: 'WHY SPACEMESH?',
-      VCBacking: 'VC BACKING',
-      VCBackingContent: 'Many reputable investors see huge potential in Spacemesh, including: Coinbase Ventures, Bain Capital, 1kx, Arrington XRP Capital, Danhua Capital, gumi Crypto Capital, MetaStable, Paradigm (Matt Huang and Fred Ehrsam’s new fund), Electric Capital, Collaborative Fund, Jack Herrick and others.',
-      TopTeam: 'TOP TEAM',
-      TopTeamContent: 'Spacemesh Co-Founders hold decades of experience in both startup investment and blockchain technology development, and have led multiple successful startup companies including Cackle.com and Convert media.',
-      Technology: 'TECHNOLOGY',
-      TechnologyContent: 'Spacemesh, unlike most crypto projects, is not based on blockchain technology. Rather, Spacemesh is lined up to be faster, more efficient, and more scalable through its Directed Acyclic Graph technology (DAG). Blockchain researchers and experts consider DAG to be a potential solution for blockchain 2.0.',
+      VCBacking: 'MARKET LEADER',
+      VCBackingContent: 'Our partners include top tier VCs as well as the world\'s largest PoC mining pool. We accurately identify market trends, conduct in-depth due diligence, and target upcoming superstar projects that we bring to our exclusive community of Key Opinion Leaders and investors.',
+      TopTeam: 'DREAM TEAM',
+      TopTeamContent: 'Procyon’s founders have over 10 years of cryptocurrency market experience with a track record that includes investment projects with average ROI of over 100x. Our tech team has over 5 years of experience managing assets totalling over 160 million USD. Our Japan-based team provides exceptional, localized, and reliable customer service within 24 hours.',
+      Technology: 'THE BIG PICTURE',
+      TechnologyContent: 'The market flows from R&D to VC funds to Miners to Exchanges and is finally distributed to general investors. At Procyon we aim to find opportunities that are usually only available to institutional investors and make them equally accessible to individual investors. Join our exclusive community of wealth generation!',
     },
 
     Why: {
@@ -77,27 +73,23 @@ export default {
       Content6: 'Japan boasts the highest investment per capita in Asia. The endless possibilities of the',
       Content7: 'Japanese market attract many global players,',
       Content8: 'however Japan suffers from a language and cultural barrier that insulates the country from global markets. This hurdle can result in missed opportunities and a lack of diversity in investment products. At Procyon we lead our exclusive communities of investors to the global stage.',
-
     },
 
-    IndustryConnections: {
-      Title: 'INDUSTRY CONNECTIONS',
-      Ul: [
-        'Partnerships with top 10 mining pools',
-        'Connected to over 100 VC funds, including those in the top 10',
-        'Track record of investing in and launching successful projects with average ROI of over 200x',
-        '10 years of cryptocurrency market experience and risk management',
-        'Relationship with regulators for accurate inside information that cuts through FUD',
-      ],
-    },
-
-    TechnologyANDOperations: {
-      Title: 'TECHNOLOGY & OPERATIONS',
-      Ul: [
-        'CTO & Tech Team: former team from Huawei, with experiences in designing BTC mining chips and mass production',
-        'Japan team with 4 years of success',
-        'China team with 12 years of experience since the beginning of crypto in 2009',
-      ],
+    What: {
+      Title: 'What Is First-Batch Mining?',
+      Content1: 'First-batch mining begins as soon as the mainnet goes live. This is possible because the first-batch of miners has already acquired hash power through the testnet prior to the launch of the mainnet. Once mainnet goes live these miners are the first to begin the mining process, achieving much',
+      Content2: 'greater ROI while the mining difficulty is low and the mining output is high',
+      Content3: 'There are two core factors that affect a miner\'s ROI:',
+      Content4: 'Mining output',
+      Content5: 'Token price',
+      Content6: 'Mining output is directly related to the mining difficulty. The more miners, the greater the total network-wide hash power, the higher the mining difficulty, and the lower the mining output per miner. The total mineable supply is fixed, so the more hash power that flows into mining, the less mining output is released per unit (TB) of hash power.',
+      Content7: 'The mining output of the first-batch mining is usually much greater in comparison to regular mining',
+      Content8: 'You can think of it like sharing a pizza. The more people share, the smaller each slice gets. For example, with Chia mining, the daily output during first-batch mining was equivalent to 1 year of mining at the rates just 2 months after mainnet launch.',
+      Content9: 'Token price is affected by dynamic market conditions. Typically the mainet launch happens simultaneously as',
+      Content10: 'listing on an exchange which is when the token experiences price discovery, possibly surging exponentially',
+      Content11: 'To put it simply, the earlier you can mine, the more tokens you earn. And on top of that, you can sell your tokens at a higher price when the token is listed on exchanges, resulting in a better ROI.',
+      Content12: 'Participating in first-batch mining is only possible if you’re a professional miner or an experienced mining pool. Procyon is the premiere platform that aims to make first-batch mining accessible to general investors, delivering exceptional ROI.',
+      Content13: 'Shoot for the stars with Procyon.',
     },
   },
 
@@ -342,5 +334,13 @@ export default {
     ConfirmInputWarning1: 'Please input your confirm password',
     ConfirmInputWarning2: 'password and confirm password not equal',
     ConfirmBtn: 'Confirm',
+  },
+
+  GoogleAuthentication: {
+    Title1: 'Google Authenticate',
+    Content1: 'Please scan the QR code above by openning your google authenticator software and scan it. And then bind your device in google authenticate softeware',
+    Content2: 'After scan and bind, you need to click the \'next step\' button to input the verify code shows in your google authenticator software to finish veirfy your google authentication',
+    NextStepBtn: 'Next Step',
+    CloseBtn: 'Close'
   },
 }

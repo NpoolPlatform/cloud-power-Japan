@@ -25,9 +25,8 @@
 </template>
 
 <script>
-import { gaVerify } from 'src/utils/utils';
 import { success, fail } from '../notify/notify'
-
+import { api } from 'src/boot/axios';
 
 export default {
   emits: ['callback'],
@@ -82,17 +81,32 @@ export default {
         let code = this.captchas.map((x) => x.num).join("");
         if (code.length == 6) {
           self.visible = true
-          console.log(code);
-          var pass = gaVerify(code)
-          if (!pass) {
-            fail(undefined, self.$t('Norify.GaVerify.Fail'), "")
-            return
-          }
-          success(undefined, self.$t('Notify.GaVerify.Success'))
-          self.$emit('callback', 'pass')
-          self.visible = false
+          self.gaVerify(code)
         }
       }
+    },
+
+    gaVerify: function (code) {
+      const fail1 = this.$t('Notify.GaVerify.CantNull')
+      const fail2 = this.$t('Notify.GaVerify.Fail')
+      const successMsg = this.$t('Notify.GaVerify.Success')
+      var self = this;
+      if (code === '') {
+        fail(undefined, fail1, "")
+        return
+      }
+
+      api.post('/verification-door/v1/verify/google/auth', {
+        Code: code,
+      }).then(resp => {
+        success(undefined, successMsg)
+        success(undefined, successMsg)
+        self.$emit('callback', 'pass')
+        self.visible = false
+      }).catch(error => {
+        console.log('error is: ', error);
+        fail(undefined, fail2, error)
+      })
     },
   },
 };

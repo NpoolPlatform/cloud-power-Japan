@@ -247,17 +247,36 @@
       <q-dialog v-model="openGaVerify">
         <q-card>
           <q-card-section>
-            <div class="text-h6">Inception</div>
+            <div class="text-h6 card-title text-black">{{ $t('GoogleAuthentication.Title1') }}</div>
           </q-card-section>
 
-          <q-card-section>
-            <q-img :src="userGoogleImg"></q-img>
+          <q-card-section class="img-section-style">
+            <q-img class="img-style" :src="userGoogleImg"></q-img>
           </q-card-section>
+
+          <q-card-section class="text-black">{{ $t('GoogleAuthentication.Content1') }}</q-card-section>
+
+          <q-card-section class="text-black">{{ $t('GoogleAuthentication.Content2') }}</q-card-section>
 
           <q-card-actions align="right" class="text-primary">
-            <q-btn flat label="Open another dialog" @click="secondDialog = true" />
-            <q-btn flat label="Close" v-close-popup />
+            <q-btn
+              flat
+              :label="$t('GoogleAuthentication.NextStepBtn')"
+              @click="secondDialog = true"
+            />
+            <q-btn flat :label="$t('GoogleAuthentication.CloseBtn')" v-close-popup />
           </q-card-actions>
+        </q-card>
+      </q-dialog>
+
+      <q-dialog v-model="secondDialog">
+        <q-card>
+          <q-card-section>
+            <span class="card-title text-black">Google Verify</span>
+          </q-card-section>
+          <q-card-section>
+            <verifycode-input @callback="verifyCallback"></verifycode-input>
+          </q-card-section>
         </q-card>
       </q-dialog>
 
@@ -292,8 +311,10 @@ import { defineComponent, computed } from 'vue'
 import { useStore } from 'vuex'
 import { success, fail } from '../notify/notify'
 import { useQuasar } from 'quasar'
+import VerifycodeInput from 'src/components/VerifycodeInput.vue'
 
 export default defineComponent({
+  components: { VerifycodeInput },
   setup () {
     const $store = useStore()
     const user = computed({
@@ -510,6 +531,7 @@ export default defineComponent({
     },
 
     onGoogleVerificationBtnClick: function () {
+      this.openGaVerify = true
       var self = this
       api.post('verification-door/v1/get/qrcode/url', {
         Username: self.user.info.UserBasicInfo.Username,
@@ -520,6 +542,14 @@ export default defineComponent({
         fail(undefined, self.$t('Notify.GaVerify.FailToGetImg'), error)
       })
     },
+
+    verifyCallback: function (resp) {
+      if (resp === 'pass') {
+        this.secondDialog = false
+        this.enableGoogleAuthentication = true
+        this.openGaVerify = false
+      }
+    },
   },
 })
 </script>
@@ -527,4 +557,39 @@ export default defineComponent({
 <style scoped src="../css/account-style.css">
 </style>
 <style scoped>
+.card-title {
+  color: #e1eeef;
+  font-size: 24px;
+  font-weight: 200;
+  position: relative;
+  margin: 0 0 24px 0;
+  padding: 0 0 24px 0;
+}
+
+.card-title::after {
+  background: linear-gradient(
+    to right,
+    transparent 0,
+    #e1eeef 10%,
+    transparent 100%
+  );
+  display: block;
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  height: 1px;
+  width: 100%;
+}
+
+.img-style {
+  width: 200px;
+  height: 200px;
+  text-align: center;
+}
+
+.img-section-style {
+  display: flex;
+  justify-content: center;
+}
 </style>

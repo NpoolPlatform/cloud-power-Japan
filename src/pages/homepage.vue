@@ -2,10 +2,7 @@
   <div id="main">
     <div class="content">
       <div id="content-title">
-        <div class="title-1">
-          {{ $t('Homepage.Title.Title') }}
-          <strong>&nbsp;Procyon</strong>
-        </div>
+        <div class="title-1">{{ $t('Homepage.Title.Title') }}</div>
         <div class="title-2">{{ $t('Homepage.Title.Subtitle') }}</div>
         <div class="btn-list">
           <q-btn
@@ -20,40 +17,36 @@
       </div>
 
       <div class="product">
-        <q-card class="product-card" v-for="(product, index) in products" :key="index">
+        <q-card class="product-card" v-for="(good, index) in goodsList" :key="index">
           <q-card-section class="card-header">
             <q-img :src="url" class="header-img"></q-img>
-            <span class="header-title">{{ product.productName }}</span>
+            <span class="header-title">{{ good.Title }}</span>
           </q-card-section>
 
           <q-card-section class="product-price">
-            <span>{{ product.productPrice }}</span>USDT / TB
+            <span>{{ good.Price }}</span>USDT / TB
           </q-card-section>
           <q-card-section class="product-line">
             <span class="line-label">{{ $t('Homepage.Content.DailyMiningRewardsLabel') }}</span>
-            <span
-              class="line-value"
-            >{{ product.dailyMiningRewards }}{{ $t('Homepage.Content.DailyMiningRewardsValue') }}</span>
+            <span class="line-value">*{{ $t('Homepage.Content.DailyMiningRewardsValue') }}</span>
           </q-card-section>
           <q-card-section class="product-line">
             <span class="line-label">{{ $t('Homepage.Content.ServicePeriodLabel') }}</span>
             <span
               class="line-value"
-            >{{ product.servocePeriod }} {{ $t('Homepage.Content.ServicePeriodValue') }}</span>
+            >{{ good.DurationDays }} {{ $t('Homepage.Content.ServicePeriodValue') }}</span>
           </q-card-section>
           <q-card-section class="product-line">
             <span class="line-label">{{ $t('Homepage.Content.TechnicalServiceFeeLabel') }}</span>
-            <span class="line-value">{{ product.technicalServiceFee }}</span>
+            <span class="line-value">20%</span>
           </q-card-section>
           <q-card-section class="product-line">
             <span class="line-label">{{ $t('Homepage.Content.MaintenanceFeeLabel') }}</span>
-            <span
-              class="line-value"
-            >${{ product.maintenanceFee }} / {{ $t('Homepage.Content.MaintenanceFeeValue') }}</span>
+            <span class="line-value">$0.05 / {{ $t('Homepage.Content.MaintenanceFeeValue') }}</span>
           </q-card-section>
           <q-card-section class="product-line">
             <span class="line-label">{{ $t('Homepage.Content.OrderEffectiveLabel') }}</span>
-            <span class="line-value">{{ product.orderEffective }}</span>
+            <span class="line-value">{{ timestampToDate(good.DeliveryAt) }}</span>
           </q-card-section>
           <q-btn class="product-btn alt">{{ $t('Homepage.Content.StartMining') }}</q-btn>
         </q-card>
@@ -86,7 +79,6 @@
 
     <div class="feature">
       <div class="content">
-        <div class="feature-header">{{ $t('Homepage.Feature.Title') }}</div>
         <div class="feature-content">
           <div class="feature-content-item">
             <q-img :src="imgVCBacking" class="feature-item-img"></q-img>
@@ -113,44 +105,45 @@
 
     <div class="content">
       <div class="columns-1">
-        <h2 id="why-procyon">What Is First-Batch Mining?</h2>
+        <h2 id="why-procyon">{{ $t('Homepage.What.Title') }}</h2>
         <p>
-          First-batch mining begins as soon as the mainnet goes live. This is possible because the first-batch of miners has already acquired hash power through the testnet prior to the launch of the mainnet. Once mainnet goes live these miners are the first to begin the mining process, achieving much
-          <strong>greater ROI while the mining difficulty is low and the mining output is high</strong>.
+          {{ $t('Homepage.What.Content1') }}
+          <strong>{{ $t('Homepage.What.Content2') }}</strong>.
         </p>
-        <p>There are two core factors that affect a miner's ROI:</p>
+        <p>{{ $t('Homepage.What.Content3') }}</p>
         <ul>
-          <li>1. Mining output</li>
-          <li>2. Token price</li>
+          <li>1. {{ $t('Homepage.What.Content4') }}</li>
+          <li>2. {{ $t('Homepage.What.Content5') }}</li>
         </ul>
         <p>
-          Mining output is directly related to the mining difficulty. The more miners, the greater the total network-wide hash power, the higher the mining difficulty, and the lower the mining output per miner. The total mineable supply is fixed, so the more hash power that flows into mining, the less mining output is released per unit (TB) of hash power.
-          <strong>The mining output of the first-batch mining is usually much greater in comparison to regular mining</strong>. You can think of it like sharing a pizza. The more people share, the smaller each slice gets. For example, with Chia mining, the daily output during first-batch mining was equivalent to 1 year of mining at the rates just 2 months after mainnet launch.
+          {{ $t('Homepage.What.Content6') }}
+          <strong>{{ $t('Homepage.What.Content7') }}</strong>
+          . {{ $t('Homepage.What.Content8') }}
         </p>
 
         <p>
-          Token price is affected by dynamic market conditions. Typically the mainet launch happens simultaneously as
-          <strong>listing on an exchange which is when the token experiences price discovery, possibly surging exponentially</strong>. To put it simply, the earlier you can mine, the more tokens you earn. And on top of that, you can sell your tokens at a higher price when the token is listed on exchanges, resulting in a better ROI.
+          {{ $t('Homepage.What.Content9') }}
+          <strong>{{ $t('Homepage.What.Content10') }}</strong>
+          . {{ $t('Homepage.What.Content11') }}
         </p>
 
-        <p>Participating in first-batch mining is only possible if you’re a professional miner or an experienced mining pool. Procyon is the premiere platform that aims to make first-batch mining accessible to general investors, delivering exceptional ROI.</p>
+        <p>{{ $t('Homepage.What.Content12') }}</p>
 
         <p>
-          <em>Shoot for the stars with Procyon.</em>
+          <em>{{ $t('Homepage.What.Content13') }}</em>
         </p>
       </div>
-
-      <div class="hr"></div>
     </div>
     <div class="hr"></div>
   </div>
 </template>
 
 <script>
-import { defineComponent, computed } from 'vue';
+import { defineComponent, computed, ref } from 'vue';
 import { api } from 'src/boot/axios';
 import { useStore } from 'vuex';
 import { success, fail, waiting } from '../notify/notify'
+import mitt from 'mitt'
 
 export default defineComponent({
   name: 'homepage',
@@ -165,6 +158,7 @@ export default defineComponent({
 
     return {
       goods,
+      emitter: mitt(),
     }
   },
 
@@ -201,21 +195,68 @@ export default defineComponent({
         maintenanceFee: 0.05,
         orderEffective: '2022/1/1',
       },],
+      myGoods: ref([])
     }
   },
 
-  created: function () { },
+  created: function () {
+    this.emitter.on('get_goods_list', this.onGetGoodsList)
+    this.getGoodsList()
+  },
 
   mounted: function () {
-    var self = this
-    var failword = this.$t('Notify.Goods.Fail')
-    api.post('/cloud-hashing-apis/v1/get/goods/detail', {}).then(resp => {
-      self.goods = resp.data
-      return
-    }).catch(error => {
-      fail(undefined, failword, error)
-      return
-    })
+    // var self = this
+    // var failword = this.$t('Notify.Goods.Fail')
+    // const $store = useStore()
+
+    // api.post('/cloud-hashing-apis/v1/get/goods/detail', {}).then(resp => {
+    //   self.$nextTick(function () {
+    //     $store.commit('goods/updateGoods', resp.data)
+    //   })
+    //   return
+    // }).catch(error => {
+    //   fail(undefined, failword, error)
+    //   return
+    // })
+  },
+
+  computed: {
+    goodsList: function () {
+      var goods = []
+      for (let i = 0; i < 3 && i < this.myGoods.length; i++) {
+        goods.push(this.myGoods[i])
+      }
+      for (let i = goods.length; i < 3; i++) {
+        goods.push(goods[i - goods.length])
+      }
+      return goods
+    },
+  },
+
+  methods: {
+    onGetGoodsList: function (goods) {
+      this.myGoods = goods
+    },
+
+    getGoodsList: function () {
+      var self = this
+      var failword = this.$t('Notify.Goods.Fail')
+      var emiiter = this.emitter
+
+      api.post('/cloud-hashing-apis/v1/get/goods/detail', {}).then(resp => {
+        emiiter.emit('get_goods_list', resp.data.Details)
+      }).catch(error => {
+        fail(undefined, failword, error)
+        return
+      })
+    },
+    timestampToDate: function (timestamp) {
+      var date = new Date(timestamp * 1000)
+      var Y = date.getFullYear() + '-';
+      var M = (date.getMonth() + 1 < 10 ? '0' + (date.getMonth() + 1) : date.getMonth() + 1) + '-';
+      var D = date.getDate() + ' ';
+      return Y + M + D
+    },
   },
 
 })

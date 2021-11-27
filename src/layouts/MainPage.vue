@@ -162,6 +162,7 @@ export default defineComponent({
         } else {
           this.toggle = null
         }
+        console.log("toggle is", this.toggle);
       },
     },
 
