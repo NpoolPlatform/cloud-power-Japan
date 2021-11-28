@@ -89,7 +89,12 @@
               <a href class="link">{{ $t('Register.User') }}</a>
             </span>
 
-            <q-btn class="register-btn" @click="onRegister">{{ $t('Register.Register') }}</q-btn>
+            <q-btn
+              class="register-btn"
+              disable
+              color="grey"
+              @click="onRegister"
+            >{{ $t('Register.Register') }}</q-btn>
 
             <p class="text-style">
               {{ $t('Register.Have') }}
