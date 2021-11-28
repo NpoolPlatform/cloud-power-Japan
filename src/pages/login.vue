@@ -156,7 +156,7 @@ export default defineComponent({
           success(notif, msg)
         })
         .catch(function (error) {
-          fail(notif, failToSend, error)
+          fail(undefined, failToSend, error)
         })
     },
 
@@ -171,31 +171,33 @@ export default defineComponent({
         VerifyCode: self.loginInput.verifyCode,
         GoogleRecaptchaResponse: self.response,
       }).then(resp => {
-        if (resp.data.Info.UserAppInfo.UserApplicationInfo.GALogin) {
-          self.gaDialog = true;
-        }
-        for (let i = 0; i > 0; i++) {
-          if (self.gaDialog) {
-            continue
-          }
-          break
-        }
         self.user = {
           logined: true,
           info: resp.data.Info,
         }
         success(notif, self.$t('Notify.Login.Success'))
-        self.$router.push({
-          path: '/',
-        })
+        if (resp.data.Info.UserAppInfo.UserApplicationInfo.GALogin) {
+          self.gaDialog = true;
+        } else {
+          self.$router.push({
+            path: '/',
+          })
+        }
       }).catch(error => {
         fail(undefined, self.$t('Notify.Login.Fail'), error)
       })
+
+      this.loginInput = {}
     },
 
     verifyCallback: function (resp) {
       if (resp === 'pass') {
         this.gaDialog = false
+        this.$router.push({
+          path: '/',
+        })
+      } else {
+        fail(undefined, "please inoput correct verify code")
       }
     },
 

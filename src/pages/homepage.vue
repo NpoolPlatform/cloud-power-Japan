@@ -59,19 +59,20 @@
       <div class="columns-2">
         <div class="column-2">
           <p>
-            {{ $t('Homepage.Why.Content1') }}&nbsp;
-            <strong>{{ $t('Homepage.Why.Content2') }}&nbsp;</strong>
-            {{ $t('Homepage.Why.Content3') }}&nbsp;
+            {{ $t('Homepage.Why.Content1') }}
+            <strong>{{ $t('Homepage.Why.Content2') }}</strong>
+            {{ $t('Homepage.Why.Content3') }}
             <strong>{{ $t('Homepage.Why.Content4') }}</strong>
-            {{ $t('Homepage.Why.Content5') }}&nbsp;
+            {{ $t('Homepage.Why.Content5') }}
           </p>
         </div>
 
         <div class="column-2">
           <p>
-            {{ $t('Homepage.Why.Content6') }}&nbsp;
-            <strong>{{ $t('Homepage.Why.Content7') }}&nbsp;</strong>
-            {{ $t('Homepage.Why.Content8') }}&nbsp;
+            {{ $t('Homepage.Why.Content6') }}
+            <strong>{{ $t('Homepage.Why.Content7') }}</strong>
+            {{ $t('Homepage.Why.Content8') }}
+            <em>{{ $t('Homepage.Why.Content9') }}</em>
           </p>
         </div>
       </div>
@@ -168,33 +169,6 @@ export default defineComponent({
       imgVCBacking: require('/src/assets/icon-vc-backing.svg'),
       imgTopTeam: require('/src/assets/icon-team.svg'),
       imgTechnology: require('/src/assets/icon-technology.svg'),
-      products: [{
-        productName: 'Spacemesh',
-        productPrice: 400,
-        dailyMiningRewards: 1,
-        servocePeriod: 360,
-        technicalServiceFee: '20%',
-        maintenanceFee: 0.05,
-        orderEffective: '2022/1/1',
-      },
-      {
-        productName: 'Spacemesh',
-        productPrice: 400,
-        dailyMiningRewards: 1,
-        servocePeriod: 360,
-        technicalServiceFee: '20%',
-        maintenanceFee: 0.05,
-        orderEffective: '2022/1/1',
-      },
-      {
-        productName: 'Spacemesh',
-        productPrice: 400,
-        dailyMiningRewards: 1,
-        servocePeriod: 360,
-        technicalServiceFee: '20%',
-        maintenanceFee: 0.05,
-        orderEffective: '2022/1/1',
-      },],
       myGoods: ref([])
     }
   },

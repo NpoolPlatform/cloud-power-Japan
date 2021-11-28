@@ -27,7 +27,7 @@
       <div class="drawer-items">
         <router-link href class="drawer-item" :to="{ path: '/mining' }">
           <q-img :src="miningImg" class="drawer-item-img"></q-img>
-          <span class="drawer-item-span">{{ $t('Drawer.Mining') }}</span>
+          <span class="drawer-item-span">{{ $t('Drawer.Order') }}</span>
         </router-link>
         <router-link href class="drawer-item" :to="{ path: '/wallet' }">
           <q-img :src="walletImg" class="drawer-item-img"></q-img>
@@ -50,7 +50,7 @@
           <div class="content-4">
             <div class="content-items">
               <q-img :src="url" class="content-logo"></q-img>
-              <div class="content-h1">{{ $t('Footer.First.Title') }}</div>
+              <div class="content-h1" style="font-size: 22px">{{ $t('Footer.First.Title') }}</div>
               <div class="content-h4">{{ $t('Footer.First.Content') }}</div>
             </div>
             <div class="content-items">
@@ -76,11 +76,8 @@
                 <router-link
                   class="footer-link nav-link"
                   :to="{ path: '/faq' }"
-                >{{ $t('Footer.Third.Faqs') }}</router-link>
-                <router-link
-                  class="footer-link nav-link"
-                  :to="{ path: '/faq' }"
-                >{{ $t('Footer.Third.Support') }}</router-link>
+                >{{ $t('Footer.Third.Faqs') }} & {{ $t('Footer.Third.Support') }}</router-link>
+                <router-link class="footer-link nav-link" :to="{ path: '/faq' }"></router-link>
                 <router-link
                   class="footer-link nav-link"
                   :to="{ path: '/legal' }"
@@ -89,15 +86,17 @@
             </div>
             <div class="content-items">
               <h4>{{ $t('Footer.Forth.Title') }}</h4>
-              <div class="item-links">
-                <div class="footer-div">
-                  {{ $t('Footer.Forth.Address') }}:
-                  <span style="font-weight: bolder;">#####</span>
-                </div>
-                <div class="footer-div">
-                  {{ $t('Footer.Forth.Email') }}:
-                  <span style="font-weight: bolder;">############</span>
-                </div>
+              <div class="button-group">
+                <q-btn-toggle
+                  v-model="locale"
+                  push
+                  glossy
+                  toggle-color="orange-9"
+                  :options="[
+                    { label: $t('Footer.Forth.En'), value: 'en-US' },
+                    { label: $t('Footer.Forth.Jp'), value: 'jp' },
+                  ]"
+                />
               </div>
             </div>
           </div>
@@ -130,7 +129,7 @@ export default defineComponent({
       get: () => $store.state.user.user.logined
     })
     return {
-      locale: 'en-US',
+      locale,
       openSide,
       logined,
     }

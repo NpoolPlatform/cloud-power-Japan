@@ -100,11 +100,13 @@
                 <span class="setting-subtitle">{{ $t('Account.SecuritySetting.ChangePassword') }}</span>
               </div>
               <div class="setting-content">{{ $t('Account.SecuritySetting.ChangePasswordContent') }}</div>
-
-              <q-btn
-                class="account-btn setting-btn btn-position"
-                @click="changePassword = true"
-              >{{ $t('Account.SecuritySetting.ChangePasswordBtn') }}</q-btn>
+              <q-space style="margin-bottom: 60px"></q-space>
+              <div>
+                <q-btn
+                  class="account-btn setting-btn"
+                  @click="changePassword = true"
+                >{{ $t('Account.SecuritySetting.ChangePasswordBtn') }}</q-btn>
+              </div>
             </div>
 
             <div class="setting-box">
@@ -118,9 +120,14 @@
                 <span :v-if="enabledEmail"></span>
                 {{ enabledEmail ? $t('Account.SecuritySetting.Verify') : $t('Account.SecuritySetting.NotVerify') }}
               </div>
-              <q-btn
-                class="account-btn setting-btn btn-position"
-              >{{ $t('Account.SecuritySetting.EmailBtn') }}</q-btn>
+              <q-space style="margin-bottom: 60px"></q-space>
+              <div>
+                <q-btn
+                  disable
+                  color="grey"
+                  class="account-btn setting-btn"
+                >{{ $t('Account.SecuritySetting.EmailBtn') }}</q-btn>
+              </div>
             </div>
           </div>
 
@@ -136,10 +143,15 @@
                 <span :v-if="enabledMobile"></span>
                 {{ enabledMobile ? $t('Account.SecuritySetting.Verify') : $t('Account.SecuritySetting.NotVerify') }}
               </div>
-              <q-btn
-                class="account-btn setting-btn btn-position"
-                style="top: 15px;"
-              >{{ $t('Account.SecuritySetting.MobileBtn') }}</q-btn>
+              <q-space style="margin-bottom: 26px"></q-space>
+              <div>
+                <q-btn
+                  disable
+                  color="grey"
+                  class="account-btn setting-btn"
+                  style="top: 15px;"
+                >{{ $t('Account.SecuritySetting.MobileBtn') }}</q-btn>
+              </div>
             </div>
 
             <div class="setting-box">
@@ -153,12 +165,20 @@
                 <span :v-if="enableGoogleAuthentication"></span>
                 {{ enableGoogleAuthentication ? $t('Account.SecuritySetting.Verify') : $t('Account.SecuritySetting.NotVerify') }}
               </div>
-              <q-btn
-                class="account-btn setting-btn google-btn btn-position"
-                style="top: 5px;"
-                :disable="enableGoogleAuthentication"
-                @click="onGoogleVerificationBtnClick"
-              >{{ $t('Account.SecuritySetting.GoogleBtn') }}</q-btn>
+              <q-space style="margin-bottom: 20px"></q-space>
+              <div>
+                <q-tooltip
+                  anchor="top middle"
+                  self="bottom middle"
+                  :offset="[10, 10]"
+                  v-if="enableGoogleAuthentication"
+                >{{ $t('Account.SecuritySetting.HaveDoneGoogle') }}</q-tooltip>
+                <q-btn
+                  class="account-btn setting-btn google-btn"
+                  :disable="enableGoogleAuthentication"
+                  @click="onGoogleVerificationBtnClick"
+                >{{ $t('Account.SecuritySetting.GoogleBtn') }}</q-btn>
+              </div>
             </div>
           </div>
 
@@ -174,9 +194,14 @@
                 <span :v-if="enabledID"></span>
                 {{ enabledID ? $t('Account.SecuritySetting.Verify') : $t('Account.SecuritySetting.NotVerify') }}
               </div>
-              <q-btn
-                class="account-btn setting-btn btn-position"
-              >{{ $t('Account.SecuritySetting.IDVerificationBtn') }}</q-btn>
+              <q-space style="margin-bottom: 60px"></q-space>
+              <div>
+                <q-btn
+                  disable
+                  color="grey"
+                  class="account-btn setting-btn"
+                >{{ $t('Account.SecuritySetting.IDVerificationBtn') }}</q-btn>
+              </div>
             </div>
 
             <div class="setting-box">
@@ -202,12 +227,14 @@
                 </q-toggle>
                 <span>{{ $t('Account.SecuritySetting.GALogin') }}</span>
               </div>
-
-              <q-btn
-                class="account-btn setting-btn btn-position"
-                style="top: 0;"
-                @click="submitLoginVerify"
-              >{{ $t('Account.SecuritySetting.Submit') }}</q-btn>
+              <q-space style="margin-bottom: 25px"></q-space>
+              <div>
+                <q-btn
+                  class="account-btn setting-btn"
+                  style="top: 0;"
+                  @click="submitLoginVerify"
+                >{{ $t('Account.SecuritySetting.Submit') }}</q-btn>
+              </div>
             </div>
           </div>
         </div>

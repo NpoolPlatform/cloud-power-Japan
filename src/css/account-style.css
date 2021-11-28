@@ -60,7 +60,7 @@
 
 .setting-box {
   width: 420px;
-  height: 224px;
+  height: 250px;
 }
 
 .detail-input {
@@ -163,18 +163,9 @@
   color: #ffffff;
 }
 
-.google-btn {
-  font-size: 14px;
-}
-
 .verify-img {
   width: 24px;
   height: 24px;
-}
-
-.btn-position {
-  top: 40px;
-  position: relative;
 }
 
 .verify-content {
@@ -216,4 +207,8 @@
 
 .dialog-style {
   width: 800px;
+}
+
+.btn-positon {
+  margin-bottom: 20px;
 }

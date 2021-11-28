@@ -1,9 +1,9 @@
 {
-  "name": "cloud-power-webui",
+  "name": "japan-webui",
   "version": "0.0.1",
-  "description": "A Cloud Power app",
-  "productName": "Cloud Power",
-  "author": "crazyzpl <crazyzplzpl@163.com>",
+  "description": "Procyon's cloud power app",
+  "productName": "Procyon",
+  "author": "procyon",
   "private": true,
   "scripts": {
     "lint": "eslint --ext .js,.vue ./",
