@@ -185,7 +185,7 @@ export default defineComponent({
       this.codeRef.validate()
       this.passRef.validate()
 
-      if (this.usernameRef.hasError || this.codeRef.hasError || this.passRef.hasError) {
+      if (this.usernameRef.hasError || this.passRef.hasError) {
         return
       }
       let self = this

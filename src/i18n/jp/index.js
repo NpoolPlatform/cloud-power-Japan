@@ -42,6 +42,36 @@ export default {
     Account: 'アカウント',
   },
 
+  Register: {
+    Title: 'User Registration',
+    Username: 'Email アドレス',
+    UsernameInputwarning: 'Please input correct email address',
+    SendCode: 'コード送信',
+    EmailVerifyCode: 'Email アドレスの認証コード',
+    EmailVerifyCodeInpuWarning: 'Please input a verification code',
+    Password: 'パスワード',
+    PasswordInputWarning: 'Please input your password',
+    Confirm: 'Confirm Password',
+    ConfirmInputWarning1: 'Please input your confirm password',
+    ConfirmInputWarning2: 'password and confirm password not equal',
+    InvitationCode: 'Invitation Code',
+    Agree1: 'I have read and agree to the',
+    Policy: ' Privacy Policy',
+    And: ' and',
+    User: ' User Agreements',
+    Register: 'Register',
+    Have: 'Already have an account?',
+    Click: 'Click here to sign in.',
+    Login: 'ログイン',
+    LoginTitle: 'ユーザーログイン',
+  },
+
+  Login: {
+    Forget: 'パスワードを忘れた場合?',
+    NoAccount: 'アカウントがない場合',
+    Register: 'こちらから登録',
+  },
+
   Homepage: {
     Title: {
       Title: 'Procyonと星を目指しましょう！',
