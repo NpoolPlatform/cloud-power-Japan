@@ -135,8 +135,8 @@ export default defineComponent({
     }
   },
 
-  mounted: function () {
-
+  created: function () {
+    this.locale = 'jp'
   },
 
   data () {
