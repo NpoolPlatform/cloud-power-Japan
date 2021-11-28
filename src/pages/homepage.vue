@@ -17,7 +17,7 @@
       </div>
 
       <div class="product">
-        <q-card class="product-card" v-for="(good, index) in goodsList" :key="index">
+        <q-card class="product-card" v-for="(good, index) in myGoods" :key="index">
           <q-card-section class="card-header">
             <q-img :src="url" class="header-img"></q-img>
             <span class="header-title">{{ good.Title }}</span>
@@ -182,18 +182,18 @@ export default defineComponent({
     this.emitter.off('get_goods_list')
   },
 
-  computed: {
-    goodsList: function () {
-      var goods = []
-      for (let i = 0; i < 3 && i < this.myGoods.length; i++) {
-        goods.push(this.myGoods[i])
-      }
-      for (let i = goods.length; i < 3 && goods.length > 0; i++) {
-        goods.push(goods[i - goods.length])
-      }
-      return goods
-    },
-  },
+  // computed: {
+  //   goodsList: function () {
+  //     var goods = []
+  //     for (let i = 0; i < 3 && i < this.myGoods.length; i++) {
+  //       goods.push(this.myGoods[i])
+  //     }
+  //     for (let i = goods.length; i < 3 && goods.length > 0; i++) {
+  //       goods.push(goods[i - goods.length])
+  //     }
+  //     return goods
+  //   },
+  // },
 
   methods: {
     onGetGoodsList: function (goods) {

@@ -140,16 +140,14 @@ export default {
 
   Mining: {
     Column1: {
-      Title: 'EARNINGS',
-      Total: 'TOTAL EARNING',
-      Yesterday: 'YESTERDAY\'S EARNINGS',
-      Current: 'CURRENT BALANCE',
+      Title: 'Total',
+      Total: 'TOTAL Amount',
     },
 
     Column2: {
       Title: 'MINING DASHBOARD',
       Earning: 'Total: ',
-      Last24: 'Last 24 hours: ',
+      Discount: 'Discount: ',
       Capacity: 'Capacity: ',
       DailyOutput: 'Daily Output (30 day avg.)',
       TechnicalServiceFee: 'Technical Service Fee:',

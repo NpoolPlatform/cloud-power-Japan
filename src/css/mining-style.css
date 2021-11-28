@@ -45,6 +45,7 @@
 
 .earn-box {
   display: flex;
+  justify-content: center;
 }
 
 .earn-box-item {

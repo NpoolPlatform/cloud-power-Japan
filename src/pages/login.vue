@@ -4,28 +4,29 @@
       <q-card class="register-card">
         <q-card-section class="card-title">
           <span>{{ $t('Register.LoginTitle') }}</span>
-          <q-btn @click="gaDialog = true">open dialog</q-btn>
         </q-card-section>
         <q-card-section>
           <q-form class="register-form">
             <q-input
+              ref="usernameRef"
               class="register-input"
               outlined
               bg-color="blue-grey-1"
               v-model="loginInput.email"
               :label="$t('Register.Username')"
               lazy-rules
-              :rules="[val => val && val.length > 0 || $t('Register.UsernameInputwarning')]"
+              :rules="usernameRule"
             ></q-input>
 
             <q-input
+              ref="codeRef"
               class="register-input"
               outlined
               bg-color="blue-grey-1"
               v-model="loginInput.verifyCode"
               :label="$t('Register.EmailVerifyCode')"
               lazy-rules
-              :rules="[val => val && val.length > 0 || $t('Register.EmailVerifyCodeInpuWarning')]"
+              :rules="codeRule"
             >
               <template v-slot:append>
                 <q-btn flat rounded @click="sendCode">{{ $t('Register.SendCode') }}</q-btn>
@@ -33,6 +34,7 @@
             </q-input>
 
             <q-input
+              ref="passRef"
               class="register-input"
               outlined
               bg-color="blue-grey-1"
@@ -40,7 +42,7 @@
               :label="$t('Register.Password')"
               :type="isPwd ? 'password' : 'text'"
               lazy-rules
-              :rules="[val => val && val.length > 0 || $t('Register.PasswordInputWarning')]"
+              :rules="passwordRule"
             >
               <template v-slot:append>
                 <q-icon
@@ -93,6 +95,7 @@ import { useStore } from 'vuex'
 import { api } from 'src/boot/axios';
 import notify, { success, fail, waiting } from '../notify/notify'
 import VerifycodeInput from 'src/components/VerifycodeInput.vue';
+import { useI18n } from 'vue-i18n';
 
 export default defineComponent({
   components: { RecaptchaVue, VerifycodeInput },
@@ -111,10 +114,25 @@ export default defineComponent({
       }
     })
 
+    const { t } = useI18n()
+
+    const usernameRef = ref(null)
+    const codeRef = ref(null)
+    const passRef = ref(null)
+    const usernameRule = ref([val => val && val.length > 0 || t('Register.UsernameInputwarning')])
+    const codeRule = ref([val => val && val.length > 0 || t('Register.EmailVerifyCodeInpuWarning')])
+    const passwordRule = ref([val => val && val.length > 0 || t('Register.PasswordInputWarning')])
+
     return {
       loginInput,
       isPwd: ref(true),
+      usernameRule,
       user,
+      usernameRef,
+      codeRule,
+      codeRef,
+      passwordRule,
+      passRef,
     }
   },
 
@@ -141,9 +159,11 @@ export default defineComponent({
 
   methods: {
     sendCode: function () {
-      if (this.loginInput.email === '') {
-        fail(undefined, 'email is null', null)
+      this.usernameRef.validate()
+      if (this.usernameRef.hasError) {
+        return
       }
+
       const notif = waiting("send code successfully")
       var failToSend = "fail to send code"
 
@@ -156,11 +176,18 @@ export default defineComponent({
           success(notif, msg)
         })
         .catch(function (error) {
-          fail(undefined, failToSend, error)
+          fail(notif, failToSend, error)
         })
     },
 
     login: function () {
+      this.usernameRef.validate()
+      this.codeRef.validate()
+      this.passRef.validate()
+
+      if (this.usernameRef.hasError || this.codeRef.hasError || this.passRef.hasError) {
+        return
+      }
       let self = this
 
       var notif = waiting(this.$t('Notify.Login.Wait'))
@@ -184,7 +211,7 @@ export default defineComponent({
           })
         }
       }).catch(error => {
-        fail(undefined, self.$t('Notify.Login.Fail'), error)
+        fail(notif, self.$t('Notify.Login.Fail'), error)
       })
 
       this.loginInput = {}

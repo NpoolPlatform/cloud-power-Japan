@@ -27,7 +27,7 @@
       <div class="assets-box">
         <div class="box-title">
           <span class="title">{{ $t('Wallet.Assets.Title') }}</span>
-          <button class="opacity-btn">{{ $t('Wallet.Assets.Export') }}</button>
+          <button v-show="false" class="opacity-btn">{{ $t('Wallet.Assets.Export') }}</button>
         </div>
 
         <q-markup-table class="table-box" wrap-cells flat>

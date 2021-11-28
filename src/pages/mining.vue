@@ -6,29 +6,11 @@
       <div class="earn-box">
         <div class="earn-box-item">
           <div>
-            <span class="price">5000</span>
+            <span class="price">{{ totalAmount }}</span>
             <span class="unit">USDT</span>
           </div>
           <div class="hr"></div>
           <span class="subtitle">{{ $t('Mining.Column1.Total') }}</span>
-        </div>
-
-        <div class="earn-box-item">
-          <div>
-            <span class="price">5000</span>
-            <span class="unit">USDT</span>
-          </div>
-          <div class="hr"></div>
-          <span class="subtitle">{{ $t('Mining.Column1.Yesterday') }}</span>
-        </div>
-
-        <div class="earn-box-item">
-          <div>
-            <span class="price">5000</span>
-            <span class="unit">USDT</span>
-          </div>
-          <div class="hr"></div>
-          <span class="subtitle">{{ $t('Mining.Column1.Current') }}</span>
         </div>
       </div>
 
@@ -49,13 +31,19 @@
               <span
                 class="column-item-number"
               >{{ order.order.Payment.Amount }} {{ order.order.Payment.CoinInfo.Unit }}</span>
-              <span class="additions">({{ order.order.Units }})</span>
+
+              <span
+                class="additions"
+                style="text-decoration:line-through"
+              >({{ order.good.PriceCurrency.Symbol }}{{ order.order.Units * order.good.Price }})</span>
             </div>
 
             <div class="column-item" v-if="order.order.Discount !== 0">
-              <span class="column-item-title">{{ $t('Mining.Column2.Last24') }}</span>
-              <span class="column-item-number">.5 SMH</span>
-              <span class="additions">(250 USDT)</span>
+              <span class="column-item-title">{{ $t('Mining.Column2.Discount') }}</span>
+              <span class="column-item-number">{{ order.order.Discount }}%</span>
+              <span
+                class="additions"
+              >({{ order.good.PriceCurrency.Symbol }}{{ Number(order.order.Units) * Number(order.good.Price) - Number(order.order.Payment.Amount) }})</span>
             </div>
 
             <div class="column-item">
@@ -69,7 +57,7 @@
           <div class="detailed-summary">
             <div class="line">
               <span class="label">{{ $t('Mining.Column2.TechnicalServiceFee') }}</span>
-              <span class="value">0.2 SMH (20%)</span>
+              <span class="value">20%</span>
             </div>
 
             <div class="line">
@@ -131,6 +119,16 @@ export default defineComponent({
     }
   },
 
+  computed: {
+    totalAmount: function () {
+      var amount = 0;
+      this.myOrders.forEach(order => {
+        amount += order.order.Payment.Amount
+      })
+      return amount
+    },
+  },
+
   created: function () {
     var userid = this.q.cookies.get('UserID')
     if (userid === null || userid === undefined || userid === '') {
@@ -154,29 +152,6 @@ export default defineComponent({
     }).catch(error => {
       fail(undefined, 'fail to get user order details', error)
     })
-  },
-
-  mounted: function () {
-    // var userid = this.q.cookies.get('UserID')
-    // var appid = this.q.cookies.get('AppID')
-    // var self = this
-
-    // api.post('/cloud-hashing-apis/v1/get/orders/detail/by/app/user', {
-    //   AppID: appid,
-    //   UserID: userid,
-    // }).then(resp => {
-    //   self.orders = resp.data
-    //   console.log("self.orders", self.orders.Details)
-    //   resp.data.Details.forEach(order => {
-    //     var good = self.getGoodsByID(order.GoodID)
-    //     self.orderGoods.order = order
-    //     self.orderGoods.good = good
-    //     self.myOrders.push(self.orderGoods)
-    //   });
-    //   console.log("self.myOrders", self.myOrders);
-    // }).catch(error => {
-    //   fail(undefined, 'fail to get user order details', error)
-    // })
   },
 
   methods: {
