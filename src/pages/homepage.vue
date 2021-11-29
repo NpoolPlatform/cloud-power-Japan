@@ -125,6 +125,12 @@
         </p>
 
         <p>
+          {{ $t('Homepage.What.Content14') }}
+          <strong>{{ $t('Homepage.What.Content15') }}</strong>
+          . {{ $t('Homepage.What.Content16') }}
+        </p>
+
+        <p>
           {{ $t('Homepage.What.Content9') }}
           <strong>{{ $t('Homepage.What.Content10') }}</strong>
           . {{ $t('Homepage.What.Content11') }}

@@ -3,22 +3,22 @@
     <div class="content">
       <div class="title">{{ $t('Account.Title') }}</div>
       <div class="details-box">
-        <span class="box-title">{{ $t('Account.PersonalDetails.Title') }}</span>
+        <span class="title">{{ $t('Account.PersonalDetails.Title') }}</span>
         <div class="detail-column">
-          <div>
+          <div class="input-style">
             <q-item-label>{{ $t('Account.PersonalDetails.FirstName') }}</q-item-label>
             <q-input
-              style="width: 400px; margin-top: 10px;"
+              style="width: 90%; margin: 10px 20px 0 0;"
               outlined
               v-model="firstname"
               bg-color="blue-grey-1"
             ></q-input>
           </div>
 
-          <div>
+          <div class="input-style">
             <q-item-label>{{ $t('Account.PersonalDetails.LastName') }}</q-item-label>
             <q-input
-              style="width: 400px; margin-top: 10px;"
+              style="width: 90%; margin: 10px 20px 0 0;"
               outlined
               v-model="lastname"
               bg-color="blue-grey-1"
@@ -27,20 +27,20 @@
         </div>
 
         <div class="detail-column">
-          <div>
+          <div class="input-style">
             <q-item-label>{{ $t('Account.PersonalDetails.StreetAddress1') }}</q-item-label>
             <q-input
-              style="width: 400px; margin-top: 10px;"
+              style="width: 90%; margin: 10px 20px 0 0;"
               outlined
               v-model="street1"
               bg-color="blue-grey-1"
             ></q-input>
           </div>
 
-          <div>
+          <div class="input-style">
             <q-item-label>{{ $t('Account.PersonalDetails.StreetAddress2') }}</q-item-label>
             <q-input
-              style="width: 400px; margin-top: 10px;"
+              style="width: 90%; margin: 10px 20px 0 0;"
               outlined
               v-model="street2"
               bg-color="blue-grey-1"
@@ -49,20 +49,20 @@
         </div>
 
         <div class="detail-column">
-          <div>
+          <div class="input-style">
             <q-item-label>{{ $t('Account.PersonalDetails.City') }}</q-item-label>
             <q-input
-              style="width: 400px; margin-top: 10px;"
+              style="width: 90%; margin: 10px 20px 0 0;"
               outlined
               v-model="city"
               bg-color="blue-grey-1"
             ></q-input>
           </div>
 
-          <div>
+          <div class="input-style">
             <q-item-label>{{ $t('Account.PersonalDetails.Province') }}</q-item-label>
             <q-input
-              style="width: 400px; margin-top: 10px;"
+              style="width: 90%; margin: 10px 20px 0 0;"
               outlined
               v-model="province"
               bg-color="blue-grey-1"
@@ -71,18 +71,19 @@
         </div>
 
         <div class="detail-column">
-          <div>
+          <div class="input-style">
             <q-item-label>{{ $t('Account.PersonalDetails.Country') }}</q-item-label>
             <q-input
-              style="width: 400px; margin-top: 10px;"
+              style="width: 90%; margin: 10px 20px 0 0;"
               outlined
               v-model="country"
               bg-color="blue-grey-1"
             ></q-input>
           </div>
 
-          <div>
+          <div class="input-style">
             <q-btn
+              style="width: 90%; margin: 10px 20px 0 0;"
               class="account-btn"
               @click="onSaveChange"
             >{{ $t('Account.PersonalDetails.Save') }}</q-btn>
@@ -101,7 +102,7 @@
               </div>
               <div class="setting-content">{{ $t('Account.SecuritySetting.ChangePasswordContent') }}</div>
               <q-space style="margin-bottom: 60px"></q-space>
-              <div>
+              <div class="setting-btn-position">
                 <q-btn
                   class="account-btn setting-btn"
                   @click="changePassword = true"
@@ -121,7 +122,7 @@
                 {{ enabledEmail ? $t('Account.SecuritySetting.Verify') : $t('Account.SecuritySetting.NotVerify') }}
               </div>
               <q-space style="margin-bottom: 60px"></q-space>
-              <div>
+              <div class="setting-btn-position">
                 <q-btn
                   disable
                   color="grey"
@@ -144,12 +145,11 @@
                 {{ enabledMobile ? $t('Account.SecuritySetting.Verify') : $t('Account.SecuritySetting.NotVerify') }}
               </div>
               <q-space style="margin-bottom: 26px"></q-space>
-              <div>
+              <div class="setting-btn-position">
                 <q-btn
                   disable
                   color="grey"
                   class="account-btn setting-btn"
-                  style="top: 15px;"
                 >{{ $t('Account.SecuritySetting.MobileBtn') }}</q-btn>
               </div>
             </div>
@@ -166,7 +166,7 @@
                 {{ enableGoogleAuthentication ? $t('Account.SecuritySetting.Verify') : $t('Account.SecuritySetting.NotVerify') }}
               </div>
               <q-space style="margin-bottom: 20px"></q-space>
-              <div>
+              <div class="setting-btn-position">
                 <q-tooltip
                   anchor="top middle"
                   self="bottom middle"
@@ -195,7 +195,7 @@
                 {{ enabledID ? $t('Account.SecuritySetting.Verify') : $t('Account.SecuritySetting.NotVerify') }}
               </div>
               <q-space style="margin-bottom: 60px"></q-space>
-              <div>
+              <div class="setting-btn-position">
                 <q-btn
                   disable
                   color="grey"
@@ -228,7 +228,7 @@
                 <span>{{ $t('Account.SecuritySetting.GALogin') }}</span>
               </div>
               <q-space style="margin-bottom: 25px"></q-space>
-              <div>
+              <div class="setting-btn-position">
                 <q-btn
                   class="account-btn setting-btn"
                   style="top: 0;"
@@ -569,11 +569,11 @@ export default defineComponent({
     onGoogleVerificationBtnClick: function () {
       this.openGaVerify = true
       var self = this
+      var username = "(Procyon:" + this.user.info.UserBasicInfo.EmailAddress + ")"
       api.post('verification-door/v1/get/qrcode/url', {
-        Username: self.user.info.UserBasicInfo.Username,
+        Username: username,
       }).then(resp => {
         self.userGoogleImg = resp.data.Info
-        console.log('google img is', self.userGoogleImg);
       }).catch(error => {
         fail(undefined, self.$t('Notify.GaVerify.FailToGetImg'), error)
       })

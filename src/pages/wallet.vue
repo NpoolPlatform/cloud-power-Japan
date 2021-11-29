@@ -18,7 +18,7 @@
             <span class="unit">USDT</span>
           </div>
           <div class="hr"></div>
-          <span class="subtitle">{{ $t('Mining.Column1.Yesterday') }}</span>
+          <span class="subtitle">{{ $t('Mining.Column1.Total') }}</span>
         </div>
       </div>
 
@@ -38,9 +38,6 @@
               <th class="text-left">{{ $t('Wallet.Assets.Change') }}</th>
               <th class="text-left">{{ $t('Wallet.Assets.MarketValueUSDT') }}</th>
               <th class="text-left">{{ $t('Wallet.Assets.MarketValueBalance') }}</th>
-              <th class="text-right">
-                <q-img :src="helpImg" class="help-img" @click="help"></q-img>
-              </th>
             </tr>
           </thead>
           <tbody class="table-style">

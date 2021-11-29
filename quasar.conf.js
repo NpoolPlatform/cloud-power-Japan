@@ -9,6 +9,7 @@
 /* eslint-env node */
 const ESLintPlugin = require('eslint-webpack-plugin')
 const { configure } = require('quasar/wrappers');
+const path = require('path')
 
 module.exports = configure(function (ctx) {
   return {
@@ -78,7 +79,8 @@ module.exports = configure(function (ctx) {
       // "chain" is a webpack-chain object https://github.com/neutrinojs/webpack-chain
       chainWebpack (chain) {
         chain.plugin('eslint-webpack-plugin')
-          .use(ESLintPlugin, [{ extensions: [ 'js', 'vue' ] }])
+          .use(ESLintPlugin, [{ extensions: [ 'js', 'vue' ] }]),
+        chain.resolve.alias.set('@', path.join(__dirname, 'src'))
       },
     },
 

@@ -32,7 +32,6 @@ export default defineComponent({
     },
 
     callback: function (resp) {
-      console.log("response is: ", resp);
       this.$emit('callback', resp)
     },
     expiredCallback: function (resp) {

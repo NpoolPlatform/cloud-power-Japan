@@ -24,17 +24,17 @@
         <p>{{ $t('Legal.P6') }}</p>
         <h2>{{ $t('Legal.H4') }}</h2>
         <p>{{ $t('Legal.P7') }}</p>
-        <h2>{{ $t('Leagal.H5') }}</h2>
+        <h2>{{ $t('Legal.H5') }}</h2>
         <p>{{ $t('Legal.P8') }}</p>
         <ul>
           <li>{{ $t('Legal.U2.L1') }}</li>
-          <li>{{ $t('Legal.U2.L1') }}</li>
-          <li>{{ $t('Legal.U2.L1') }}</li>
-          <li>{{ $t('Legal.U2.L1') }}</li>
-          <li>{{ $t('Legal.U2.L1') }}</li>
-          <li>{{ $t('Legal.U2.L1') }}</li>
-          <li>{{ $t('Legal.U2.L1') }}</li>
-          <li>{{ $t('Legal.U2.L1') }}</li>
+          <li>{{ $t('Legal.U2.L2') }}</li>
+          <li>{{ $t('Legal.U2.L3') }}</li>
+          <li>{{ $t('Legal.U2.L4') }}</li>
+          <li>{{ $t('Legal.U2.L5') }}</li>
+          <li>{{ $t('Legal.U2.L6') }}</li>
+          <li>{{ $t('Legal.U2.L7') }}</li>
+          <li>{{ $t('Legal.U2.L8') }}</li>
         </ul>
         <p>{{ $t('Legal.P9') }}</p>
         <p>{{ $t('Legal.P10') }}</p>

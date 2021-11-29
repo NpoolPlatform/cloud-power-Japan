@@ -141,7 +141,6 @@ export default defineComponent({
       deep: true,
       immediate: true,
       handler: function (n, o) {
-        console.log("finish is", n)
       },
     }
   },
@@ -164,15 +163,15 @@ export default defineComponent({
         return
       }
 
-      const notif = waiting("send code successfully")
-      var failToSend = "fail to send code"
+      var notif = waiting(this.$t('Notify.SendCode.WaitCode'))
+      var msg = this.$t('Notify.SendCode.SendTo') + this.loginInput.email + ', ' + this.$t('Notify.SendCode.CheckEmail')
+      var failToSend = this.$t('Notify.SendCode.Fail')
 
       var thiz = this
       api.post('/verification-door/v1/send/email', {
         Email: this.loginInput.email
       })
         .then(function (resp) {
-          const msg = "code has been sent" + thiz.loginInput.email + ', ' + "please check your email"
           success(notif, msg)
         })
         .catch(function (error) {
@@ -238,7 +237,6 @@ export default defineComponent({
           break;
         default:
           this.response = resp
-          console.log(resp)
           break;
       }
     },

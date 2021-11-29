@@ -103,7 +103,6 @@ export default {
         self.$emit('callback', 'pass')
         self.visible = false
       }).catch(error => {
-        console.log('error is: ', error);
         fail(undefined, fail2, error)
       })
     },

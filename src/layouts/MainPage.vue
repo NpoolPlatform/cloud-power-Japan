@@ -12,9 +12,67 @@
         <router-link class="nav-link" :to="{ path: '/' }">{{ $t('Header.Home') }}</router-link>
         <router-link class="nav-link" :to="{ path: '/' }">{{ $t('Header.Blog') }}</router-link>
         <router-link class="nav-link" :to="{ path: '/faq' }">{{ $t('Header.Support') }}</router-link>
-        <router-link class="nav-link" :to="{ path: '/' }">{{ $t('Header.Contact') }}</router-link>
-        <q-btn v-if="!logined" class="alt" flat @click="signIn">{{ $t('Header.Signin') }}</q-btn>
-        <q-img v-if="logined" class="avator" :src="userImg" @click="onAvatorClick"></q-img>
+        <a class="nav-link" href="mailto:support@procyon.vip">{{ $t('Header.Contact') }}</a>
+        <q-select
+          hide-dropdown-icon
+          class="select-style"
+          standout="bg-teal text-white"
+          style="background: none;"
+          v-model="language"
+          :options="languages"
+        />
+        <q-btn
+          class="alt"
+          disable
+          style="margin-right: 10px; background-color: grey; border: none;"
+          flat
+          @click="$router.push('/register')"
+        >{{ $t('Register.Register') }}</q-btn>
+        <q-btn
+          v-if="!logined"
+          class="alt"
+          flat
+          @click="$router.push('/login')"
+        >{{ $t('Header.Signin') }}</q-btn>
+        <div class="avator-box">
+          <q-img v-if="logined" class="avator" :src="userImg" @click="showList = !showList"></q-img>
+
+          <div class="list-box" v-if="showList">
+            <q-list>
+              <q-item
+                clickable
+                v-close-popup
+                @click="$router.push('/account'); showList = !showList"
+              >
+                <q-item-section>
+                  <q-item-label>{{ $t('Drawer.Account') }}</q-item-label>
+                </q-item-section>
+              </q-item>
+
+              <q-item clickable v-close-popup @click="$router.push('/order'); showList = !showList">
+                <q-item-section>
+                  <q-item-label>{{ $t('Drawer.Order') }}</q-item-label>
+                </q-item-section>
+              </q-item>
+
+              <q-item
+                clickable
+                v-close-popup
+                @click="$router.push('/wallet'); showList = !showList"
+              >
+                <q-item-section>
+                  <q-item-label>{{ $t('Drawer.Wallet') }}</q-item-label>
+                </q-item-section>
+              </q-item>
+
+              <q-item clickable v-close-popup @click="logout">
+                <q-item-section>
+                  <q-item-label>{{ $t('Drawer.Logout') }}</q-item-label>
+                </q-item-section>
+              </q-item>
+            </q-list>
+          </div>
+        </div>
       </div>
     </q-header>
 
@@ -25,7 +83,7 @@
       v-model="openSide"
     >
       <div class="drawer-items">
-        <router-link href class="drawer-item" :to="{ path: '/mining' }">
+        <router-link href class="drawer-item" :to="{ path: '/order' }">
           <q-img :src="miningImg" class="drawer-item-img"></q-img>
           <span class="drawer-item-span">{{ $t('Drawer.Order') }}</span>
         </router-link>
@@ -108,6 +166,8 @@
 </template>
 
 <script>
+import { api } from 'src/boot/axios';
+import { fail, success } from 'src/notify/notify';
 import { defineComponent, computed } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useStore } from 'vuex'
@@ -137,6 +197,7 @@ export default defineComponent({
 
   created: function () {
     this.locale = 'jp'
+    this.language = 'jp'
   },
 
   data () {
@@ -148,6 +209,9 @@ export default defineComponent({
       toggleStyle: 'background: linear-gradient(to bottom right, #1f293a 0, #23292b 100%) no-repeat; background-size: 200px; border-bottom: 240px #a1d0d0;',
       toggle: null,
       userImg: require('/src/assets/icon-user.svg'),
+      showList: false,
+      language: this.locale,
+      languages: ['en-US', 'jp']
     }
   },
 
@@ -161,7 +225,6 @@ export default defineComponent({
         } else {
           this.toggle = null
         }
-        console.log("toggle is", this.toggle);
       },
     },
 
@@ -169,22 +232,25 @@ export default defineComponent({
       deep: true,
       immediate: true,
       handler: function (n, o) {
+
       },
     },
   },
 
   methods: {
-    signIn: function () {
-      this.$router.push('/login')
-    },
-    goTo: function () {
-      this.$router.push({
-        path: '#why-procyon'
+    logout: function () {
+      var self = this
+      var appSession = this.$q.cookies.get('AppSession')
+      api.post('/login-door/v1/logout', {
+        Session: appSession,
+      }).then(resp => {
+        success(undefined, self.$t('Notify.Logout.Success'))
+        self.$q.cookies.remove('UserID')
+        self.$router.push('/')
+        location.reload()
+      }).catch(error => {
+        fail(undefined, self.$t('Notify.Logout.Fail'), error)
       })
-    },
-
-    onAvatorClick: function () {
-      this.$router.push('/account')
     },
   },
 })
@@ -192,3 +258,11 @@ export default defineComponent({
 
 <style scoped src="../css/main-style.css"></style>
 <style scoped src="../css/general.css"></style>
+<style>
+.select-style .q-field__native,
+.q-field__prefix,
+.q-field__suffix {
+  font-size: 18px;
+  color: white;
+}
+</style>

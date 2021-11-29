@@ -49,20 +49,11 @@ export default defineComponent({
       deep: true,
       immediate: true,
       handler: function (n, o) {
-        if (n === '/wallet' || n === '/account' || n === '/mining') {
+        if (n === '/wallet' || n === '/account' || n === '/order') {
           this.open = true
         } else {
           this.open = false
         }
-
-        // var session = this.q.cookies.get('AppSession')
-        // var userid = this.q.cookies.get('UserID')
-        // var sessionCondition = session === '' || session === null || session === undefined
-        // var useridCondition = userid === '' || userid === null || userid === undefined
-        // if (sessionCondition || useridCondition) {
-        //   this.$router.push('/')
-        //   return
-        // }
       },
     }
   },
@@ -70,6 +61,12 @@ export default defineComponent({
   created: function () {
     var appID = 'ff2c5d50-be56-413e-aba5-9c7ad888a769'
     this.q.cookies.set('AppID', appID)
+
+    var flag = navigator.userAgent.match(/(phone|pad|pod|iPhone|iPod|ios|iPad|Android|Mobile|BlackBerry|IEMobile|MQQBrowser|JUC|Fennec|wOSBrowser|BrowserNG|WebOS|Symbian|Windows Phone)/i)
+    console.log("flag is", flag);
+    if (flag) {
+      this.$router.push('/warning')
+    }
   },
 
   mounted: function () {
@@ -78,6 +75,9 @@ export default defineComponent({
     var sessionCondition = session === '' || session === null || session === undefined
     var useridCondition = userid === '' || userid === null || userid === undefined
     if (sessionCondition || useridCondition) {
+      if (this.path === '/order' || this.path === '/wallet' || this.path === '/account') {
+        this.$router.push('/')
+      }
       return
     }
 
