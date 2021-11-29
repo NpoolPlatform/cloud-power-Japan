@@ -13,14 +13,26 @@
         <router-link class="nav-link" :to="{ path: '/' }">{{ $t('Header.Blog') }}</router-link>
         <router-link class="nav-link" :to="{ path: '/faq' }">{{ $t('Header.Support') }}</router-link>
         <a class="nav-link" href="mailto:support@procyon.vip">{{ $t('Header.Contact') }}</a>
-        <q-select
+        <!-- <q-select
           hide-dropdown-icon
           class="select-style"
           standout="bg-teal text-white"
           style="background: none;"
           v-model="language"
           :options="languages"
-        />
+        />-->
+        <div class="button-group">
+          <q-btn-toggle
+            v-model="locale"
+            push
+            glossy
+            toggle-color="orange-9"
+            :options="[
+              { label: $t('Footer.Forth.En'), value: 'en-US' },
+              { label: $t('Footer.Forth.Jp'), value: 'jp' },
+            ]"
+          />
+        </div>
         <q-btn
           class="alt"
           disable
