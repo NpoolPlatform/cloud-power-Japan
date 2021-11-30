@@ -11,12 +11,19 @@ import { useQuasar } from 'quasar';
 import { useRouter } from 'vue-router'
 import { api } from './boot/axios';
 import { fail } from './notify/notify';
+import { useI18n } from 'vue-i18n';
 
 export default defineComponent({
   name: 'App',
   setup () {
     const q = useQuasar()
     const $store = useStore()
+    const { locale } = useI18n({ useScope: 'global' })
+    const lang = computed({
+      set: val => {
+        $store.commit('lang/updateLang', val)
+      }
+    })
 
     const user = computed({
       get: () => $store.state.user.user,
@@ -41,6 +48,8 @@ export default defineComponent({
       user,
       path,
       open,
+      locale,
+      lang,
     }
   },
 
@@ -62,8 +71,19 @@ export default defineComponent({
     var appID = 'ff2c5d50-be56-413e-aba5-9c7ad888a769'
     this.q.cookies.set('AppID', appID)
 
+    var language = localStorage.getItem('locale') || window.navigator.language.toLowerCase() || 'ja_JP'
+    if (language.indexOf('zh') !== -1) {
+      this.locale = 'ja_JP'
+      this.lang = 'ja_JP'
+    } else if (language.indexOf('en') !== -1) {
+      this.locale = 'en_US'
+      this.lang = 'en_US'
+    } else {
+      this.locale = 'ja_JP'
+      this.lang = 'ja_JP'
+    }
+
     var flag = navigator.userAgent.match(/(phone|pad|pod|iPhone|iPod|ios|iPad|Android|Mobile|BlackBerry|IEMobile|MQQBrowser|JUC|Fennec|wOSBrowser|BrowserNG|WebOS|Symbian|Windows Phone)/i)
-    console.log("flag is", flag);
     if (flag) {
       this.$router.push('/warning')
     }

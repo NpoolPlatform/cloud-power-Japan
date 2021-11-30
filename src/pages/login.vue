@@ -56,7 +56,7 @@
               <recaptcha-vue @callback="callback"></recaptcha-vue>
             </div>
 
-            <q-btn class="register-btn" @click="login()">{{ $t('Register.Login') }}</q-btn>
+            <q-btn id="loginBtn" class="register-btn" @click="login">{{ $t('Register.Login') }}</q-btn>
             <div class="bottom-style">
               <router-link
                 class="link-style"
@@ -96,14 +96,13 @@ import { api } from 'src/boot/axios';
 import notify, { success, fail, waiting } from '../notify/notify'
 import VerifycodeInput from 'src/components/VerifycodeInput.vue';
 import { useI18n } from 'vue-i18n';
+import { useQuasar } from 'quasar';
 
 export default defineComponent({
   components: { RecaptchaVue, VerifycodeInput },
   setup () {
-    const email = ref('')
-    const verifyCode = ref('')
-    const password = ref('')
-    const loginInput = reactive({ email, verifyCode, password })
+    const { locale } = useI18n({ useScope: 'global' })
+    const q = useQuasar()
 
     const $store = useStore()
 
@@ -114,7 +113,7 @@ export default defineComponent({
       }
     })
 
-    const { t } = useI18n()
+    const { t } = useI18n({ useScope: 'global' })
 
     const usernameRef = ref(null)
     const codeRef = ref(null)
@@ -124,7 +123,6 @@ export default defineComponent({
     const passwordRule = ref([val => val && val.length > 0 || t('Register.PasswordInputWarning')])
 
     return {
-      loginInput,
       isPwd: ref(true),
       usernameRule,
       user,
@@ -133,6 +131,8 @@ export default defineComponent({
       codeRef,
       passwordRule,
       passRef,
+      locale,
+      q,
     }
   },
 
@@ -148,11 +148,16 @@ export default defineComponent({
   data () {
     return {
       siteKey: '6LdlXU4dAAAAAJz1WqVn2xkIwQrSH38x6tYRAD_m',
-      response: null,
       gaVerifyCode: '',
       gaDialog: false,
       authCode: '',
       finish: '',
+      loginInput: {
+        email: '',
+        verifyCode: '',
+        password: '',
+        response: '',
+      },
     }
   },
 
@@ -163,13 +168,14 @@ export default defineComponent({
         return
       }
 
-      var notif = waiting(this.$t('Notify.SendCode.WaitCode'))
-      var msg = this.$t('Notify.SendCode.SendTo') + this.loginInput.email + ', ' + this.$t('Notify.SendCode.CheckEmail')
+      var notif = waiting(this.$t('Notify.SendCode.WaitSend'))
+      var msg = this.$t('Notify.SendCode.SendTo') + ' ' + this.loginInput.email + ', ' + this.$t('Notify.SendCode.CheckEmail')
       var failToSend = this.$t('Notify.SendCode.Fail')
 
       var thiz = this
       api.post('/verification-door/v1/send/email', {
-        Email: this.loginInput.email
+        Email: thiz.loginInput.email,
+        Lang: thiz.locale,
       })
         .then(function (resp) {
           success(notif, msg)
@@ -184,7 +190,12 @@ export default defineComponent({
       this.codeRef.validate()
       this.passRef.validate()
 
-      if (this.usernameRef.hasError || this.passRef.hasError) {
+      if (this.usernameRef.hasError || this.codeRef.hasError || this.passRef.hasError) {
+        return
+      }
+
+      if (this.loginInput.response === '' || this.loginInput.response === null || this.loginInput.response === undefined) {
+        fail(undefined, this.$t('Notify.Recaptcha.Fail'))
         return
       }
       let self = this
@@ -195,7 +206,7 @@ export default defineComponent({
         Username: self.loginInput.email,
         Password: self.loginInput.password,
         VerifyCode: self.loginInput.verifyCode,
-        GoogleRecaptchaResponse: self.response,
+        GoogleRecaptchaResponse: self.loginInput.response,
       }).then(resp => {
         self.user = {
           logined: true,
@@ -204,30 +215,43 @@ export default defineComponent({
         success(notif, self.$t('Notify.Login.Success'))
         if (resp.data.Info.UserAppInfo.UserApplicationInfo.GALogin) {
           self.gaDialog = true;
+          return
         } else {
           self.$router.push({
             path: '/',
           })
         }
+        return
       }).catch(error => {
         fail(notif, self.$t('Notify.Login.Fail'), error)
+        self.loginInput.email = ''
+        self.loginInput.password = ''
+        self.loginInput.verifyCode = ''
+        self.loginInput.response = ''
       })
-
-      this.loginInput = {}
     },
 
     verifyCallback: function (resp) {
+      var self = this
       if (resp === 'pass') {
         this.gaDialog = false
         this.$router.push({
           path: '/',
         })
       } else {
-        fail(undefined, "please inoput correct verify code")
+        self.loginInput.email = ''
+        self.loginInput.password = ''
+        self.loginInput.verifyCode = ''
+        self.loginInput.response = ''
+        this.q.cookies.remove('UserID')
+        this.q.cookies.remove('AppSession')
+        this.q.cookies.remove('Session')
+        fail(undefined, "please inoput correct verify code", "")
       }
     },
 
     callback: function (resp) {
+      var self = this
       switch (resp) {
         case "expired":
           console.log("expired")
@@ -236,7 +260,7 @@ export default defineComponent({
           console.log("error")
           break;
         default:
-          this.response = resp
+          this.loginInput.response = resp
           break;
       }
     },

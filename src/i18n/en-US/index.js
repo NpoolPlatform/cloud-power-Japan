@@ -71,7 +71,7 @@ export default {
       Content4: 'investment opportunities that cannot be found on the open market', 
       Content5: '. Our unique positioning is our strength and your gain!',
       Content6: 'Japan boasts the highest investment per capita in Asia. The endless possibilities of the',
-      Content7: 'Japanese market attract many global players,',
+      Content7: 'Japanese market attract many global players',
       Content8: ', however Japan suffers from a language and cultural barrier that insulates the country from global markets. This hurdle can result in missed opportunities and a lack of diversity in investment products. At Procyon,',
       Content9: 'we lead our exclusive communities of investors to the global stage.',
     },
@@ -79,18 +79,18 @@ export default {
     What: {
       Title: 'What Is First-Batch Mining?',
       Content1: 'First-batch mining begins as soon as the mainnet goes live. This is possible because the first-batch of miners has already acquired hash power through the testnet prior to the launch of the mainnet. Once mainnet goes live these miners are the first to begin the mining process, achieving much ',
-      Content2: 'greater ROI while the mining difficulty is low and the mining output is high.',
+      Content2: 'greater ROI while the mining difficulty is low and the mining output is high',
       Content3: 'There are two core factors that affect a miner\'s ROI:',
       Content4: 'Mining output',
       Content5: 'Token price',
       Content6: 'Mining output is directly related to the mining difficulty. The more miners, the greater the total network-wide hash power, the higher the mining difficulty, and the lower the mining output per miner. The total mineable supply is fixed, so the more hash power that flows into mining, the less mining output is released per unit (TB) of hash power.',
-      Content7: 'The mining output of the first-batch mining is usually much greater in comparison to regular mining.',
+      Content7: 'The mining output of the first-batch mining is usually much greater in comparison to regular mining',
       Content8: 'You can think of it like sharing a pizza. The more people share, the smaller each slice gets. For example, with Chia mining, the daily output during first-batch mining was equivalent to 1 year of mining at the rates just 2 months after mainnet launch.',
       Content14: 'There is a crypto project called Chia, and to use Chia mining as a case study, Chia\'s mining difficulty increased rapidly from the first two months after its mainnet launched. As a result,',
-      Content15: 'miners who participated in Chia\'s first batch mining received daily mining rewards equivalent to what would take 1 year of mining at the mining output levels just 2 months after mainnet launch.',
+      Content15: 'miners who participated in Chia\'s first batch mining received daily mining rewards equivalent to what would take 1 year of mining at the mining output levels just 2 months after mainnet launch',
       Content16: 'This is the power of first batch mining.',
       Content9: 'Token price is affected by dynamic market conditions. Typically the mainet launch happens simultaneously as',
-      Content10: 'listing on an exchange which is when the token experiences price discovery, possibly surging exponentially.',
+      Content10: 'listing on an exchange which is when the token experiences price discovery, possibly surging exponentially',
       Content11: 'To put it simply, the earlier you can mine, the more tokens you earn. And on top of that, you can sell your tokens at a higher price when the token is listed on exchanges, resulting in a better ROI.',
       Content12: 'Participating in first-batch mining is only possible if you’re a professional miner or an experienced mining pool. Procyon is the premiere platform that aims to make first-batch mining accessible to general investors, delivering exceptional ROI.',
       Content13: 'Shoot for the stars with Procyon!',
@@ -329,6 +329,10 @@ export default {
       Success: 'Logout successfully!',
       Fail: 'Fail to logout',
     },
+
+    Recaptcha: {
+      Fail: 'you must finish google recaptcha robot check firstly!',
+    },
   },
 
   Login: {
@@ -434,7 +438,7 @@ export default {
     Header5: {
       Title: 'MINING & GENERAL CRYPTOCURRENCY INFORMATION',
       Q1: 'What is mining?',
-      A1: '\'Mining\' is the term used to describe how cryptocurrencies are produced. In order to ""mine"" a cryptocurrency, computers must solve complex mathematicl equations and if successful, the operators of the computers (also known as mining machines) are given cryptocurrency as a reward.',
+      A1: '\'Mining\' is the term used to describe how cryptocurrencies are produced. In order to "mine" a cryptocurrency, computers must solve complex mathematicl equations and if successful, the operators of the computers (also known as mining machines) are given cryptocurrency as a reward.',
       A2: 'Much like mining for gold, it takes effort to procure (in the case of cryptocurrencies, computing power or hard disk space), there is a finite supply, and the more that is mined, or the more people attempt to mine it at the same time, the more difficult it is to mine more (this is known as Mining Difficulty, explained below).',
       Q2: 'What is a mining pool?',
       A3: 'A \'mining pool\' is a large-scale cryptocurrency mining operation that combines a large number of mining machines together to increase their probability of finding a \'block\' on the blockchain and thus gaining cryptocurrencies as a reward (explained below).',

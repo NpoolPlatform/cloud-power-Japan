@@ -1,5 +1,5 @@
 <template>
-  <div v-if="visible">
+  <div>
     <div class="content">
       <div class="title">{{ $t('Mining.Column1.Title') }}</div>
 
@@ -119,12 +119,18 @@ export default defineComponent({
     }
   },
 
+  watch: {
+
+  },
+
   computed: {
     totalAmount: function () {
-      var amount = 0;
-      this.myOrders.forEach(order => {
-        amount += order.order.Payment.Amount
-      })
+      var amount = 0
+      if (this.myOrders !== [] || this.myOrders !== undefined || this.myOrders !== null) {
+        this.myOrders.forEach(order => {
+          amount += order.order.Payment.Amount
+        })
+      }
       return amount
     },
   },
@@ -145,13 +151,15 @@ export default defineComponent({
       UserID: userid,
     }).then(resp => {
       self.orders = resp.data
-      console.log("self.orders", self.orders.Details)
       resp.data.Details.forEach(order => {
         self.getOrderGood(order)
       });
+      return
     }).catch(error => {
-      fail(undefined, 'fail to get user order details', error)
+      // fail(undefined, 'fail to get user order details', error)
+      self.myOrders = []
     })
+    self.myOrders = []
   },
 
   methods: {

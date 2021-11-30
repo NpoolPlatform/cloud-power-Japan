@@ -13,14 +13,6 @@
         <router-link class="nav-link" :to="{ path: '/' }">{{ $t('Header.Blog') }}</router-link>
         <router-link class="nav-link" :to="{ path: '/faq' }">{{ $t('Header.Support') }}</router-link>
         <a class="nav-link" href="mailto:support@procyon.vip">{{ $t('Header.Contact') }}</a>
-        <!-- <q-select
-          hide-dropdown-icon
-          class="select-style"
-          standout="bg-teal text-white"
-          style="background: none;"
-          v-model="language"
-          :options="languages"
-        />-->
         <div class="button-group">
           <q-btn-toggle
             v-model="locale"
@@ -28,8 +20,8 @@
             glossy
             toggle-color="orange-9"
             :options="[
-              { label: $t('Footer.Forth.En'), value: 'en-US' },
-              { label: $t('Footer.Forth.Jp'), value: 'jp' },
+              { label: $t('Footer.Forth.En'), value: 'en_US' },
+              { label: $t('Footer.Forth.Jp'), value: 'ja_JP' },
             ]"
           />
         </div>
@@ -46,7 +38,7 @@
           flat
           @click="$router.push('/login')"
         >{{ $t('Header.Signin') }}</q-btn>
-        <div class="avator-box">
+        <div class="avator-box" @click.stop>
           <q-img v-if="logined" class="avator" :src="userImg" @click="showList = !showList"></q-img>
 
           <div class="list-box" v-if="showList">
@@ -163,8 +155,8 @@
                   glossy
                   toggle-color="orange-9"
                   :options="[
-                    { label: $t('Footer.Forth.En'), value: 'en-US' },
-                    { label: $t('Footer.Forth.Jp'), value: 'jp' },
+                    { label: $t('Footer.Forth.En'), value: 'en_US' },
+                    { label: $t('Footer.Forth.Jp'), value: 'ja_JP' },
                   ]"
                 />
               </div>
@@ -190,6 +182,13 @@ export default defineComponent({
     const { locale } = useI18n({ useScope: 'global' })
     const $store = useStore()
 
+    const lang = computed({
+      get: () => $store.state.lang.lang,
+      set: val => {
+        $store.commit('lang/updateLang', val)
+      }
+    })
+
     const openSide = computed({
       get: () => $store.state.router.router.open,
       set: val => {
@@ -204,12 +203,8 @@ export default defineComponent({
       locale,
       openSide,
       logined,
+      lang,
     }
-  },
-
-  created: function () {
-    this.locale = 'jp'
-    this.language = 'jp'
   },
 
   data () {
@@ -222,12 +217,21 @@ export default defineComponent({
       toggle: null,
       userImg: require('/src/assets/icon-user.svg'),
       showList: false,
-      language: this.locale,
-      languages: ['en-US', 'jp']
     }
   },
 
+  mounted: function () {
+    document.addEventListener('click', this.bodyCloseSelected)
+  },
+
   watch: {
+    locale: {
+      deep: true,
+      immediate: true,
+      handler: function (n, o) {
+        this.lang = n
+      },
+    },
     openSide: {
       deep: true,
       immediate: true,
@@ -249,7 +253,14 @@ export default defineComponent({
     },
   },
 
+  beforeUnmount: function () {
+    document.removeEventListener('click', this.bodyCloseSelected)
+  },
+
   methods: {
+    bodyCloseSelected: function () {
+      this.showList = false
+    },
     logout: function () {
       var self = this
       var appSession = this.$q.cookies.get('AppSession')
@@ -258,8 +269,8 @@ export default defineComponent({
       }).then(resp => {
         success(undefined, self.$t('Notify.Logout.Success'))
         self.$q.cookies.remove('UserID')
-        self.$router.push('/')
         location.reload()
+        self.$router.push('/')
       }).catch(error => {
         fail(undefined, self.$t('Notify.Logout.Fail'), error)
       })

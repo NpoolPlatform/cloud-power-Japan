@@ -153,7 +153,7 @@
   font-size: 24px;
   margin: 0 0 16px 0;
   color: #e1eeef;
-  font-family: "Barlow", sans-serif;
+  /* font-family: "Barlow", sans-serif; */
 }
 
 .mining-icon {
@@ -206,7 +206,7 @@
   border: 0;
   color: #e4f4f0;
   cursor: pointer;
-  font-family: "Barlow", sans-serif;
+  /* font-family: "Barlow", sans-serif; */
   font-weight: 600;
   text-shadow: 1px 1px 1px #ce5417;
   transition: all ease-in-out 0.1s;

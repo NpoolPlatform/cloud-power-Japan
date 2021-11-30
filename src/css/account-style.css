@@ -89,7 +89,7 @@
   border: 0;
   color: #e4f4f0;
   cursor: pointer;
-  font-family: "Barlow", sans-serif;
+  /* font-family: "Barlow", sans-serif; */
   font-weight: 600;
   text-shadow: 1px 1px 1px #ce5417;
   transition: all ease-in-out 0.1s;
@@ -117,7 +117,7 @@
 }
 
 .setting-btn {
-  font-family: Barlow;
+  /* font-family: Barlow; */
   font-style: normal;
   font-weight: 600;
   font-size: 18px;
@@ -126,7 +126,7 @@
 }
 
 .setting-subtitle {
-  font-family: Barlow;
+  /* font-family: Barlow; */
   font-style: normal;
   font-weight: bold;
   font-size: 28px;
@@ -166,7 +166,7 @@
   height: auto;
   left: 354px;
   top: 910px;
-  font-family: Barlow;
+  /* font-family: Barlow; */
   font-style: normal;
   font-weight: normal;
   font-size: 16px;

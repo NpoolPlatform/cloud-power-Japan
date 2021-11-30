@@ -5,6 +5,7 @@ import user from './module-user'
 import router from './module-router'
 import goods from './module-goods'
 import orders from './module-order'
+import lang from './module-lang'
 
 /*
  * If not building with SSR mode, you can
@@ -22,6 +23,7 @@ export default store(function (/* { ssrContext } */) {
       router,
       goods,
       orders,
+      lang,
     },
 
     // enable strict mode (adds overhead!)

@@ -315,24 +315,17 @@
         </q-card>
       </q-dialog>
 
-      <div>
+      <div v-show="false">
         <div class="title">{{ $t('Account.History.Title') }}</div>
-        <q-markup-table class="table-box" wrap-cells flat>
-          <thead class="table-style">
-            <tr class="table-header">
-              <th class="text-left text-size">{{ $t('Account.History.Date') }}</th>
-              <th class="text-left text-size">{{ $t('Account.History.IP') }}</th>
-              <th class="text-left text-size">{{ $t('Account.History.Location') }}</th>
-            </tr>
-          </thead>
-          <tbody class="table-style">
-            <tr class="table-line" v-for="(history, index) in userLoginHistory" :key="index">
-              <td class="text-left">{{ history.date }}</td>
-              <td class="text-left">{{ history.ip }}</td>
-              <td class="text-left">{{ history.location }}</td>
-            </tr>
-          </tbody>
-        </q-markup-table>
+        <div>
+          <q-table
+            flat
+            class="table-box"
+            :rows="userLoginHistory"
+            :columns="userLoginHistoryColumns"
+            row-key="name"
+          />
+        </div>
       </div>
     </div>
 
@@ -451,6 +444,12 @@ export default defineComponent({
       openGaVerify: false,
       secondDialog: false,
       visible: false,
+
+      userLoginHistoryColumns: [
+        { name: 'date', label: this.$t('Account.History.Date'), align: 'left', field: 'date' },
+        { name: 'ip', label: this.$t('Account.History.IP'), align: 'center', field: 'ip', },
+        { name: 'location', label: this.$t('Account.History.Location'), align: 'center', field: 'location', },
+      ],
 
       userLoginHistory: [
         {

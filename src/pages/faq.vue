@@ -6,7 +6,7 @@
           <h1>{{ $t('Faq.A') }} &amp; {{ $t('Faq.B') }}</h1>
           <h2>
             {{ $t('Faq.C') }}
-            <a href="mailto:support@procyon.vip">{{ $t('Faq.Contact') }}</a>.
+            <a href="mailto:support@procyon.vip">{{ $t('Faq.Contact') }}</a>
           </h2>
         </div>
 
@@ -31,7 +31,7 @@
           <a
             href="https://www.hkelectric.com/en/our-operations/supply-reliability"
             target="_blank"
-          >{{ $t('Faq.Header1.Diction') }}</a>.
+          >{{ $t('Faq.Header1.Diction') }}</a>
         </p>
 
         <h3>{{ $t('Faq.Header1.Q5') }}</h3>
@@ -74,7 +74,7 @@
 
         <p>
           {{ $t('Faq.Header3.A2') }}
-          <a href="mailto:support@procyon.vip">support@procyon.vip</a>
+          <a href="mailto:support@procyon.vip">support@procyon.vip</a>.
         </p>
 
         <h3>{{ $t('Faq.Header3.Q3') }}</h3>
@@ -88,7 +88,7 @@
           <a
             href="https://www.freee.co.jp/kb/kb-kakuteishinkoku/virtual_currency_tax/"
             target="_blank"
-          >{{ $t('Faq.Header3.A5') }}</a>.
+          >{{ $t('Faq.Header3.A5') }}</a>
         </p>
 
         <h2>{{ $t('Faq.Header4.Title') }}</h2>

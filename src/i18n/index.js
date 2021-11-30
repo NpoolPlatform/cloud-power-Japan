@@ -3,7 +3,7 @@ import zhCN from './zh-CN'
 import jp from './jp'
 
 export default {
-  'en-US': enUS,
-  'zh-CN': zhCN,
-  'jp': jp,
+  'en_US': enUS,
+  'zh_CN': zhCN,
+  'ja_JP': jp,
 }

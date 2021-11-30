@@ -104,6 +104,7 @@ export default {
         self.visible = false
       }).catch(error => {
         fail(undefined, fail2, error)
+        self.$emit('callback', 'error')
       })
     },
   },

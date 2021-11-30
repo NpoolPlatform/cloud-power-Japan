@@ -5,7 +5,7 @@
       <div class="balance-box">
         <div class="balance-box-item">
           <div>
-            <span class="price">5000</span>
+            <span class="price">0</span>
             <span class="unit">USDT</span>
           </div>
           <div class="hr"></div>
@@ -14,7 +14,7 @@
 
         <div class="balance-box-item">
           <div>
-            <span class="price">5000</span>
+            <span class="price">0</span>
             <span class="unit">USDT</span>
           </div>
           <div class="hr"></div>
@@ -30,29 +30,9 @@
           <button v-show="false" class="opacity-btn">{{ $t('Wallet.Assets.Export') }}</button>
         </div>
 
-        <q-markup-table class="table-box" wrap-cells flat>
-          <thead class="table-style">
-            <tr class="table-header">
-              <th class="text-left">{{ $t('Wallet.Assets.Name') }}</th>
-              <th class="text-left">{{ $t('Wallet.Assets.Balance') }}</th>
-              <th class="text-left">{{ $t('Wallet.Assets.Change') }}</th>
-              <th class="text-left">{{ $t('Wallet.Assets.MarketValueUSDT') }}</th>
-              <th class="text-left">{{ $t('Wallet.Assets.MarketValueBalance') }}</th>
-            </tr>
-          </thead>
-          <tbody class="table-style">
-            <tr class="table-line" v-for="(asset, index) in assets" :key="asset.id">
-              <td class="text-left">{{ asset.name }}</td>
-              <td class="text-left">{{ asset.balance }}</td>
-              <td class="text-left">{{ asset.change }}</td>
-              <td class="text-left">{{ asset.valueUSDT }}</td>
-              <td class="text-left">{{ asset.valueJPY }}</td>
-              <td class="text-right">
-                <q-btn class="color-btn" @click="transfer(index)">{{ $t('Wallet.Assets.Transfer') }}</q-btn>
-              </td>
-            </tr>
-          </tbody>
-        </q-markup-table>
+        <div>
+          <q-table flat class="table-box" :rows="assets" :columns="assetsColumns" row-key="name" />
+        </div>
       </div>
 
       <div class="transactions-box">
@@ -60,37 +40,15 @@
           <span class="title">{{ $t('Wallet.Transactions.Title') }}</span>
         </div>
 
-        <q-markup-table class="table-box" wrap-cells flat>
-          <thead class="table-style">
-            <tr class="table-header">
-              <th class="text-left">{{ $t('Wallet.Transactions.Name') }}</th>
-              <th class="text-left">{{ $t('Wallet.Transactions.Date') }}</th>
-              <th class="text-left">{{ $t('Wallet.Transactions.Amount') }}</th>
-              <th class="text-left">{{ $t('Wallet.Transactions.Status') }}</th>
-              <th class="text-left">{{ $t('Wallet.Transactions.Type') }}</th>
-              <th></th>
-            </tr>
-          </thead>
-          <tbody class="table-style">
-            <tr
-              class="table-line"
-              v-for="(transaction, index) in transactions"
-              :key="transaction.id"
-            >
-              <td class="text-left">{{ transaction.name }}</td>
-              <td class="text-left">{{ transaction.date }}</td>
-              <td class="text-left">{{ transaction.amount }}</td>
-              <td class="text-left">{{ transaction.status }}</td>
-              <td class="text-left">{{ transaction.type }}</td>
-              <td class="text-right">
-                <q-btn
-                  class="color-btn"
-                  @click="details(index)"
-                >{{ $t('Wallet.Transactions.Details') }}</q-btn>
-              </td>
-            </tr>
-          </tbody>
-        </q-markup-table>
+        <div>
+          <q-table
+            flat
+            class="table-box"
+            :rows="transactions"
+            :columns="transactionsColumns"
+            row-key="name"
+          />
+        </div>
       </div>
 
       <div class="guide-box">
@@ -128,41 +86,55 @@ export default defineComponent({
   data () {
     return {
       helpImg: require('/src/assets/help-circle.svg'),
+      assetsColumns: [
+        { name: 'name', label: this.$t('Wallet.Assets.Name'), align: 'left', field: row => row.name },
+        { name: 'balance', label: this.$t('Wallet.Assets.Balance'), align: 'center', field: 'balance', },
+        { name: 'change', label: this.$t('Wallet.Assets.Change'), align: 'center', field: 'change', },
+        { name: 'valueUSDT', label: this.$t('Wallet.Assets.MarketValueUSDT'), align: 'center', field: 'valueUSDT', },
+        { name: 'valueJPY', label: this.$t('Wallet.Assets.MarketValueBalance'), align: 'center', field: 'valueJPY', },
+      ],
       assets: [
-        {
-          id: '1',
-          name: 'SPACEMESH',
-          balance: '100 SMH',
-          change: '+1.5 SMH',
-          valueUSDT: '5000 USDT',
-          valueJPY: '560,000 JPY',
-        },
-        {
-          id: '2',
-          name: 'SPACEMESH',
-          balance: '100 SMH',
-          change: '+1.5 SMH',
-          valueUSDT: '5000 USDT',
-          valueJPY: '560,000 JPY',
-        },
+        // {
+        //   id: '1',
+        //   name: 'SPACEMESH',
+        //   balance: '100 SMH',
+        //   change: '+1.5 SMH',
+        //   valueUSDT: '5000 USDT',
+        //   valueJPY: '560,000 JPY',
+        // },
+        // {
+        //   id: '2',
+        //   name: 'SPACEMESH',
+        //   balance: '100 SMH',
+        //   change: '+1.5 SMH',
+        //   valueUSDT: '5000 USDT',
+        //   valueJPY: '560,000 JPY',
+        // },
+      ],
+      transactionsColumns: [
+        { name: 'name', label: this.$t('Wallet.Transactions.Name'), align: 'left', field: 'name' },
+        { name: 'date', label: this.$t('Wallet.Transactions.Date'), align: 'center', field: 'date', },
+        { name: 'amount', label: this.$t('Wallet.Transactions.Amount'), align: 'center', field: 'amount', },
+        { name: 'status', label: this.$t('Wallet.Transactions.Status'), align: 'center', field: 'status', },
+        { name: 'type', label: this.$t('Wallet.Transactions.Type'), align: 'center', field: 'type', },
       ],
       transactions: [
-        {
-          id: 1,
-          name: 'SPACEMESH',
-          date: '2021-09-15',
-          amount: '-10 SMG',
-          status: 'Pending',
-          type: 'Withdrawal',
-        },
-        {
-          id: 2,
-          name: 'ETHEREUM',
-          date: '2021-08-20',
-          amount: '-1 ETH',
-          status: 'Completed',
-          type: 'Conversion',
-        },
+        // {
+        //   id: 1,
+        //   name: 'SPACEMESH',
+        //   date: '2021-09-15',
+        //   amount: '-10 SMG',
+        //   status: 'Pending',
+        //   type: 'Withdrawal',
+        // },
+        // {
+        //   id: 2,
+        //   name: 'ETHEREUM',
+        //   date: '2021-08-20',
+        //   amount: '-1 ETH',
+        //   status: 'Completed',
+        //   type: 'Conversion',
+        // },
       ],
     }
   },

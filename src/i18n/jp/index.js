@@ -80,6 +80,21 @@ export default {
     Register: 'こちらから登録',
   },
 
+  ForgetPassword: {
+    Title: 'パスワードを忘れた場合',
+    Username: 'Email アドレス',
+    UsernameInputwarning: '正しいEmailアドレスを記入ください',
+    SendCode: 'コード送信',
+    EmailVerifyCode: 'Email アドレスの認証コード',
+    EmailVerifyCodeInpuWarning: '認証コードを記入ください',
+    Password: 'パスワード',
+    PasswordInputWarning: 'パスワードを記入ください',
+    Confirm: 'パスワードの確認',
+    ConfirmInputWarning1: 'パスワードを確認してください。',
+    ConfirmInputWarning2: 'パスワードと確認用パスワードが一致しない',
+    ConfirmBtn: '確認',
+  },
+
   Homepage: {
     Title: {
       Title: 'SHOOT FOR THE STARS WITH PROCYON!',
@@ -322,6 +337,10 @@ export default {
     Logout: {
       Success: 'ログアウト成功!',
       Fail: 'ログアウトに失敗する, ',
+    },
+
+    Recaptcha: {
+      Fail: 'グーグルマンチェックを先に済ませる必要があります!',
     },
   },
 

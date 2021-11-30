@@ -44,13 +44,17 @@
           </q-card-section>
           <q-card-section class="product-line">
             <span class="line-label">{{ $t('Homepage.Content.MaintenanceFeeLabel') }}</span>
-            <span class="line-value">$0.05 / {{ $t('Homepage.Content.MaintenanceFeeValue') }}</span>
+            <span class="line-value">* / {{ $t('Homepage.Content.MaintenanceFeeValue') }}</span>
           </q-card-section>
           <q-card-section class="product-line">
             <span class="line-label">{{ $t('Homepage.Content.OrderEffectiveLabel') }}</span>
-            <span class="line-value">{{ timestampToDate(good.DeliveryAt) }}</span>
+            <span class="line-value">*</span>
           </q-card-section>
-          <q-btn class="product-btn alt">{{ $t('Homepage.Content.StartMining') }}</q-btn>
+          <q-btn
+            disable
+            color="grey"
+            class="product-btn alt"
+          >{{ $t('Homepage.Content.StartMining') }}</q-btn>
         </q-card>
       </div>
     </div>
@@ -111,7 +115,7 @@
         <h2 id="why-procyon">{{ $t('Homepage.What.Title') }}</h2>
         <p>
           {{ $t('Homepage.What.Content1') }}
-          <strong>{{ $t('Homepage.What.Content2') }}</strong>.
+          <strong>{{ $t('Homepage.What.Content2') }}</strong>
         </p>
         <p>{{ $t('Homepage.What.Content3') }}</p>
         <ul>
