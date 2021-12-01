@@ -7,11 +7,13 @@ metadata:
     k8s.kuboard.cn/displayName: japan-webui
     k8s.kuboard.cn/workload: japan-webui
     kubernetes.io/ingress.class: "traefik-internet"
-    traefik.ingress.kubernetes.io/router.entrypoints: web,websecure
+    traefik.ingress.kubernetes.io/router.entrypoints: websecure
 
 spec:
+  tls:  
+    - secretName: procyon-vip-tls
   rules:
-    - host: www.npool.top
+    - host: www.procyon.vip
       http:
         paths:
           - path: /
