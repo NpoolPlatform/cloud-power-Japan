@@ -18,8 +18,8 @@
               glossy
               toggle-color="orange-9"
               :options="[
-                { label: $t('Footer.Forth.En'), value: 'en-US' },
-                { label: $t('Footer.Forth.Jp'), value: 'jp' },
+                { label: $t('Footer.Forth.En'), value: 'en_US' },
+                { label: $t('Footer.Forth.Jp'), value: 'ja_JP' },
               ]"
             />
           </div>
@@ -44,7 +44,7 @@ export default defineComponent({
   },
 
   created: function () {
-    this.locale = 'jp'
+    this.locale = 'ja_JP'
   },
 })
 </script>

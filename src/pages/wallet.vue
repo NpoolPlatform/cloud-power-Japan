@@ -31,7 +31,13 @@
         </div>
 
         <div>
-          <q-table flat class="table-box" :rows="assets" :columns="assetsColumns" row-key="name" />
+          <q-table flat class="table-box" :rows="assets" :columns="assetsColumns" row-key="name">
+            <template v-slot:body-cell-actions="props">
+              <q-td :props="props">
+                <q-btn @click="onTransfer(props.row)">Transfer</q-btn>
+              </q-td>
+            </template>
+          </q-table>
         </div>
       </div>
 
@@ -92,6 +98,7 @@ export default defineComponent({
         { name: 'change', label: this.$t('Wallet.Assets.Change'), align: 'center', field: 'change', },
         { name: 'valueUSDT', label: this.$t('Wallet.Assets.MarketValueUSDT'), align: 'center', field: 'valueUSDT', },
         { name: 'valueJPY', label: this.$t('Wallet.Assets.MarketValueBalance'), align: 'center', field: 'valueJPY', },
+        { name: 'actions' }
       ],
       assets: [
         // {
@@ -117,6 +124,7 @@ export default defineComponent({
         { name: 'amount', label: this.$t('Wallet.Transactions.Amount'), align: 'center', field: 'amount', },
         { name: 'status', label: this.$t('Wallet.Transactions.Status'), align: 'center', field: 'status', },
         { name: 'type', label: this.$t('Wallet.Transactions.Type'), align: 'center', field: 'type', },
+        { name: 'actions' }
       ],
       transactions: [
         // {
@@ -143,6 +151,9 @@ export default defineComponent({
     transfer: function (index) { },
     help: function () { },
     details: function (index) { },
+    onTransfer: function (row) {
+      console.log("row is", row);
+    },
   },
 })
 </script>
