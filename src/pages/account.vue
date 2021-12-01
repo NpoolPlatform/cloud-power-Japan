@@ -315,16 +315,27 @@
         </q-card>
       </q-dialog>
 
-      <div v-show="false">
+      <div>
         <div class="title">{{ $t('Account.History.Title') }}</div>
-        <div>
+        <div class="table-box">
           <q-table
             flat
-            class="table-box"
-            :rows="userLoginHistory"
+            style="background: none; color: white;"
+            :rows="loginHistory"
             :columns="userLoginHistoryColumns"
             row-key="name"
+            v-model:pagination="pagination"
+            hide-pagination
           />
+          <div class="flex flex-center">
+            <q-pagination
+              v-model="pagination.page"
+              :max="pagesNumber"
+              color="white"
+              input
+              input-class="text-white"
+            />
+          </div>
         </div>
       </div>
     </div>
@@ -335,11 +346,12 @@
 
 <script>
 import { api } from 'src/boot/axios'
-import { defineComponent, computed } from 'vue'
+import { defineComponent, computed, ref } from 'vue'
 import { useStore } from 'vuex'
 import { success, fail } from '../notify/notify'
 import { useQuasar } from 'quasar'
 import VerifycodeInput from 'src/components/VerifycodeInput.vue'
+import { timestampToDate } from 'src/utils/utils'
 
 export default defineComponent({
   components: { VerifycodeInput },
@@ -415,6 +427,14 @@ export default defineComponent({
       }
     })
     const q = useQuasar()
+
+    const pagination = ref({
+      sortBy: 'desc',
+      descending: false,
+      page: 1,
+      rowsPerPage: 3
+    })
+
     return {
       user,
       userGALogin,
@@ -427,10 +447,12 @@ export default defineComponent({
       country,
       enableGoogleAuthentication,
       q,
+      pagination,
     }
   },
 
   data () {
+
     return {
       changePassword: false,
       passwordImg: require('/src/assets/icon-password.svg'),
@@ -446,9 +468,9 @@ export default defineComponent({
       visible: false,
 
       userLoginHistoryColumns: [
-        { name: 'date', label: this.$t('Account.History.Date'), align: 'left', field: 'date' },
-        { name: 'ip', label: this.$t('Account.History.IP'), align: 'center', field: 'ip', },
-        { name: 'location', label: this.$t('Account.History.Location'), align: 'center', field: 'location', },
+        { name: 'LoginTime', label: this.$t('Account.History.Date'), align: 'left', field: 'LoginTime', sortable: true },
+        { name: 'IP', label: this.$t('Account.History.IP'), align: 'center', field: 'IP', },
+        { name: 'Location', label: this.$t('Account.History.Location'), align: 'center', field: 'Location', },
       ],
 
       userLoginHistory: [
@@ -479,6 +501,9 @@ export default defineComponent({
         password: '',
         confirmPassword: '',
       },
+
+      loginHistory: [],
+      pagesNumber: computed(() => Math.ceil(this.loginHistory.length / this.pagination.rowsPerPage))
     }
   },
 
@@ -488,6 +513,8 @@ export default defineComponent({
       fail(undefined, this.$t('Notify.User.PleaseLogin'), "")
       this.$router.push('/login')
     }
+
+    this.getUserLoginHistory()
   },
 
   computed: {
@@ -601,6 +628,23 @@ export default defineComponent({
         this.openGaVerify = false
       }
     },
+
+    getUserLoginHistory: function () {
+      var self = this
+
+      api.post('/login-door/v1/get/user/login/records', {}).then(resp => {
+        console.log("login history is", resp.data.Infos);
+        resp.data.Infos.forEach(info => {
+          if (info.Location === '' || info.Location === null || info.Location === undefined) {
+            info.Location = self.$t('Account.History.Private')
+          }
+          info.LoginTime = timestampToDate(info.LoginTime)
+          self.loginHistory.push(info)
+        });
+      }).catch(error => {
+        self.loginHistory = []
+      })
+    },
   },
 })
 </script>
@@ -642,5 +686,14 @@ export default defineComponent({
 .img-section-style {
   display: flex;
   justify-content: center;
+}
+
+.pagination-style {
+  color: #1ec498;
+}
+
+.table-title-style {
+  font-size: 18px;
+  font-weight: 600;
 }
 </style>

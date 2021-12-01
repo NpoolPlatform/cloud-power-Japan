@@ -18,3 +18,10 @@ spec:
             backend:
               serviceName: japan-webui
               servicePort: 80
+    - host: www.procyon.vip
+      http:
+        paths:
+          - path: /
+            backend:
+              serviceName: japan-webui
+              servicePort: 80
