@@ -167,7 +167,7 @@ export default {
     Order: "ORDER",
     Wallet: "WALLET",
     Account: "ACCOUNT",
-    Logout: "Logout",
+    Logout: "LOGOUT",
   },
 
   Mining: {

@@ -377,6 +377,16 @@ export default {
     },
   },
 
+  GoogleAuthentication: {
+    Title1: "Google Authenticate",
+    Content1:
+      "上のQRコードをgoogle authenticatorソフトを開いてスキャンしてください。その後、google authenticatorソフトウェアに端末をバインドしてください。",
+    Content2:
+      "スキャンとバインドの後、「次のステップ」ボタンをクリックして、google authenticatorソフトウェアに表示される検証コードを入力して、google認証を完了してください。",
+    NextStepBtn: "次の段階",
+    CloseBtn: "閉じる",
+  },
+
   Faq: {
     A: "サポート",
     B: "FAQS",

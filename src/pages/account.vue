@@ -110,7 +110,7 @@
                   v-if="!enableGoogleAuthentication"
                 >{{ $t('Dialog.ChangePassword.HaveGoogle') }}</q-tooltip>
                 <q-btn
-                  :disable="enableGoogleAuthentication"
+                  :disable="!enableGoogleAuthentication"
                   class="account-btn setting-btn"
                   @click="changePassword = true"
                 >{{ $t('Account.SecuritySetting.ChangePasswordBtn') }}</q-btn>
@@ -299,7 +299,7 @@
               ref="passwordRef"
               lazy-rules
               :rules="passwordRule"
-              v-model="changePasswordInput.password"
+              v-model="password"
               :label="$t('Dialog.ChangePassword.Password')"
             ></q-input>
           </q-card-section>
@@ -486,6 +486,7 @@ export default defineComponent({
       }
     })
     const q = useQuasar()
+    const password = ref(null)
 
     const emailRef = ref(null)
     const emailCodeRef = ref(null)
@@ -497,7 +498,7 @@ export default defineComponent({
     const emailRule = ref([val => val && val.length > 0 || t('Register.UsernameInputwarning')])
     const emailCodeRule = ref([val => val && val.length > 0 || t('Register.EmailVerifyCodeInpuWarning')])
     const passwordRule = ref([val => val && val.length > 0 || t('Register.PasswordInputWarning')])
-    const confirmpassRule = ref([val => val && val.length > 0 || t('Register.ConfirmInputWarning1')])
+    const confirmpassRule = ref([val => val && val.length > 0 || t('Register.ConfirmInputWarning1'), val => val && val !== password.value || t('Register.ConfirmInputWarning2')])
     const googleCodeRule = ref([val => val && val.length > 0 || t('Register.GooglrCodeInputWarning')])
     const oldPasswordRule = ref([val => val && val.length > 0 || t('Register.PasswordInputWarning')])
 
@@ -534,6 +535,7 @@ export default defineComponent({
       oldPassRef,
       oldPasswordRule,
       locale,
+      password,
     }
   },
 
@@ -544,7 +546,7 @@ export default defineComponent({
         emailCode: '',
         googleCode: '',
         old: '',
-        password: '',
+        password: this.password,
         confirmPassword: '',
       },
       changePassword: false,
@@ -615,8 +617,7 @@ export default defineComponent({
       var self = this
 
       if (this.changePasswordInput.password !== this.changePasswordInput.confirmPassword) {
-        fail(undefined, self.$t('Notify.ChangePassword.Fail1'), "")
-        this.changePassword = false
+        fail(undefined, self.$t('Register.ConfirmInputWarning2'), "")
         return
       }
 
