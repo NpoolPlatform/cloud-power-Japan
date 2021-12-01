@@ -281,6 +281,11 @@ export default {
     },
   },
 
+  ReLogin: {
+    Title: "Re-login",
+    Content: "Change password successfully, please log in again",
+  },
+
   Dialog: {
     ChangePassword: {
       EmailLabel: "Email Address",

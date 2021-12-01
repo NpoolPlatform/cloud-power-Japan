@@ -299,7 +299,7 @@
               ref="passwordRef"
               lazy-rules
               :rules="passwordRule"
-              v-model="password"
+              v-model="changePasswordInput.password"
               :label="$t('Dialog.ChangePassword.Password')"
             ></q-input>
           </q-card-section>
@@ -369,6 +369,20 @@
         </q-card>
       </q-dialog>
 
+      <q-dialog v-model="relogin" persistent transition-show="scale" transition-hide="scale">
+        <q-card class="bg-teal text-white" style="width: 300px">
+          <q-card-section>
+            <div class="text-h6">{{ $t('ReLogin.Title') }}</div>
+          </q-card-section>
+
+          <q-card-section class="q-pt-none">{{ $t('ReLogin.Content') }}</q-card-section>
+
+          <q-card-actions align="right" class="bg-white text-teal">
+            <q-btn flat label="OK" @click="goToLogin" />
+          </q-card-actions>
+        </q-card>
+      </q-dialog>
+
       <div>
         <div class="title">{{ $t('Account.History.Title') }}</div>
         <div class="table-box">
@@ -402,7 +416,7 @@
 import { api } from 'src/boot/axios'
 import { defineComponent, computed, ref } from 'vue'
 import { useStore } from 'vuex'
-import { success, fail } from '../notify/notify'
+import { success, fail, waiting } from '../notify/notify'
 import { useQuasar } from 'quasar'
 import VerifycodeInput from 'src/components/VerifycodeInput.vue'
 import { timestampToDate } from 'src/utils/utils'
@@ -498,7 +512,7 @@ export default defineComponent({
     const emailRule = ref([val => val && val.length > 0 || t('Register.UsernameInputwarning')])
     const emailCodeRule = ref([val => val && val.length > 0 || t('Register.EmailVerifyCodeInpuWarning')])
     const passwordRule = ref([val => val && val.length > 0 || t('Register.PasswordInputWarning')])
-    const confirmpassRule = ref([val => val && val.length > 0 || t('Register.ConfirmInputWarning1'), val => val && val !== password.value || t('Register.ConfirmInputWarning2')])
+    const confirmpassRule = ref([val => val && val.length > 0 || t('Register.ConfirmInputWarning1')])
     const googleCodeRule = ref([val => val && val.length > 0 || t('Register.GooglrCodeInputWarning')])
     const oldPasswordRule = ref([val => val && val.length > 0 || t('Register.PasswordInputWarning')])
 
@@ -546,7 +560,7 @@ export default defineComponent({
         emailCode: '',
         googleCode: '',
         old: '',
-        password: this.password,
+        password: '',
         confirmPassword: '',
       },
       changePassword: false,
@@ -569,7 +583,8 @@ export default defineComponent({
       ],
 
       loginHistory: [],
-      pagesNumber: computed(() => Math.ceil(this.loginHistory.length / this.pagination.rowsPerPage))
+      pagesNumber: computed(() => Math.ceil(this.loginHistory.length / this.pagination.rowsPerPage)),
+      relogin: false,
     }
   },
 
@@ -602,6 +617,12 @@ export default defineComponent({
   },
 
   methods: {
+    goToLogin: function () {
+      this.q.cookies.remove('UserID')
+      this.q.cookies.remove('AppSession')
+      this.relogin = false
+      this.$router.push('/login')
+    },
     onChangePassword: function () {
       this.emailRef.validate()
       this.emailCodeRef.validate()
@@ -632,6 +653,7 @@ export default defineComponent({
       }).then(resp => {
         success(undefined, self.$t('Notify.ChangePassword.Success'))
         self.changePassword = false
+        self.relogin = true
         return
       }).catch(error => {
         fail(undefined, self.$t('Notify.ChangePassword.Fail2'), error)
@@ -733,7 +755,7 @@ export default defineComponent({
       }
 
       var notif = waiting(this.$t('Notify.SendCode.WaitSend'))
-      var msg = this.$t('Notify.SendCode.SendTo') + ' ' + this.loginInput.email + ', ' + this.$t('Notify.SendCode.CheckEmail')
+      var msg = this.$t('Notify.SendCode.SendTo') + ' ' + this.changePasswordInput.email + ', ' + this.$t('Notify.SendCode.CheckEmail')
       var failToSend = this.$t('Notify.SendCode.Fail')
 
       var thiz = this

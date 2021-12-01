@@ -288,6 +288,11 @@ export default {
     },
   },
 
+  ReLogin: {
+    Title: "Re-login",
+    Content: "パスワードの変更に成功しました。もう一度ログインしてください。",
+  },
+
   Dialog: {
     ChangePassword: {
       EmailLabel: "Email アドレス",
