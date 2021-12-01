@@ -10,7 +10,7 @@
         <q-card-section class="q-pt-none">{{ $t('Warning.P1') }}</q-card-section>
         <q-card-section class="q-pt-none">{{ $t('Warning.P2') }}</q-card-section>
 
-        <q-card-actions align="right" class="bg-white text-teal">
+        <q-card-actions align="between" class="bg-white text-teal">
           <div class="button-group">
             <q-btn-toggle
               v-model="locale"

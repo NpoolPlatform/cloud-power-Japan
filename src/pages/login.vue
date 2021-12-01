@@ -29,7 +29,7 @@
               :rules="codeRule"
             >
               <template v-slot:append>
-                <q-btn flat rounded @click="sendCode">{{ $t('Register.SendCode') }}</q-btn>
+                <q-btn flat rounded :disable="sendDisable" @click="sendCode">{{ getCode }}</q-btn>
               </template>
             </q-input>
 
@@ -159,6 +159,10 @@ export default defineComponent({
         password: '',
         response: '',
       },
+      sendDisable: false,
+      getCode: this.$t('Register.SendCode'),
+      isGeting: false,
+      count: 60,
     }
   },
 
@@ -180,6 +184,19 @@ export default defineComponent({
       })
         .then(function (resp) {
           success(notif, msg)
+          var countDown = setInterval(() => {
+            if (thiz.count < 1) {
+              thiz.isGeting = false;
+              thiz.sendDisable = false;
+              thiz.getCode = thiz.$t('Register.SendCode');
+              thiz.count = 6;
+              clearInterval(countDown);
+            } else {
+              thiz.isGeting = true;
+              thiz.sendDisable = true;
+              thiz.getCode = + thiz.count-- + 's';
+             }
+          },1000);
         })
         .catch(function (error) {
           fail(notif, failToSend, error)
@@ -202,7 +219,8 @@ export default defineComponent({
       let self = this
 
       var notif = waiting(this.$t('Notify.Login.Wait'))
-      var password = sha256Password(this.loginInput.password)
+      // var password = sha256Password(this.loginInput.password)
+      var password = this.loginInput.password
 
       api.post('/login-door/v1/login', {
         Username: self.loginInput.email,

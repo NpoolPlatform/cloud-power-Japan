@@ -6,7 +6,6 @@
         <div class="title-2">{{ $t('Homepage.Title.Subtitle') }}</div>
         <div class="btn-list">
           <q-btn
-            v-show="false"
             disable
             color="grey"
             @click="$router.push('/register')"

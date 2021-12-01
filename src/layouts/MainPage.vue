@@ -10,10 +10,14 @@
 
       <div class="header-right">
         <router-link class="nav-link" :to="{ path: '/' }">{{ $t('Header.Home') }}</router-link>
-        <router-link class="nav-link" :to="{ path: '/' }">{{ $t('Header.Blog') }}</router-link>
+        <a
+          class="nav-link"
+          href="https://procyon-vip.medium.com/"
+          target="_blank"
+        >{{ $t('Header.Blog') }}</a>
         <router-link class="nav-link" :to="{ path: '/faq' }">{{ $t('Header.Support') }}</router-link>
         <a class="nav-link" href="mailto:support@procyon.vip">{{ $t('Header.Contact') }}</a>
-        <div class="button-group">
+        <div class="button-group" style="margin-right: 10px;">
           <q-btn-toggle
             v-model="locale"
             push
@@ -26,7 +30,6 @@
           />
         </div>
         <q-btn
-          v-show="false"
           class="alt"
           disable
           style="margin-right: 10px; background-color: grey; border: none;"
@@ -127,10 +130,11 @@
                   class="footer-link nav-link"
                   :to="{ path: '/' }"
                 >{{ $t('Footer.Second.Products') }}</router-link>
-                <router-link
+                <a
                   class="footer-link nav-link"
-                  :to="{ path: '/' }"
-                >{{ $t('Footer.Second.Blog') }}</router-link>
+                  href="https://procyon-vip.medium.com/"
+                  target="_blank"
+                >{{ $t('Footer.Second.Blog') }}</a>
               </div>
             </div>
             <div class="content-items">

@@ -66,8 +66,8 @@
             </div>
           </div>
           <div class="bottom-button">
-            <q-btn class="export">{{ $t('Mining.Column2.Export') }}</q-btn>
-            <q-btn class="purchase">{{ $t('Mining.Column2.Purchase') }}</q-btn>
+            <q-btn disable color="grey" class="export">{{ $t('Mining.Column2.Export') }}</q-btn>
+            <q-btn disable color="grey" class="purchase">{{ $t('Mining.Column2.Purchase') }}</q-btn>
           </div>
         </div>
       </div>

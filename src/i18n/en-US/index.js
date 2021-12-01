@@ -160,10 +160,11 @@ export default {
     Click: "Click here to sign in.",
     Login: "Login",
     LoginTitle: "User Login",
+    GooglrCodeInputWarning: "please input your google auth code",
   },
 
   Drawer: {
-    Order: "Order",
+    Order: "ORDER",
     Wallet: "WALLET",
     Account: "ACCOUNT",
     Logout: "Logout",
@@ -282,13 +283,21 @@ export default {
 
   Dialog: {
     ChangePassword: {
+      EmailLabel: "Email Address",
+      EmailInput: "Please input your email address",
       Old: "Please input your old passwrod",
       OldLabel: "Old Password",
       Password: "Please input your password",
       PasswordLabel: "Password",
       ConfirmPassword: "Please confirm your password",
       ConfirmPasswordLabel: "Confirm Password",
+      EmailCodeLabel: "Email verify code",
+      EmailCodeInput: "please input your email verify code",
+      SendCode: "send code",
+      GoogleAuthLabel: "Google authentication code",
+      GoogleAuthInput: "please input your code in your google authenticator",
       Change: "Change",
+      HaveGoogle: "you need to do google authentication firstly!",
     },
   },
 

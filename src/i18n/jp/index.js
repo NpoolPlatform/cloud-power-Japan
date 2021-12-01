@@ -72,6 +72,7 @@ export default {
     Click: "ここをクリックしてサインインしてください。",
     Login: "ログイン",
     LoginTitle: "ユーザーログイン",
+    GooglrCodeInputWarning: "あなたのGoogle認証コードを入力してください。",
   },
 
   Login: {
@@ -289,6 +290,13 @@ export default {
 
   Dialog: {
     ChangePassword: {
+      EmailLabel: "Email アドレス",
+      EmailInput: "電子メールアドレスを入力してください。",
+      EmailCodeLabel: "メール認証コード",
+      EmailCodeInput: "あなたのEメール認証コードを入力してください。",
+      SendCode: "送信コード",
+      GoogleAuthLabel: "Google認証コード",
+      GoogleAuthInput: "google認証にコードを入力してください。",
       Old: "旧パスワードを入力してください。",
       OldLabel: "旧パスワード",
       Password: "パスワードを記入ください",
@@ -296,6 +304,7 @@ export default {
       ConfirmPassword: "パスワードを確認してください。",
       ConfirmPasswordLabel: "パスワードの確認",
       Change: "確認",
+      HaveGoogle: "まず、google認証を行う必要があります。",
     },
   },
 

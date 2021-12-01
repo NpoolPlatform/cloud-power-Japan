@@ -103,7 +103,14 @@
               <div class="setting-content">{{ $t('Account.SecuritySetting.ChangePasswordContent') }}</div>
               <q-space style="margin-bottom: 60px"></q-space>
               <div class="setting-btn-position">
+                <q-tooltip
+                  anchor="top middle"
+                  self="bottom middle"
+                  :offset="[10, 10]"
+                  v-if="!enableGoogleAuthentication"
+                >{{ $t('Dialog.ChangePassword.HaveGoogle') }}</q-tooltip>
                 <q-btn
+                  :disable="enableGoogleAuthentication"
                   class="account-btn setting-btn"
                   @click="changePassword = true"
                 >{{ $t('Account.SecuritySetting.ChangePasswordBtn') }}</q-btn>
@@ -172,7 +179,7 @@
                   self="bottom middle"
                   :offset="[10, 10]"
                   v-if="enableGoogleAuthentication"
-                >{{ $t('Account.SecuritySetting.HaveDoneGoogle') }}</q-tooltip>
+                >{{ $t('Account.SecuritySetting.HaveGoogle') }}</q-tooltip>
                 <q-btn
                   class="account-btn setting-btn google-btn"
                   :disable="enableGoogleAuthentication"
@@ -243,12 +250,55 @@
       <q-dialog v-model="changePassword">
         <q-card class="dialog-style">
           <q-card-section>
+            <q-item-label class="text-black">{{ $t('Dialog.ChangePassword.EmailLabel') }}</q-item-label>
+            <q-input
+              ref="emailRef"
+              lazy-rules
+              :rules="emailRule"
+              v-model="changePasswordInput.email"
+              :label="$t('Dialog.ChangePassword.EmailInput')"
+            ></q-input>
+          </q-card-section>
+          <q-card-section>
+            <q-item-label class="text-black">{{ $t('Dialog.ChangePassword.EmailCodeLabel') }}</q-item-label>
+            <q-input
+              ref="emailCodeRef"
+              lazy-rules
+              :rules="emailCodeRule"
+              v-model="changePasswordInput.emailCode"
+              :label="$t('Dialog.ChangePassword.EmailCodeInput')"
+            >
+              <template v-slot:append>
+                <q-btn flat rounded @click="sendCode">{{ $t('Dialog.ChangePassword.SendCode') }}</q-btn>
+              </template>
+            </q-input>
+          </q-card-section>
+          <q-card-section>
+            <q-item-label class="text-black">{{ $t('Dialog.ChangePassword.GoogleAuthLabel') }}</q-item-label>
+            <q-input
+              ref="googleCodeRef"
+              lazy-rules
+              :rules="googleCodeRule"
+              v-model="changePasswordInput.googleCode"
+              :label="$t('Dialog.ChangePassword.GoogleAuthInput')"
+            ></q-input>
+          </q-card-section>
+          <q-card-section>
             <q-item-label class="text-black">{{ $t('Dialog.ChangePassword.OldLabel') }}</q-item-label>
-            <q-input v-model="changePasswordInput.old" :label="$t('Dialog.ChangePassword.Old')"></q-input>
+            <q-input
+              ref="oldPassRef"
+              lazy-rules
+              :rules="oldPasswordRule"
+              v-model="changePasswordInput.old"
+              :label="$t('Dialog.ChangePassword.Old')"
+            ></q-input>
           </q-card-section>
           <q-card-section>
             <q-item-label class="text-black">{{ $t('Dialog.ChangePassword.PasswordLabel') }}</q-item-label>
             <q-input
+              ref="passwordRef"
+              lazy-rules
+              :rules="passwordRule"
               v-model="changePasswordInput.password"
               :label="$t('Dialog.ChangePassword.Password')"
             ></q-input>
@@ -256,10 +306,14 @@
           <q-card-section>
             <q-item-label class="text-black">{{ $t('Dialog.ChangePassword.ConfirmPasswordLabel') }}</q-item-label>
             <q-input
+              ref="confirmPassRef"
+              lazy-rules
+              :rules="confirmpassRule"
               v-model="changePasswordInput.confirmPassword"
               :label="$t('Dialog.ChangePassword.ConfirmPassword')"
             ></q-input>
           </q-card-section>
+          <q-card-section></q-card-section>
 
           <q-card-actions align="center">
             <q-btn
@@ -353,6 +407,7 @@ import { useQuasar } from 'quasar'
 import VerifycodeInput from 'src/components/VerifycodeInput.vue'
 import { timestampToDate } from 'src/utils/utils'
 import { sha256Password } from 'src/utils/utils'
+import { useI18n } from 'vue-i18n';
 
 export default defineComponent({
   components: { VerifycodeInput },
@@ -364,6 +419,9 @@ export default defineComponent({
         $store.commit('user/updateUserInfo', val)
       }
     })
+
+    const { locale } = useI18n({ useScope: 'global' })
+    const { t } = useI18n({ useScope: 'global' })
 
     const firstname = computed({
       get: () => $store.state.user.user.info.UserBasicInfo.FirstName,
@@ -429,6 +487,20 @@ export default defineComponent({
     })
     const q = useQuasar()
 
+    const emailRef = ref(null)
+    const emailCodeRef = ref(null)
+    const googleCodeRef = ref(null)
+    const oldPassRef = ref(null)
+    const passwordRef = ref(null)
+    const confirmPassRef = ref(null)
+
+    const emailRule = ref([val => val && val.length > 0 || t('Register.UsernameInputwarning')])
+    const emailCodeRule = ref([val => val && val.length > 0 || t('Register.EmailVerifyCodeInpuWarning')])
+    const passwordRule = ref([val => val && val.length > 0 || t('Register.PasswordInputWarning')])
+    const confirmpassRule = ref([val => val && val.length > 0 || t('Register.ConfirmInputWarning1')])
+    const googleCodeRule = ref([val => val && val.length > 0 || t('Register.GooglrCodeInputWarning')])
+    const oldPasswordRule = ref([val => val && val.length > 0 || t('Register.PasswordInputWarning')])
+
     const pagination = ref({
       sortBy: 'desc',
       descending: false,
@@ -449,12 +521,32 @@ export default defineComponent({
       enableGoogleAuthentication,
       q,
       pagination,
+      emailRef,
+      emailCodeRef,
+      googleCodeRef,
+      passwordRef,
+      confirmPassRef,
+      emailRule,
+      emailCodeRule,
+      passwordRule,
+      confirmpassRule,
+      googleCodeRule,
+      oldPassRef,
+      oldPasswordRule,
+      locale,
     }
   },
 
   data () {
-
     return {
+      changePasswordInput: {
+        email: '',
+        emailCode: '',
+        googleCode: '',
+        old: '',
+        password: '',
+        confirmPassword: '',
+      },
       changePassword: false,
       passwordImg: require('/src/assets/icon-password.svg'),
       emailImg: require('/src/assets/icon-email.svg'),
@@ -473,35 +565,6 @@ export default defineComponent({
         { name: 'IP', label: this.$t('Account.History.IP'), align: 'center', field: 'IP', },
         { name: 'Location', label: this.$t('Account.History.Location'), align: 'center', field: 'Location', },
       ],
-
-      userLoginHistory: [
-        {
-          date: '2021-10-15 21:56:49',
-          ip: '116.232.193.0',
-          location: 'Japan',
-        },
-        {
-          date: '2021-10-15 21:56:49',
-          ip: '116.232.193.0',
-          location: 'Japan',
-        },
-        {
-          date: '2021-10-15 21:56:49',
-          ip: '116.232.193.0',
-          location: 'Japan',
-        },
-        {
-          date: '2021-10-15 21:56:49',
-          ip: '116.232.193.0',
-          location: 'Japan',
-        },
-      ],
-
-      changePasswordInput: {
-        old: '',
-        password: '',
-        confirmPassword: '',
-      },
 
       loginHistory: [],
       pagesNumber: computed(() => Math.ceil(this.loginHistory.length / this.pagination.rowsPerPage))
@@ -538,6 +601,17 @@ export default defineComponent({
 
   methods: {
     onChangePassword: function () {
+      this.emailRef.validate()
+      this.emailCodeRef.validate()
+      this.googleCodeRef.validate()
+      this.oldPassRef.validate()
+      this.passwordRef.validate()
+      this.confirmPassRef.validate()
+
+      if (this.emailRef.hasError || this.emailCodeRef.hasError || this.googleCodeRef.hasError || this.oldPassRef.hasError || this.passwordRef.hasError || this.confirmPassRef.hasError) {
+        return
+      }
+
       var self = this
 
       if (this.changePasswordInput.password !== this.changePasswordInput.confirmPassword) {
@@ -550,12 +624,15 @@ export default defineComponent({
       api.post('/user-management/v1/change/password', {
         OldPassword: self.changePasswordInput.old,
         Password: password,
+        Email: self.changePasswordInput.email,
+        EmailVerifyCode: self.changePasswordInput.emailCode,
+        GoogleVerifyCode: self.changePasswordInput.googleCode,
       }).then(resp => {
         success(undefined, self.$t('Notify.ChangePassword.Success'))
         self.changePassword = false
         return
       }).catch(error => {
-        fail(undefined, self.$t('Notify.ChangePasword.Fail2'), error)
+        fail(undefined, self.$t('Notify.ChangePassword.Fail2'), error)
         return
       })
     },
@@ -635,7 +712,6 @@ export default defineComponent({
       var self = this
 
       api.post('/login-door/v1/get/user/login/records', {}).then(resp => {
-        console.log("login history is", resp.data.Infos);
         resp.data.Infos.forEach(info => {
           if (info.Location === '' || info.Location === null || info.Location === undefined) {
             info.Location = self.$t('Account.History.Private')
@@ -647,7 +723,31 @@ export default defineComponent({
         self.loginHistory = []
       })
     },
+
+    sendCode: function () {
+      this.usernameRef.validate()
+      if (this.usernameRef.hasError) {
+        return
+      }
+
+      var notif = waiting(this.$t('Notify.SendCode.WaitSend'))
+      var msg = this.$t('Notify.SendCode.SendTo') + ' ' + this.loginInput.email + ', ' + this.$t('Notify.SendCode.CheckEmail')
+      var failToSend = this.$t('Notify.SendCode.Fail')
+
+      var thiz = this
+      api.post('/verification-door/v1/send/email', {
+        Email: thiz.changePasswordInput.email,
+        Lang: thiz.locale,
+      })
+        .then(function (resp) {
+          success(notif, msg)
+        })
+        .catch(function (error) {
+          fail(notif, failToSend, error)
+        })
+    },
   },
+
 })
 </script>
 
@@ -662,7 +762,6 @@ export default defineComponent({
   margin: 0 0 24px 0;
   padding: 0 0 24px 0;
 }
-
 .card-title::after {
   background: linear-gradient(
     to right,
@@ -678,22 +777,18 @@ export default defineComponent({
   height: 1px;
   width: 100%;
 }
-
 .img-style {
   width: 200px;
   height: 200px;
   text-align: center;
 }
-
 .img-section-style {
   display: flex;
   justify-content: center;
 }
-
 .pagination-style {
   color: #1ec498;
 }
-
 .table-title-style {
   font-size: 18px;
   font-weight: 600;
