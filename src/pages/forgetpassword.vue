@@ -81,6 +81,7 @@ import { defineComponent } from 'vue'
 import { sendCode } from 'src/utils/utils'
 import { api } from 'src/boot/axios'
 import { fail, success, waiting } from 'src/notify/notify'
+import { sha256Password } from 'src/utils/utils'
 
 export default defineComponent({
   setup () {
@@ -107,9 +108,11 @@ export default defineComponent({
       }
       var self = this
       const notif = waiting(this.$t('Notify.ForgetPassword.Waiting'))
+      var password = sha256Password(this.forgetPasswordInput.password)
+
       api.post('/user-management/v1/forget/password', {
         EmailAddress: self.forgetPasswordInput.email,
-        Password: self.forgetPasswordInput.password,
+        Password: password,
         Code: self.forgetPasswordInput.verifyCode,
       }).then(resp => {
         success(notif, self.$t('Notify.ForgetPassword.Success'))

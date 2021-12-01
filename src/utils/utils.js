@@ -1,5 +1,6 @@
 import { api } from "src/boot/axios";
 import { success, fail, waiting } from "../notify/notify";
+import sha256 from "crypto-js/sha256";
 
 export function sendCode(email) {
   if (email === "") {
@@ -58,4 +59,8 @@ export function timestampToDate(timestamp) {
       : date.getMonth() + 1) + "-";
   var D = date.getDate() + " ";
   return Y + M + D;
+}
+
+export function sha256Password(password) {
+  return sha256(password).toString();
 }

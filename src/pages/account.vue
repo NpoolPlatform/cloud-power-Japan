@@ -352,6 +352,7 @@ import { success, fail } from '../notify/notify'
 import { useQuasar } from 'quasar'
 import VerifycodeInput from 'src/components/VerifycodeInput.vue'
 import { timestampToDate } from 'src/utils/utils'
+import { sha256Password } from 'src/utils/utils'
 
 export default defineComponent({
   components: { VerifycodeInput },
@@ -545,9 +546,10 @@ export default defineComponent({
         return
       }
 
+      var password = sha256Password(this.changePasswordInput.password)
       api.post('/user-management/v1/change/password', {
         OldPassword: self.changePasswordInput.old,
-        Password: self.changePasswordInput.password,
+        Password: password,
       }).then(resp => {
         success(undefined, self.$t('Notify.ChangePassword.Success'))
         self.changePassword = false

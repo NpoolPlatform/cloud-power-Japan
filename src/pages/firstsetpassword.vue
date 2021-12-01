@@ -83,6 +83,7 @@ import { defineComponent } from 'vue'
 import { api } from 'src/boot/axios';
 import { sendCode } from 'src/utils/utils';
 import { success, fail, waiting } from '../notify/notify'
+import { sha256Password } from 'src/utils/utils';
 
 export default defineComponent({
   name: 'firstsetpassword',
@@ -118,9 +119,10 @@ export default defineComponent({
         return
       }
 
+      var password = sha256Password(this.setpasswordInput.password)
       api.post('/user-management/v1/set/password', {
         Username: self.setpasswordInput.email,
-        Password: self.setpasswordInput.password,
+        Password: password,
       }).then(resp => {
         success(undefined, 'successfully set password, please go to login')
         self.$router.push({

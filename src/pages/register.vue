@@ -112,6 +112,7 @@ import { defineComponent, ref, reactive } from 'vue';
 import { api } from 'boot/axios'
 import { success, fail, waiting } from '../notify/notify'
 import { useI18n } from 'vue-i18n';
+import { sha256Password } from 'src/utils/utils';
 
 export default defineComponent({
   setup () {
@@ -195,11 +196,12 @@ export default defineComponent({
       }
       var thiz = this
       var failToRegister = "fail to register"
+      var password = sha256Password(this.registerInput.email)
 
       api.post('/user-management/v1/signup', {
-        Password: this.registerInput.password,
-        EmailAddress: this.registerInput.email,
-        Code: this.registerInput.verifyCode,
+        Password: password,
+        EmailAddress: thiz.registerInput.email,
+        Code: thiz.registerInput.verifyCode,
       })
         .then(function (resp) {
           thiz.$router.push({

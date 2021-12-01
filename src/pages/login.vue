@@ -93,10 +93,11 @@ import { defineComponent, ref, reactive, computed } from 'vue';
 import RecaptchaVue from 'src/components/Recaptcha.vue';
 import { useStore } from 'vuex'
 import { api } from 'src/boot/axios';
-import notify, { success, fail, waiting } from '../notify/notify'
+import { success, fail, waiting } from '../notify/notify'
 import VerifycodeInput from 'src/components/VerifycodeInput.vue';
 import { useI18n } from 'vue-i18n';
 import { useQuasar } from 'quasar';
+import { sha256Password } from 'src/utils/utils';
 
 export default defineComponent({
   components: { RecaptchaVue, VerifycodeInput },
@@ -201,10 +202,11 @@ export default defineComponent({
       let self = this
 
       var notif = waiting(this.$t('Notify.Login.Wait'))
+      var password = sha256Password(this.loginInput.password)
 
       api.post('/login-door/v1/login', {
         Username: self.loginInput.email,
-        Password: self.loginInput.password,
+        Password: password,
         VerifyCode: self.loginInput.verifyCode,
         GoogleRecaptchaResponse: self.loginInput.response,
       }).then(resp => {

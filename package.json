@@ -12,7 +12,10 @@
   "dependencies": {
     "@quasar/extras": "^1.0.0",
     "axios": "^0.21.1",
+    "bcryptjs": "^2.4.3",
+    "blueimp-md5": "^2.19.0",
     "core-js": "^3.6.5",
+    "crypto-js": "^4.1.1",
     "dotenv": "^10.0.0",
     "less-loader": "^10.2.0",
     "mitt": "^2.0.1",
