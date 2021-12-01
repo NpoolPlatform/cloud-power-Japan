@@ -15,9 +15,11 @@ function getAPI() {
   }
 
   if (origin.match("procyon.vip")) {
-    return "https://www.procyon.vip:80/api";
+    if (window.location.protocol.match("https")) {
+      return "https://www.procyon.vip/api";
+    }
+    return "http://www.procyon.vip/api";
   }
-
   return "/api";
 }
 
