@@ -26,6 +26,7 @@
           />
         </div>
         <q-btn
+          v-show="false"
           class="alt"
           disable
           style="margin-right: 10px; background-color: grey; border: none;"
