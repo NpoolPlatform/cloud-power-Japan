@@ -179,7 +179,7 @@
                   self="bottom middle"
                   :offset="[10, 10]"
                   v-if="enableGoogleAuthentication"
-                >{{ $t('Account.SecuritySetting.HaveGoogle') }}</q-tooltip>
+                >{{ $t('Account.SecuritySetting.HaveDoneGoogle') }}</q-tooltip>
                 <q-btn
                   class="account-btn setting-btn google-btn"
                   :disable="enableGoogleAuthentication"
@@ -622,8 +622,9 @@ export default defineComponent({
       }
 
       var password = sha256Password(this.changePasswordInput.password)
+      var oldPassword = sha256Password(this.changePasswordInput.old)
       api.post('/user-management/v1/change/password', {
-        OldPassword: self.changePasswordInput.old,
+        OldPassword: oldPassword,
         Password: password,
         Email: self.changePasswordInput.email,
         EmailVerifyCode: self.changePasswordInput.emailCode,
@@ -726,8 +727,8 @@ export default defineComponent({
     },
 
     sendCode: function () {
-      this.usernameRef.validate()
-      if (this.usernameRef.hasError) {
+      this.emailRef.validate()
+      if (this.emailRef.hasError) {
         return
       }
 
