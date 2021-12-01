@@ -8,23 +8,23 @@ import axios from "axios";
 // "export default () => {}" function below (which runs individually
 // for each client)
 
-function getAPI() {
-  var origin = window.location.host;
-  if (origin.match("npool.top")) {
-    return "http://www.npool.top:8080/api";
-  }
+// function getAPI() {
+//   var origin = window.location.host;
+//   if (origin.match("npool.top")) {
+//     return "http://www.npool.top:8080/api";
+//   }
 
-  if (origin.match("procyon.vip")) {
-    if (window.location.protocol.match("https")) {
-      return "https://www.procyon.vip/api";
-    }
-    return "http://www.procyon.vip/api";
-  }
-  return "/api";
-}
+//   if (origin.match("procyon.vip")) {
+//     if (window.location.protocol.match("https")) {
+//       return "https://www.procyon.vip/api";
+//     }
+//     return "http://www.procyon.vip/api";
+//   }
+//   return "/api";
+// }
 
 const api = axios.create({
-  baseURL: getAPI(),
+  baseURL: "/api",
   withCredentials: true,
 });
 
