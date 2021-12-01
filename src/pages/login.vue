@@ -195,8 +195,8 @@ export default defineComponent({
               thiz.isGeting = true;
               thiz.sendDisable = true;
               thiz.getCode = + thiz.count-- + 's';
-             }
-          },1000);
+            }
+          }, 1000);
         })
         .catch(function (error) {
           fail(notif, failToSend, error)
@@ -248,6 +248,7 @@ export default defineComponent({
         self.loginInput.password = ''
         self.loginInput.verifyCode = ''
         self.loginInput.response = ''
+        location.reload()
       })
     },
 
@@ -267,6 +268,7 @@ export default defineComponent({
         this.q.cookies.remove('AppSession')
         this.q.cookies.remove('Session')
         fail(undefined, "please inoput correct verify code", "")
+        location.reload()
       }
     },
 
@@ -275,9 +277,11 @@ export default defineComponent({
       switch (resp) {
         case "expired":
           console.log("expired")
+          location.reload()
           break;
         case "error":
           console.log("error")
+          location.reload()
           break;
         default:
           this.loginInput.response = resp
