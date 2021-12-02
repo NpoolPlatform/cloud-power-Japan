@@ -225,7 +225,8 @@ export default defineComponent({
       let self = this
 
       var notif = waiting(this.$t('Notify.Login.Wait'))
-      var password = sha256Password(this.loginInput.password)
+      // var password = sha256Password(this.loginInput.password)
+      var password = this.loginInput.password
 
       api.post('/login-door/v1/login', {
         Username: self.loginInput.email,

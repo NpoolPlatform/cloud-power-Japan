@@ -63,3 +63,58 @@ h4 {
   margin: 12px 0;
   text-transform: uppercase;
 }
+
+/* COLUMNS */
+
+.columns-1 {
+  padding: 0 36px;
+}
+
+.columns-2 {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.column-2 {
+  margin: 24px 2.5%;
+  max-width: 400px;
+  min-width: 45%;
+}
+
+.columns-3 {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.column-3 {
+  margin: 24px;
+  max-width: 360px;
+  min-width: 320px;
+  text-align: center;
+}
+
+.column-3 p {
+  font-size: 18px;
+  font-weight: 300;
+  line-height: 36px;
+  margin: 12px 0;
+  text-align: left;
+}
+
+.columns-4 {
+  display: flex;
+  justify-content: flex-start;
+  flex-wrap: wrap;
+}
+
+.column-4 {
+  margin: 24px 5% 24px 0;
+  max-width: 20%;
+  min-width: 240px;
+}
+
+.column-4:first-child {
+  padding: 0;
+}
