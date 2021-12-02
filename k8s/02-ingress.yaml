@@ -28,3 +28,10 @@ spec:
             backend:
               serviceName: japan-webui
               servicePort: 80
+    - host: procyon.vip
+      http:
+        paths:
+          - path: /
+            backend:
+              serviceName: japan-webui
+              servicePort: 80
