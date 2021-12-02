@@ -369,20 +369,6 @@
         </q-card>
       </q-dialog>
 
-      <q-dialog v-model="relogin" persistent transition-show="scale" transition-hide="scale">
-        <q-card class="bg-teal text-white" style="width: 300px">
-          <q-card-section>
-            <div class="text-h6">{{ $t('ReLogin.Title') }}</div>
-          </q-card-section>
-
-          <q-card-section class="q-pt-none">{{ $t('ReLogin.Content') }}</q-card-section>
-
-          <q-card-actions align="right" class="bg-white text-teal">
-            <q-btn flat label="OK" @click="goToLogin" />
-          </q-card-actions>
-        </q-card>
-      </q-dialog>
-
       <div>
         <div class="title">{{ $t('Account.History.Title') }}</div>
         <div class="table-box">
@@ -417,7 +403,7 @@ import { api } from 'src/boot/axios'
 import { defineComponent, computed, ref } from 'vue'
 import { useStore } from 'vuex'
 import { success, fail, waiting } from '../notify/notify'
-import { useQuasar } from 'quasar'
+import { throttle, useQuasar } from 'quasar'
 import VerifycodeInput from 'src/components/VerifycodeInput.vue'
 import { timestampToDate } from 'src/utils/utils'
 import { sha256Password } from 'src/utils/utils'
@@ -596,6 +582,11 @@ export default defineComponent({
     }
 
     this.getUserLoginHistory()
+    this.onSaveChange = throttle(this.onSaveChange, 1000)
+    this.onGoogleVerificationBtnClick = throttle(this.onGoogleVerificationBtnClick, 1000)
+    this.submitLoginVerify = throttle(this.submitLoginVerify, 1000)
+    this.sendCode = throttle(this.sendCode, 1000)
+    this.onChangePassword = throttle(this.onChangePassword, 1000)
   },
 
   computed: {
@@ -617,12 +608,6 @@ export default defineComponent({
   },
 
   methods: {
-    goToLogin: function () {
-      this.q.cookies.remove('UserID')
-      this.q.cookies.remove('AppSession')
-      this.relogin = false
-      this.$router.push('/login')
-    },
     onChangePassword: function () {
       this.emailRef.validate()
       this.emailCodeRef.validate()
@@ -653,7 +638,9 @@ export default defineComponent({
       }).then(resp => {
         success(undefined, self.$t('Notify.ChangePassword.Success'))
         self.changePassword = false
-        self.relogin = true
+        self.q.cookies.remove('UserID')
+        self.q.cookies.remove('AppSession')
+        self.$router.push('/login')
         return
       }).catch(error => {
         fail(undefined, self.$t('Notify.ChangePassword.Fail2'), error)

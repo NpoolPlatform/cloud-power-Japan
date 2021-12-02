@@ -118,10 +118,10 @@ export default {
   },
 
   Warning: {
-    Warning: "Warning",
+    Warning: "Notice",
     Content: "Thank you for visiting Procyon!",
-    P1: "The mobile version of this website is still under development, and may be unstable.",
-    P2: "As such, we kindly recommend all users to login and manage their accounts on the PC browser version of the website.",
+    P1: " Our site is currently optimized for desktop browser viewing.",
+    P2: "However, please feel free to use Procyon on your phone or desktop browser.",
   },
 
   FirstSetPassword: {

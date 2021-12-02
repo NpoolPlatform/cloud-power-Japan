@@ -113,6 +113,7 @@ import { api } from 'boot/axios'
 import { success, fail, waiting } from '../notify/notify'
 import { useI18n } from 'vue-i18n';
 import { sha256Password } from 'src/utils/utils';
+import { throttle } from 'quasar';
 
 export default defineComponent({
   setup () {
@@ -155,6 +156,11 @@ export default defineComponent({
     return {
       agree: false,
     }
+  },
+
+  created: function () {
+    this.sendCode = throttle(this.sendCode, 1000)
+    this.onRegister = throttle(this.onRegister, 1000)
   },
 
   methods: {

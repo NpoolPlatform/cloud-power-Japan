@@ -82,6 +82,7 @@ import { sendCode } from 'src/utils/utils'
 import { api } from 'src/boot/axios'
 import { fail, success, waiting } from 'src/notify/notify'
 import { sha256Password } from 'src/utils/utils'
+import { throttle } from 'quasar'
 
 export default defineComponent({
   setup () {
@@ -100,14 +101,20 @@ export default defineComponent({
     }
   },
 
+  created: function () {
+    this.onConfirm = throttle(this.onConfirm, 1000)
+    this.sendCode = throttle(this.sendCode, 1000)
+  },
+
   methods: {
     onConfirm: function () {
+      const notif = waiting(this.$t('Notify.ForgetPassword.Waiting'))
       if (this.forgetPasswordInput.password !== this.forgetPasswordInput.confirmPassword) {
-        fail(undefined, this.$t('Notify.ForgetPassword.Fail1'))
+        fail(notif, this.$t('Notify.ForgetPassword.Fail1'), "")
         return
       }
       var self = this
-      const notif = waiting(this.$t('Notify.ForgetPassword.Waiting'))
+
       var password = sha256Password(this.forgetPasswordInput.password)
 
       api.post('/user-management/v1/forget/password', {
@@ -118,7 +125,7 @@ export default defineComponent({
         success(notif, self.$t('Notify.ForgetPassword.Success'))
         self.$router.push('/login')
       }).catch(error => {
-        fail(undefined, self.$t('Notify.ForgetPassword.Fail2'), error)
+        fail(notif, self.$t('Notify.ForgetPassword.Fail2'), error)
       })
     },
 

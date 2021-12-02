@@ -120,7 +120,7 @@
 }
 
 .footer-content {
-  min-width: 640px;
+  /* min-width: 640px; */
   margin: 0 90px;
 }
 
@@ -137,6 +137,7 @@
 
 .content-logo {
   width: 200px;
+  height: 30px;
 }
 
 .content-h1 {

@@ -98,6 +98,7 @@ import VerifycodeInput from 'src/components/VerifycodeInput.vue';
 import { useI18n } from 'vue-i18n';
 import { useQuasar } from 'quasar';
 import { sha256Password } from 'src/utils/utils';
+import { throttle } from 'quasar';
 
 export default defineComponent({
   components: { RecaptchaVue, VerifycodeInput },
@@ -164,6 +165,11 @@ export default defineComponent({
       isGeting: false,
       count: 60,
     }
+  },
+
+  created: function () {
+    this.sendCode = throttle(this.sendCode, 1000)
+    this.login = throttle(this.login, 1000)
   },
 
   methods: {

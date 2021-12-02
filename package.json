@@ -18,6 +18,7 @@
     "crypto-js": "^4.1.1",
     "dotenv": "^10.0.0",
     "less-loader": "^10.2.0",
+    "lodash": "^4.17.21",
     "mitt": "^2.0.1",
     "quasar": "^2.0.0",
     "vue-cookies": "^1.7.4",

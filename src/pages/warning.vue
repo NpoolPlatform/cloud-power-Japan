@@ -1,7 +1,7 @@
 <template>
   <div>
     <q-dialog v-model="persistent" persistent transition-show="scale" transition-hide="scale">
-      <q-card class="bg-teal text-white" style="width: 300px">
+      <q-card class="text-white warning-bk" style="width: 300px">
         <q-card-section>
           <div class="text-h6">{{ $t('Warning.Warning') }}</div>
         </q-card-section>
@@ -10,7 +10,7 @@
         <q-card-section class="q-pt-none">{{ $t('Warning.P1') }}</q-card-section>
         <q-card-section class="q-pt-none">{{ $t('Warning.P2') }}</q-card-section>
 
-        <q-card-actions align="between" class="bg-white text-teal">
+        <q-card-actions align="between" class="text-teal">
           <div class="button-group">
             <q-btn-toggle
               v-model="locale"
@@ -23,7 +23,7 @@
               ]"
             />
           </div>
-          <q-btn flat label="OK" />
+          <q-btn flat label="OK" @click="persistent = !persistent; $router.push('/')" />
         </q-card-actions>
       </q-card>
     </q-dialog>
@@ -48,3 +48,19 @@ export default defineComponent({
   },
 })
 </script>
+
+<style>
+.warning-bk {
+  background: linear-gradient(
+    to bottom right,
+    rgba(225, 238, 239, 0.2) 0,
+    rgba(161, 208, 208, 0.2) 100%
+  );
+  box-shadow: 16px 16px 20px 0 #23292b;
+  border-radius: 12px;
+  color: #e1eeef;
+  padding: 24px;
+  margin: 24px;
+  position: relative;
+}
+</style>
