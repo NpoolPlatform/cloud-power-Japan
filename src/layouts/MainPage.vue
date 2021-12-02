@@ -1,88 +1,94 @@
 <template>
   <q-layout view="hHh lpR fFf">
-    <q-header reveal class="page-header" :style="toggle">
-      <div class="header-left">
-        <router-link :to="{ path: '/' }">
-          <q-img :src="url" class="header-title"></q-img>
-        </router-link>
-        <div v-if="openSide" class="hr"></div>
-      </div>
-
-      <div class="header-right">
-        <router-link class="nav-link" :to="{ path: '/' }">{{ $t('Header.Home') }}</router-link>
-        <a
-          class="nav-link"
-          href="https://procyon-vip.medium.com/"
-          target="_blank"
-        >{{ $t('Header.Blog') }}</a>
-        <router-link class="nav-link" :to="{ path: '/faq' }">{{ $t('Header.Support') }}</router-link>
-        <a class="nav-link" href="mailto:support@procyon.vip">{{ $t('Header.Contact') }}</a>
-        <div class="button-group" style="margin-right: 10px;">
-          <q-btn-toggle
-            v-model="locale"
-            push
-            glossy
-            toggle-color="orange-9"
-            :options="[
-              { label: $t('Footer.Forth.En'), value: 'en_US' },
-              { label: $t('Footer.Forth.Jp'), value: 'ja_JP' },
-            ]"
-          />
+    <div>
+      <q-header reveal class="page-header" :style="toggle">
+        <div class="header-left">
+          <router-link :to="{ path: '/' }">
+            <q-img :src="url" class="header-title"></q-img>
+          </router-link>
+          <div v-if="openSide" class="hr"></div>
         </div>
-        <q-btn
-          class="alt"
-          disable
-          style="margin-right: 10px; background-color: grey; border: none;"
-          flat
-          @click="$router.push('/register')"
-        >{{ $t('Register.Register') }}</q-btn>
-        <q-btn
-          v-if="!logined"
-          class="alt"
-          flat
-          @click="$router.push('/login')"
-        >{{ $t('Header.Signin') }}</q-btn>
-        <div class="avator-box" @click.stop>
-          <q-img v-if="logined" class="avator" :src="userImg" @click="showList = !showList"></q-img>
 
-          <div class="list-box" v-if="showList">
-            <q-list>
-              <q-item
-                clickable
-                v-close-popup
-                @click="$router.push('/account'); showList = !showList"
-              >
-                <q-item-section>
-                  <q-item-label>{{ $t('Drawer.Account') }}</q-item-label>
-                </q-item-section>
-              </q-item>
+        <div class="header-right">
+          <router-link class="nav-link" :to="{ path: '/' }">{{ $t('Header.Home') }}</router-link>
+          <a
+            class="nav-link"
+            href="https://procyon-vip.medium.com/"
+            target="_blank"
+          >{{ $t('Header.Blog') }}</a>
+          <router-link class="nav-link" :to="{ path: '/faq' }">{{ $t('Header.Support') }}</router-link>
+          <a class="nav-link" href="mailto:support@procyon.vip">{{ $t('Header.Contact') }}</a>
+          <div class="button-group" style="margin-right: 10px;">
+            <q-btn-toggle
+              v-model="locale"
+              push
+              glossy
+              toggle-color="orange-9"
+              :options="[
+                { label: $t('Footer.Forth.En'), value: 'en_US' },
+                { label: $t('Footer.Forth.Jp'), value: 'ja_JP' },
+              ]"
+            />
+          </div>
+          <q-btn
+            class="alt"
+            disable
+            style="margin-right: 10px; background-color: grey; border: none; width: 140px;"
+            flat
+            @click="$router.push('/register')"
+          >{{ $t('Register.Register') }}</q-btn>
+          <q-btn
+            v-if="!logined"
+            class="alt"
+            flat
+            @click="$router.push('/login')"
+          >{{ $t('Header.Signin') }}</q-btn>
+          <div class="avator-box" @click.stop>
+            <q-img v-if="logined" class="avator" :src="userImg" @click="showList = !showList"></q-img>
 
-              <q-item clickable v-close-popup @click="$router.push('/order'); showList = !showList">
-                <q-item-section>
-                  <q-item-label>{{ $t('Drawer.Order') }}</q-item-label>
-                </q-item-section>
-              </q-item>
+            <div class="list-box" v-if="showList">
+              <q-list>
+                <q-item
+                  clickable
+                  v-close-popup
+                  @click="$router.push('/account'); showList = !showList"
+                >
+                  <q-item-section>
+                    <q-item-label>{{ $t('Drawer.Account') }}</q-item-label>
+                  </q-item-section>
+                </q-item>
 
-              <q-item
-                clickable
-                v-close-popup
-                @click="$router.push('/wallet'); showList = !showList"
-              >
-                <q-item-section>
-                  <q-item-label>{{ $t('Drawer.Wallet') }}</q-item-label>
-                </q-item-section>
-              </q-item>
+                <q-item
+                  clickable
+                  v-close-popup
+                  @click="$router.push('/order'); showList = !showList"
+                >
+                  <q-item-section>
+                    <q-item-label>{{ $t('Drawer.Order') }}</q-item-label>
+                  </q-item-section>
+                </q-item>
 
-              <q-item clickable v-close-popup @click="logout">
-                <q-item-section>
-                  <q-item-label>{{ $t('Drawer.Logout') }}</q-item-label>
-                </q-item-section>
-              </q-item>
-            </q-list>
+                <q-item
+                  clickable
+                  v-close-popup
+                  @click="$router.push('/wallet'); showList = !showList"
+                >
+                  <q-item-section>
+                    <q-item-label>{{ $t('Drawer.Wallet') }}</q-item-label>
+                  </q-item-section>
+                </q-item>
+
+                <q-item clickable v-close-popup @click="logout">
+                  <q-item-section>
+                    <q-item-label>{{ $t('Drawer.Logout') }}</q-item-label>
+                  </q-item-section>
+                </q-item>
+              </q-list>
+            </div>
           </div>
         </div>
-      </div>
-    </q-header>
+      </q-header>
+    </div>
 
     <q-drawer
       style="background: linear-gradient(to bottom right, #1f293a 0, #23292b 100%); box-shadow: 0px 0px 60px 15px #051319; text-align: center;"

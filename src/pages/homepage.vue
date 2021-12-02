@@ -10,6 +10,7 @@
             color="grey"
             @click="$router.push('/register')"
             class="btn-register"
+            style="width: 175px;"
           >{{ $t('Homepage.Title.Register') }}</q-btn>
         </div>
       </div>
@@ -254,7 +255,6 @@ export default defineComponent({
 .content p:not([class]) {
   font-size: 18px;
   font-weight: 300;
-  line-height: 36px;
 }
 
 .content p:not([class]) em {

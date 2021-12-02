@@ -163,7 +163,6 @@ a:not([class]):hover {
 }
 
 .title-1 {
-  height: 48px;
   background: linear-gradient(to left, #54e280 0, #1ec498 50%);
   background-clip: border-box;
   filter: contrast(2);

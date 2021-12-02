@@ -26,6 +26,7 @@
   display: flex;
   justify-content: space-around;
   align-items: baseline;
+  padding: 12px;
 }
 
 /* header left */
