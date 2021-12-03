@@ -1,6 +1,7 @@
 import { api } from "src/boot/axios";
 import { success, fail, waiting } from "../notify/notify";
 import sha256 from "crypto-js/sha256";
+import { useI18n } from "vue-i18n";
 
 export function sendCode(email) {
   if (email === "") {
