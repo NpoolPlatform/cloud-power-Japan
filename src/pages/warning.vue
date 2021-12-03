@@ -60,10 +60,6 @@ export default defineComponent({
       locale,
     };
   },
-
-  created: function () {
-    this.locale = "ja_JP";
-  },
 });
 </script>
 

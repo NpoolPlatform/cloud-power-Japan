@@ -135,7 +135,7 @@ export default defineComponent({
       (val) => (val && val.length > 0) || t("Register.PasswordInputWarning"),
     ]);
 
-    const count = ref(0)
+    const count = ref(0);
 
     return {
       isPwd: ref(true),

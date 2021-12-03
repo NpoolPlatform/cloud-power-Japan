@@ -70,14 +70,11 @@ export default defineComponent({
     var appID = "ff2c5d50-be56-413e-aba5-9c7ad888a769";
     this.q.cookies.set("AppID", appID);
 
-    var language =
-      localStorage.getItem("locale") ||
-      window.navigator.language.toLowerCase() ||
-      "ja_JP";
-    if (language.indexOf("zh") !== -1) {
+    var language = this.q.lang.getLocale();
+    if (language.match("zh")) {
       this.locale = "ja_JP";
       this.lang = "ja_JP";
-    } else if (language.indexOf("en") !== -1) {
+    } else if (language.match("en")) {
       this.locale = "en_US";
       this.lang = "en_US";
     } else {
