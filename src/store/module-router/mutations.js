@@ -1,3 +1,3 @@
-export function setOpenSide (state, open) {
-  state.router.open = open
+export function setOpenSide(state, open) {
+  state.router.open = open;
 }

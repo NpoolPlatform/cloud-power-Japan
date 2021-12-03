@@ -3,5 +3,5 @@ export default function () {
     router: {
       open: false,
     },
-  }
+  };
 }

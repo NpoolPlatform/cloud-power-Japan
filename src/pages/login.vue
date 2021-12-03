@@ -29,9 +29,9 @@
               :rules="codeRule"
             >
               <template v-slot:append>
-                <q-btn flat rounded :disable="sendDisable" @click="sendCode">{{
-                  getCode
-                }}</q-btn>
+                <q-btn flat rounded :disable="sendDisable" @click="sendCode">
+                  {{ getCode }}</q-btn
+                >
               </template>
             </q-input>
 
@@ -135,6 +135,8 @@ export default defineComponent({
       (val) => (val && val.length > 0) || t("Register.PasswordInputWarning"),
     ]);
 
+    const count = ref(0)
+
     return {
       isPwd: ref(true),
       usernameRule,
@@ -146,6 +148,7 @@ export default defineComponent({
       passRef,
       locale,
       q,
+      count,
     };
   },
 
@@ -171,9 +174,7 @@ export default defineComponent({
         response: "",
       },
       sendDisable: false,
-      getCode: this.$t("Register.SendCode"),
       isGeting: false,
-      count: 60,
       refreshRecaptcha: true,
     };
   },
@@ -181,6 +182,15 @@ export default defineComponent({
   created: function () {
     this.sendCode = throttle(this.sendCode, 1000);
     this.login = throttle(this.login, 1000);
+  },
+
+  computed: {
+    getCode: function () {
+      if (this.count < 1) {
+        return this.$t("Register.SendCode");
+      }
+      return this.count + "s";
+    },
   },
 
   methods: {
@@ -207,17 +217,17 @@ export default defineComponent({
         })
         .then(function (resp) {
           success(notif, msg);
+          thiz.count = 60;
           var countDown = setInterval(() => {
             if (thiz.count < 1) {
               thiz.isGeting = false;
               thiz.sendDisable = false;
-              thiz.getCode = thiz.$t("Register.SendCode");
-              thiz.count = 6;
+              thiz.count = 60;
               clearInterval(countDown);
             } else {
               thiz.isGeting = true;
               thiz.sendDisable = true;
-              thiz.getCode = +thiz.count-- + "s";
+              thiz.count--;
             }
           }, 1000);
         })

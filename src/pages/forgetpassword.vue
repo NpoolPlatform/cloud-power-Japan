@@ -97,7 +97,7 @@
   </div>
 </template>
 <script>
-import { defineComponent } from "vue";
+import { defineComponent, ref } from "vue";
 import { api } from "src/boot/axios";
 import { fail, success, waiting } from "src/notify/notify";
 import { sha256Password } from "src/utils/utils";
@@ -107,8 +107,10 @@ import { useI18n } from "vue-i18n";
 export default defineComponent({
   setup() {
     const { locale } = useI18n();
+    const count = ref(0);
     return {
       locale,
+      count,
     };
   },
 
@@ -123,15 +125,22 @@ export default defineComponent({
       isPwd: true,
       isCPwd: true,
       sendDisable: false,
-      getCode: this.$t("Register.SendCode"),
       isGeting: false,
-      count: 60,
     };
   },
 
   created: function () {
     this.onConfirm = throttle(this.onConfirm, 1000);
     this.sendCode = throttle(this.sendCode, 1000);
+  },
+
+  computed: {
+    getCode: function () {
+      if (this.count < 1) {
+        return this.$t("Register.SendCode");
+      }
+      return this.count + "s";
+    },
   },
 
   methods: {
@@ -182,17 +191,17 @@ export default defineComponent({
             ", " +
             self.$t("Notify.SendCode.CheckEmail");
           success(notif, msg);
+          self.count = 60;
           var countDown = setInterval(() => {
             if (self.count < 1) {
               self.isGeting = false;
               self.sendDisable = false;
-              self.getCode = self.$t("Register.SendCode");
-              self.count = 6;
+              self.count = 60;
               clearInterval(countDown);
             } else {
               self.isGeting = true;
               self.sendDisable = true;
-              self.getCode = +self.count-- + "s";
+              self.count--;
             }
           }, 1000);
         })
