@@ -48,7 +48,7 @@ pipeline {
         sh(returnStdout: true, script: '''
           images=`docker images | grep entropypool | grep japan-webui | grep latest | awk '{ print $3 }'`
           for image in $images; do
-            docker rmi $image
+            docker rmi $image -f
           done
           docker build -t entropypool/japan-webui:latest .
         '''.stripIndent())
