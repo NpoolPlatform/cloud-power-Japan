@@ -50,8 +50,14 @@ pipeline {
           for image in $images; do
             docker rmi $image
           done
+          set +e
+          version=`git describe --tags --abbrev=0`
+          if [ ! $? -eq 0 ]; then
+                version=latest
+          fi
+          set -e
+          docker build -t entropypool/japan-webui:$version .
         '''.stripIndent())
-        sh 'DEVELOPMENT=development make generate-docker-images'
       }
     }
 
@@ -176,8 +182,14 @@ pipeline {
           for image in $images; do
             docker rmi $image -f
           done
+          set +e
+          version=`git describe --tags --abbrev=0`
+          if [ ! $? -eq 0 ]; then
+                version=latest
+          fi
+          set -e
+          docker build -t entropypool/japan-webui:$version .
         '''.stripIndent())
-        sh 'DEVELOPMENT=other make generate-docker-images'
       }
     }
 
@@ -186,7 +198,15 @@ pipeline {
         expression { RELEASE_TARGET == 'true' }
       }
       steps {
-        sh 'DEVELOPMENT=development make release-docker-images'
+        sh(returnStdout: true, script: '''
+          set +e
+          version=`git describe --tags --abbrev=0`
+          if [ ! $? -eq 0 ]; then
+                version=latest
+          fi
+          set -e
+                docker push entropypool/japan-webui:$version
+        '''.stripIndent())
       }
     }
 
@@ -195,7 +215,15 @@ pipeline {
         expression { RELEASE_TARGET == 'true' }
       }
       steps {
-        sh 'DEVELOPMENT=other make release-docker-images'
+        sh(returnStdout: true, script: '''
+          set +e
+          version=`git describe --tags --abbrev=0`
+          if [ ! $? -eq 0 ]; then
+                version=latest
+          fi
+          set -e
+                docker push entropypool/japan-webui:$version
+        '''.stripIndent())
       }
     }
 
@@ -205,7 +233,14 @@ pipeline {
         expression { TARGET_ENV == 'development' }
       }
       steps {
-        sh 'TAG=latest make deploy-to-k8s-cluster'
+        sh(returnStdout: true, script: '''
+          revlist=`git rev-list --tags --max-count=1`
+          tag=`git describe --tags $revlist`
+
+          git checkout $tag
+          sed -i "s/japan-webui:latest/japan-webui:$tag/g" cmd/japan-webui/k8s/01-japan-webui.yaml
+          kubectl apply -k cmd/japan-webui/k8s
+        '''.stripIndent())
       }
     }
 
