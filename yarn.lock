@@ -5885,6 +5885,13 @@ vue-cookies@^1.7.4:
   resolved "https://registry.yarnpkg.com/vue-cookies/-/vue-cookies-1.7.4.tgz#d241d0a0431da0795837651d10b4d73e7c8d3e8d"
   integrity sha512-mOS5Btr8V9zvAtkmQ7/TfqJIropOx7etDAgBywPCmHjvfJl2gFbH2XgoMghleLoyyMTi5eaJss0mPN7arMoslA==
 
+vue-country-intl@^1.0.30:
+  version "1.0.30"
+  resolved "https://registry.yarnpkg.com/vue-country-intl/-/vue-country-intl-1.0.30.tgz#faa36c42ac74141932710adfc875a65dddf87cfa"
+  integrity sha512-mtGlG4hDF2KpTpa+CpR+NEVUJq86SGRTYvKQA6T72/tq0cD7I0GmpaKKB/GTmCireD+v8EP2idXCKNAcReWKkA==
+  dependencies:
+    vue "^2.6.10"
+
 vue-eslint-parser@^7.10.0:
   version "7.11.0"
   resolved "https://registry.yarnpkg.com/vue-eslint-parser/-/vue-eslint-parser-7.11.0.tgz#214b5dea961007fcffb2ee65b8912307628d0daf"
@@ -5942,6 +5949,11 @@ vue@3.2.21:
     "@vue/runtime-dom" "3.2.21"
     "@vue/server-renderer" "3.2.21"
     "@vue/shared" "3.2.21"
+
+vue@^2.6.10:
+  version "2.6.14"
+  resolved "https://registry.yarnpkg.com/vue/-/vue-2.6.14.tgz#e51aa5250250d569a3fbad3a8a5a687d6036e235"
+  integrity sha512-x2284lgYvjOMj3Za7kqzRcUSxBboHqtgRE2zlos1qWaOye5yUmHn42LB1250NJBLRwEcdrB0JRwyPTEPhfQjiQ==
 
 vuex@^4.0.2:
   version "4.0.2"
