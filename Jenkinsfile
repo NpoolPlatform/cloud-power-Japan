@@ -221,7 +221,7 @@ pipeline {
 
           git checkout $tag
           sed -i "s/japan-webui:latest/japan-webui:$tag/g" cmd/japan-webui/k8s/01-japan-webui.yaml
-          TAG=$tag make deploy-to-k8s-cluster
+          kubectl apply -k cmd/application-managemen/k8s
         '''.stripIndent())
       }
     }
@@ -244,7 +244,7 @@ pipeline {
 
           git checkout $tag
           sed -i "s/japan-webui:latest/japan-webui:$tag/g" cmd/japan-webui/k8s/01-japan-webui.yaml
-          TAG=$tag make deploy-to-k8s-cluster
+          kubectl apply -k cmd/application-managemen/k8s
         '''.stripIndent())
       }
     }
