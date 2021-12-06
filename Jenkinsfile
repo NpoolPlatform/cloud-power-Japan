@@ -50,13 +50,7 @@ pipeline {
           for image in $images; do
             docker rmi $image
           done
-          set +e
-          version=`git describe --tags --abbrev=0`
-          if [ ! $? -eq 0 ]; then
-                version=latest
-          fi
-          set -e
-          docker build -t entropypool/japan-webui:$version .
+          docker build -t entropypool/japan-webui:latest .
         '''.stripIndent())
       }
     }
@@ -182,13 +176,7 @@ pipeline {
           for image in $images; do
             docker rmi $image -f
           done
-          set +e
-          version=`git describe --tags --abbrev=0`
-          if [ ! $? -eq 0 ]; then
-                version=latest
-          fi
-          set -e
-          docker build -t entropypool/japan-webui:$version .
+          docker build -t entropypool/japan-webui:$tag .
         '''.stripIndent())
       }
     }
@@ -198,15 +186,7 @@ pipeline {
         expression { RELEASE_TARGET == 'true' }
       }
       steps {
-        sh(returnStdout: true, script: '''
-          set +e
-          version=`git describe --tags --abbrev=0`
-          if [ ! $? -eq 0 ]; then
-                version=latest
-          fi
-          set -e
-                docker push entropypool/japan-webui:$version
-        '''.stripIndent())
+        sh 'docker push entropypool/japan-webui:latest'
       }
     }
 
@@ -216,13 +196,9 @@ pipeline {
       }
       steps {
         sh(returnStdout: true, script: '''
-          set +e
-          version=`git describe --tags --abbrev=0`
-          if [ ! $? -eq 0 ]; then
-                version=latest
-          fi
-          set -e
-                docker push entropypool/japan-webui:$version
+          revlist=`git rev-list --tags --max-count=1`
+          tag=`git describe --tags $revlist`
+          docker push entropypool/japan-webui:$tag
         '''.stripIndent())
       }
     }
@@ -233,14 +209,7 @@ pipeline {
         expression { TARGET_ENV == 'development' }
       }
       steps {
-        sh(returnStdout: true, script: '''
-          revlist=`git rev-list --tags --max-count=1`
-          tag=`git describe --tags $revlist`
-
-          git checkout $tag
-          sed -i "s/japan-webui:latest/japan-webui:$tag/g" cmd/japan-webui/k8s/01-japan-webui.yaml
-          kubectl apply -k cmd/japan-webui/k8s
-        '''.stripIndent())
+        sh 'kubectl apply -k cmd/japan-webui/k8s'
       }
     }
 
@@ -283,53 +252,6 @@ pipeline {
         '''.stripIndent())
       }
     }
-
-    // stage('Generate docker image') {
-    //   when {
-    //     expression { BUILD_TARGET == 'true' }
-    //   }
-    //   steps {
-    //     sh(returnStdout: true, script: '''
-    //       images=`docker images | grep entropypool | grep japan-webui | awk '{ print $3 }'`
-    //       for image in $images; do
-    //         docker rmi $image
-    //       done
-	  // set +e
-	  // version=`git describe --tags --abbrev=0`
-	  // if [ ! $? -eq 0 ]; then
-    // 	    version=latest
-	  // fi
-	  // set -e 
-	  // docker build -t entropypool/japan-webui:$version .
-    //     '''.stripIndent())
-    //   }
-    // }
-
-    // stage('Release docker image') {
-    //   when {
-    //     expression { RELEASE_TARGET == 'true' }
-    //   }
-    //   steps {
-    //     sh(returnStdout: true, script: '''
-	  // set +e
-	  // version=`git describe --tags --abbrev=0`
-	  // if [ ! $? -eq 0 ]; then
-    // 	    version=latest
-	  // fi
-	  // set -e 
-    //       docker push entropypool/japan-webui:$version
-    //     '''.stripIndent())
-    //   }
-    // }
-
-    // stage('Deploy') {
-    //   when {
-    //     expression { DEPLOY_TARGET == 'true' }
-    //   }
-    //   steps {
-    //     sh 'kubectl apply -k k8s'
-    //   }
-    // }
 
     stage('Post') {
       steps {
