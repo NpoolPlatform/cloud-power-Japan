@@ -78,6 +78,7 @@ pipeline {
                 ;;
               production)
                 patch=$(( $patch + 1 ))
+                git reset --hard
                 git checkout $tag
                 ;;
             esac
@@ -170,6 +171,7 @@ pipeline {
         sh(returnStdout: true, script: '''
           revlist=`git rev-list --tags --max-count=1`
           tag=`git describe --tags $revlist`
+          git reset --hard
           git checkout $tag
 
           images=`docker images | grep entropypool | grep japan-webui | grep $tag | awk '{ print $3 }'`
@@ -223,6 +225,7 @@ pipeline {
           revlist=`git rev-list --tags --max-count=1`
           tag=`git describe --tags $revlist`
 
+          git reset --hard
           git checkout $tag
           sed -i "s/japan-webui:latest/japan-webui:$tag/g" cmd/japan-webui/k8s/01-japan-webui.yaml
           kubectl apply -k cmd/japan-webui/k8s
@@ -246,6 +249,7 @@ pipeline {
           patch=$(( $patch - $patch % 2 ))
           tag=$major.$minor.$patch
 
+          git reset --hard
           git checkout $tag
           sed -i "s/japan-webui:latest/japan-webui:$tag/g" cmd/japan-webui/k8s/01-japan-webui.yaml
           kubectl apply -k cmd/japan-webui/k8s
