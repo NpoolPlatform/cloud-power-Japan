@@ -240,7 +240,7 @@ pipeline {
         expression { TARGET_ENV == 'development' }
       }
       steps {
-        sh 'kubectl apply -k cmd/japan-webui/k8s'
+        sh 'kubectl apply -k k8s'
       }
     }
 
@@ -257,7 +257,7 @@ pipeline {
           git reset --hard
           git checkout $tag
           sed -i "s/japan-webui:latest/japan-webui:$tag/g" k8s/01-japan-webui.yaml
-          kubectl apply -k cmd/japan-webui/k8s
+          kubectl apply -k k8s
         '''.stripIndent())
       }
     }
@@ -281,7 +281,7 @@ pipeline {
           git reset --hard
           git checkout $tag
           sed -i "s/japan-webui:latest/japan-webui:$tag/g" k8s/01-japan-webui.yaml
-          kubectl apply -k cmd/japan-webui/k8s
+          kubectl apply -k k8s
         '''.stripIndent())
       }
     }
