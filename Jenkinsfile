@@ -256,7 +256,7 @@ pipeline {
 
           git reset --hard
           git checkout $tag
-          sed -i "s/japan-webui:latest/japan-webui:$tag/g" cmd/japan-webui/k8s/01-japan-webui.yaml
+          sed -i "s/japan-webui:latest/japan-webui:$tag/g" k8s/01-japan-webui.yaml
           kubectl apply -k cmd/japan-webui/k8s
         '''.stripIndent())
       }
@@ -280,7 +280,7 @@ pipeline {
 
           git reset --hard
           git checkout $tag
-          sed -i "s/japan-webui:latest/japan-webui:$tag/g" cmd/japan-webui/k8s/01-japan-webui.yaml
+          sed -i "s/japan-webui:latest/japan-webui:$tag/g" k8s/01-japan-webui.yaml
           kubectl apply -k cmd/japan-webui/k8s
         '''.stripIndent())
       }
