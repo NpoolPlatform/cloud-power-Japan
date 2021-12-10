@@ -198,13 +198,14 @@ export default defineComponent({
       }
       var thiz = this;
       var failToRegister = "fail to register";
-      var password = sha256Password(this.registerInput.email);
+      var password = sha256Password(this.registerInput.password);
 
       api
         .post("/user-management/v1/signup", {
           Password: password,
           EmailAddress: thiz.registerInput.email,
-          Code: thiz.registerInput.verifyCode,
+          VerificationCode: thiz.registerInput.verifyCode,
+          InvitationCode: thiz.registerInput.invitationCode,
         })
         .then(function (resp) {
           thiz.$router.push({
