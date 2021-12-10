@@ -6,11 +6,9 @@
         <div class="title-2">{{ $t("Homepage.Title.Subtitle") }}</div>
         <div class="btn-list">
           <q-btn
-            disable
-            color="grey"
-            @click="$router.push('/register')"
+            @click="$router.push('/emailregister')"
             class="btn-register"
-            style="width: 175px"
+            style="width: 175px; text-transform: unset"
             >{{ $t("Homepage.Title.Register") }}</q-btn
           >
         </div>
@@ -100,7 +98,7 @@
             {{ $t("Homepage.Why.Content6") }}
             <strong>{{ $t("Homepage.Why.Content7") }}</strong>
             {{ $t("Homepage.Why.Content8") }}
-            <em>{{ $t("Homepage.Why.Content9") }}</em>
+            {{ $t("Homepage.Why.Content9") }}
           </p>
         </div>
       </div>

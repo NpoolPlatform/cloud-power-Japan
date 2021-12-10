@@ -13,7 +13,7 @@ export default {
   },
   Footer: {
     First: {
-      Title: "SHOOT FOR THE STARS",
+      Title: "Shoot for the stars with Procyon!",
       Content: "YOUR GLOBAL CONSTELLATION OF CRYPTOCURRENCIES",
     },
     Second: {
@@ -24,7 +24,7 @@ export default {
     },
     Third: {
       Title: "HELP",
-      Faqs: "FAQs",
+      Faqs: "FAQ",
       Support: "Support",
       Legal: "Legal",
     },
@@ -34,6 +34,11 @@ export default {
       Jp: "日本語",
     },
   },
+
+  Invitation: {
+    Title: "INFLUENCER PROGRAM",
+  },
+
   Homepage: {
     Title: {
       Title: "SHOOT FOR THE STARS WITH PROCYON!",
@@ -54,6 +59,10 @@ export default {
       StartMining: "Start Mining",
     },
 
+    Loading: {
+      Msg: "Changing language now, please wait",
+    },
+
     Feature: {
       VCBacking: "MARKET LEADER",
       VCBackingContent:
@@ -72,9 +81,9 @@ export default {
         "Procyon is the first Japan-centric, one-stop, multidimensional asset management marketplace. We bring",
       Content2: "first-to-market products and IDOs",
       Content3:
-        "to our clients. Our unique market insights and our extensive network in the crypto space allows us to provide our clients with exclusive",
+        "to our clients. Our unique market insights and our extensive network in the crypto space allows us to provide our clients with ",
       Content4:
-        "investment opportunities that cannot be found on the open market",
+        " exclusive investment opportunities that cannot be found on the open market",
       Content5: ". Our unique positioning is our strength and your gain!",
       Content6:
         "Japan boasts the highest investment per capita in Asia. The endless possibilities of the",
@@ -88,27 +97,28 @@ export default {
     What: {
       Title: "What Is First-Batch Mining?",
       Content1:
-        "First-batch mining begins as soon as the mainnet goes live. This is possible because the first-batch of miners has already acquired hash power through the testnet prior to the launch of the mainnet. Once mainnet goes live these miners are the first to begin the mining process, achieving much ",
+        "First-batch mining begins as soon as the mainnet goes live. This is possible because the first-batch of miners has already acquired hash power through the testnet prior to the launch of the mainnet. Once mainnet goes live these miners are the first to begin the mining process, achieving ",
       Content2:
-        "greater ROI while the mining difficulty is low and the mining output is high",
+        " much greater ROI while the mining difficulty is low and the mining output is high",
       Content3: "There are two core factors that affect a miner's ROI:",
       Content4: "Mining output",
       Content5: "Token price",
       Content6:
         "Mining output is directly related to the mining difficulty. The more miners, the greater the total network-wide hash power, the higher the mining difficulty, and the lower the mining output per miner. The total mineable supply is fixed, so the more hash power that flows into mining, the less mining output is released per unit (TB) of hash power.",
       Content7:
-        "The mining output of the first-batch mining is usually much greater in comparison to regular mining",
+        "The output of first-batch mining is usually much greater in comparison to regular mining",
       Content8:
-        "You can think of it like sharing a pizza. The more people share, the smaller each slice gets. For example, with Chia mining, the daily output during first-batch mining was equivalent to 1 year of mining at the rates just 2 months after mainnet launch.",
+        "You can think of it like sharing a pizza. The more people share, the smaller each slice gets. To use Chia mining as a case study, the daily output during first-batch mining was equivalent to 1 year of mining at the rates just 2 months after mainnet launch.",
+      Content18: "",
       Content14:
         "There is a crypto project called Chia, and to use Chia mining as a case study, Chia's mining difficulty increased rapidly from the first two months after its mainnet launched. As a result,",
       Content15:
         "miners who participated in Chia's first batch mining received daily mining rewards equivalent to what would take 1 year of mining at the mining output levels just 2 months after mainnet launch",
       Content16: "This is the power of first batch mining.",
       Content9:
-        "Token price is affected by dynamic market conditions. Typically the mainet launch happens simultaneously as",
+        "Token price is affected by dynamic market conditions. Typically the mainet launch happens simultaneously as ",
       Content10:
-        "listing on an exchange which is when the token experiences price discovery, possibly surging exponentially",
+        " listing on an exchange which is when the token experiences price discovery, possibly surging exponentially.",
       Content11:
         "To put it simply, the earlier you can mine, the more tokens you earn. And on top of that, you can sell your tokens at a higher price when the token is listed on exchanges, resulting in a better ROI.",
       Content12:
@@ -160,7 +170,13 @@ export default {
     Click: "Click here to sign in.",
     Login: "Login",
     LoginTitle: "User Login",
-    GooglrCodeInputWarning: "please input your google auth code",
+    GooglrCodeInputWarning: "Please input your google auth code",
+    VerifyCodeInput: "Please input your verify code",
+    RegisterEmail: "Email Register",
+    RegisterPhone: "Phone Register",
+    PhoneInput: "Phone Number",
+    PhoneInputWarning: "phone number cannot be null",
+    InvitationWarning: "Invitation code is must",
   },
 
   Drawer: {
@@ -168,6 +184,7 @@ export default {
     Wallet: "WALLET",
     Account: "ACCOUNT",
     Logout: "LOGOUT",
+    Invitation: "AFFILIATES",
   },
 
   Mining: {
@@ -229,9 +246,49 @@ export default {
   },
 
   Account: {
+    Email: {
+      Update: {
+        Title: "Update Email",
+        OldEmailInput: "Please input your old email address",
+        EmailWarning: "Please input a correct email address",
+        VerifyCode: "Email Verify Code",
+        VerifyCodeWarning: "please input a verify code",
+        EmailInput: "Please input your new email address",
+        Btn: "Update Email",
+      },
+      Enable: {
+        Title: "Enable Email",
+        EmailInput: "Email Address",
+        EmailInputWarning: "Please input a correct email address",
+        VerifyCode: "Email Verify Code",
+        VerifyCodeWarning: "please input a verify code",
+        Btn: "Enable Email",
+      },
+    },
+    Phone: {
+      Update: {
+        Title: "Update Phone",
+        OldPhoneInput: "Please input your old phone number",
+        PhoneWarning: "Please input a correct phone number",
+        VerifyCode: "Phone Verify Code",
+        VerifyCodeWarning: "please input a verify code",
+        PhoneInput: "Please input your new phone number",
+        Btn: "Update Phone",
+      },
+      Enable: {
+        Title: "Enable Phone",
+        PhoneInput: "Phone Number",
+        PhoneInputWarning: "Please input a correct phone number",
+        VerifyCode: "Phone Verify Code",
+        VerifyCodeWarning: "please input a verify code",
+        Btn: "Enable Phone",
+      },
+    },
     Title: "Account",
     PersonalDetails: {
       Title: "Personal Details",
+      Username: "Username",
+      Gender: "Gender",
       FirstName: "First Name",
       LastName: "Last Name",
       StreetAddress1: "Street Address 1",
@@ -242,6 +299,10 @@ export default {
       Save: "Save Changes",
     },
     SecuritySetting: {
+      EmailEnable: "ENABLE E-MAIL ADDRESS",
+      PhoneEnable: "ENABLE PHONE NUMBER",
+      EmailUpdate: "UPDATE E-MAIL ADDRESS",
+      PhoneUpdate: "UPDATE PHONE NUMBER",
       Title: "SECURITY SETTINGS",
       ChangePassword: "Change Password",
       ChangePasswordContent:
@@ -284,6 +345,28 @@ export default {
   ReLogin: {
     Title: "Re-login",
     Content: "Change password successfully, please log in again",
+    Fail: "Please input correct verify code",
+  },
+
+  ChangePassword: {
+    Title: "Change Password",
+    UseEmail: "Use Email",
+    UsePhone: "Use Phone",
+    OldPassword: "Old Password",
+    OldPasswordWarning: "Please input your old password",
+    Password: "New Password",
+    PasswordInputWarning: "Please input your new password",
+    ConfirmPassword: "Confirm Password",
+    ConfirmPasswordInputWarning: "Please input your confirm password",
+    Email: {
+      EmailInput: "E-Mail Address",
+      EmailInputWarning: "Please input your email address",
+    },
+    Phone: {
+      PhoneInput: "Phone Number",
+      PhoneInputWarning: "Please input your phone number",
+    },
+    ConfirmBtn: "CONFIRM",
   },
 
   Dialog: {
@@ -314,9 +397,15 @@ export default {
 
   Notify: {
     SendCode: {
-      WaitSend: "sending email... ...",
+      Email: {
+        WaitSend: "sending email... ...",
+        Check: "please check your email",
+      },
+      Phone: {
+        WaitSend: "sending sms text message... ...",
+        Check: "please check your phone message",
+      },
       SendTo: "code has been sent to",
-      CheckEmail: "please check your email",
       Fail: "fail to send code",
     },
 
@@ -377,24 +466,28 @@ export default {
   },
 
   Login: {
-    Forget: "Forget Password?",
-    NoAccount: "Doesn't have account,",
-    Register: "Click to register",
+    Forget: "Forgot password?",
+    NoAccount: "No account? ",
+    Register: "Register now.",
   },
 
   ForgetPassword: {
-    Title: "Forget Password",
-    Username: "E-mail Address",
-    UsernameInputwarning: "Please input correct email address",
+    Title: "Forgot Password",
+    Username: "Email Address",
+    UsernameInputwarning: "Please enter your correct email address",
     SendCode: "Send Code",
-    EmailVerifyCode: "E-mail Verification Code",
-    EmailVerifyCodeInpuWarning: "Please input a verification code",
-    Password: "Password",
-    PasswordInputWarning: "Please input your password",
-    Confirm: "Confirm Password",
+    EmailVerifyCode: "Email Verification Code",
+    EmailVerifyCodeInpuWarning: "Please enter your verification code",
+    Password: "Enter New Password",
+    PasswordInputWarning: "Please enter your password",
+    Confirm: "Confirm New Password",
     ConfirmInputWarning1: "Please input your confirm password",
     ConfirmInputWarning2: "password and confirm password not equal",
     ConfirmBtn: "Confirm",
+    PhoneInput: "Phone number bind to your account",
+    PhoneInputWarning: "please input your phone number",
+    UsePhone: "Use Phone",
+    UseEmail: "Use Email",
   },
 
   GoogleAuthentication: {
@@ -410,21 +503,11 @@ export default {
   Faq: {
     A: "Support",
     B: "FAQ",
-    C: "If you do not see your question below, please",
-    Contact: "contact us",
+    C: "If you do not see your question below, please ",
+    Contact: "send us an email.",
+    Contactt: "Or connect with Procyon on LINE",
     Header1: {
       Title: "THE PROCYON PLATFORM",
-      Q1: "I looked up your company on Google, but nothing came up. Is PRCN Technology Ltd. a company set up just for this platform? Are you backed by any large capital investors?",
-      A1: "As with the whole cryptocurrency industry, PRCN Technology is a relatively new venture. We understand if you feel that such a new field of investment deserves scrutiny. However, please know that our team has over a decade of collective industry experience in blockchain and cryptocurrency technologies.",
-      Q2: "I see that the company is registered offshore in Seychelles, Africa. Is this for tax incentive purposes?",
-      A2: "As you may know, some countries are more friendly than others to the new industry of cryptocurrencies and blockchain. Seychelles was selected for its crypto-friendly policies.",
-      Q3: "Where are Procyon’s mining servers located?",
-      A3: "Currently, our mining servers are located in Hong Kong.",
-      Q4: "What happens in the event of a flood or blackout in Hong Kong? Will my mining machine be okay?",
-      A4: "Hong Kong has one of the best electricity reliability rankings in the world,",
-      Diction: "as you can see from the official Hong Kong Electric website.",
-      Q5: "In case the server is damaged by a natural disaster, or is subject to robbery, Procyon is responsible for compensation, right?",
-      A5: "As indicated in Clause 6.7 of our entrustment agreement, Party A cannot be responsible for natural disasters such as a typhoon. As for Party A's responsibility to prevent robbery, that is part of our duty to our customers.",
       Q6: 'What is the "Technical Service Fee?"',
       A6: "The technical service fee covers the maintenance and operation costs of your mining machine, and is deducted from your daily mining rewards.",
       Q7: "Does Procyon have a mobile app?",
@@ -450,9 +533,6 @@ export default {
       A2: "Due to the daily price fluctuation of BTC and other cryptocurrencies, our sales partners convert payments to USDT (also known as Tether) — a stablecoin whose price is fixed to the US Dollar and does not fluctuate. This is to maintain stability and accuracy for our customers' payments. For any specific inquiries about your payment amount, please contact us at",
       Q3: 'I see the term "TiB" written in my contract, but I don\'t quite understand what that means.',
       A3: "TiB stands for Terabyte, a unit used to measure computer hard disk storage space. For cryptocurrencies mined via hard disk space, such as Spacemesh, the storage power (also known as hash power for non-storaged based cryptocurrency mining) is measured in units of TiB.",
-      Q4: "I don’t know much about digital currencies. Can you explain how Japanese tax law works regarding Digital Assets?",
-      A4: "For a detailed breakdown on Japanese Digital Currency Tax Law, please",
-      A5: "refer to the information provided here.",
     },
 
     Header4: {
@@ -475,7 +555,7 @@ export default {
       Q5: "When will I start receiving Spacemesh mining rewards?",
       A12: "If you purchased TB from the exclusive first mining batch, you will begin receiving rewards the day the Spacemesh main network launches.",
       Q6: "On which exchanges will Spacemesh be listed?",
-      A13: "SMH is certain to be on Coinbase as Coinbase directly invested in the project. It will also definitely be listed on Huobi and OKEx, and is very likely to be listed on Binance as well.",
+      A13: "SMH is likely to be on Coinbase as Coinbase directly invested in the project. It is also might be listed on large exchanges such as Huobi and OKEx, and will possibily be listed on Binance as well.",
     },
 
     Header5: {
@@ -492,6 +572,8 @@ export default {
       A6: "Mining Difficulty refers to the rate at which cryptocurrencies can be mined. Much like mining for gold in the real world, the more miners, the greater the total network-wide hash power, the higher the mining difficulty, and the lower the mining output per miner. The total mineable supply is fixed, so the more hash power that flows into mining, the less mining output is released per unit (TB) of hash power. The mining output of the first-batch mining is usually much greater in comparison to regular mining as a result.",
       Q5: "What is a cryptocurrency wallet? What is a cold wallet? What is the difference?",
       A7: "A cryptocurrency 'wallet' is where your digital currencies are kept, much in the same way you keep fiat currency cash in your wallet in your pocket. Normal online wallets, known as 'hot' wallets, store your cryptocurrencies online. 'Cold' wallets, or hardware wallets, are physical devices that store your cryptocurrencies offline. Though more secure than online 'hot' wallets, if a 'cold' wallet is damaged or lost, the digital assets inside are lost forever.",
+      Q6: "What is a test net? Why is it important before launch?",
+      A8: 'A test net is the early "beta" version of a blockchain project\'s software. This test net is often run by a small group of dedicatd users who provide technical feedback to the main project. The test net of any new blockchain project is important because it ensures stability, secruity, and performance before the launch of the main net. Projects will launch their main nets when the test net passes certain standards of quality. ',
     },
   },
 
@@ -579,7 +661,7 @@ export default {
     hh10: "10. How We Learn About, Acquire, Alter or Delete Your Personal Information",
     pp12: "Please contact us via the contact information stated in the Privacy Policy if you wish to confirm that we are processing your data, or access your personal data that we may hold, alter or delete your personal information we have collected.",
     hh11: "11. Contact Us",
-    pp13: "Please contact us in case of any concerns related to this Privacy Policy.",
+    pp13: "Please contact us at support@procyon.vip in case of any questions or concerns related to this Privacy Policy.",
 
     hhh1: "Terms of Service",
     hhh2: "Procyon User Registration Service Agreement",

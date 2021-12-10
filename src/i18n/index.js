@@ -3,7 +3,7 @@ import zhCN from "./zh-CN";
 import jp from "./jp";
 
 export default {
-  en_US: enUS,
-  zh_CN: zhCN,
-  ja_JP: jp,
+  "en-US": enUS,
+  "zh-CN": zhCN,
+  "ja-JP": jp,
 };

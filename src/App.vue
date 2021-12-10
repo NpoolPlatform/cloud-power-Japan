@@ -19,11 +19,7 @@ export default defineComponent({
     const q = useQuasar();
     const $store = useStore();
     const { locale } = useI18n({ useScope: "global" });
-    const lang = computed({
-      set: (val) => {
-        $store.commit("lang/updateLang", val);
-      },
-    });
+    locale.value = q.lang.getLocale();
 
     const user = computed({
       get: () => $store.state.user.user,
@@ -48,7 +44,6 @@ export default defineComponent({
       path,
       open,
       locale,
-      lang,
     };
   },
 
@@ -57,7 +52,12 @@ export default defineComponent({
       deep: true,
       immediate: true,
       handler: function (n, o) {
-        if (n === "/wallet" || n === "/account" || n === "/order") {
+        if (
+          n === "/wallet" ||
+          n === "/account" ||
+          n === "/order" ||
+          n === "/invitation"
+        ) {
           this.open = true;
         } else {
           this.open = false;
@@ -69,17 +69,20 @@ export default defineComponent({
   created: function () {
     var appID = "ff2c5d50-be56-413e-aba5-9c7ad888a769";
     this.q.cookies.set("AppID", appID);
-
-    var language = this.q.lang.getLocale();
-    if (language.match("zh")) {
-      this.locale = "ja_JP";
-      this.lang = "ja_JP";
-    } else if (language.match("en")) {
-      this.locale = "en_US";
-      this.lang = "en_US";
-    } else {
-      this.locale = "ja_JP";
-      this.lang = "ja_JP";
+    var hasLang = this.q.cookies.has("lang");
+    if (hasLang) {
+      var lang = this.q.cookies.get("lang");
+      switch (lang) {
+        case "en-US":
+          this.locale = lang;
+          break;
+        case "ja-JP":
+          this.locale = lang;
+          break;
+        default:
+          this.locale = "ja-JP";
+          break;
+      }
     }
   },
 
@@ -144,5 +147,11 @@ export default defineComponent({
   right: 0;
   height: 100%;
   width: 100%;
+  background-color: linear-gradient(
+    to bottom right,
+    #23292b 0,
+    #2a3943 50%,
+    #1f293a 100%
+  );
 }
 </style>

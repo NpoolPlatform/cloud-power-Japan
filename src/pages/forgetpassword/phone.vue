@@ -4,42 +4,24 @@
       <q-card class="register-card">
         <q-card-section class="card-title">
           <span>{{ $t("ForgetPassword.Title") }}</span>
+          <router-link
+            style="font-size: 16px; font-weight: 200; margin-right: 10px"
+            class="link"
+            :to="{ path: '/forgetpassword/email' }"
+            >{{ $t("ForgetPassword.UseEmail") }}</router-link
+          >
         </q-card-section>
         <q-card-section>
           <q-form class="register-form">
-            <q-input
-              class="register-input"
-              outlined
-              bg-color="blue-grey-1"
-              v-model="forgetPasswordInput.email"
-              :label="$t('ForgetPassword.Username')"
-              lazy-rules
-              :rules="[
-                (val) =>
-                  (val && val.length > 0) ||
-                  $t('ForgetPassword.UsernameInputwarning'),
-              ]"
-            ></q-input>
+            <country-code
+              v-model:userPhoneNumber="phoneResponse.phone"
+              v-model:userCode="phoneResponse.code"
+            ></country-code>
 
-            <q-input
-              class="register-input"
-              outlined
-              bg-color="blue-grey-1"
-              v-model="forgetPasswordInput.verifyCode"
-              :label="$t('ForgetPassword.EmailVerifyCode')"
-              lazy-rules
-              :rules="[
-                (val) =>
-                  (val && val.length > 0) ||
-                  $t('ForgetPassword.EmailVerifyCodeInpuWarning'),
-              ]"
-            >
-              <template v-slot:append>
-                <q-btn flat rounded :disable="sendDisable" @click="sendCode">{{
-                  getCode
-                }}</q-btn>
-              </template>
-            </q-input>
+            <send-code-input
+              :verifyParam="forgetPasswordInput.phone"
+              verifyType="phone"
+            ></send-code-input>
 
             <q-input
               class="register-input"
@@ -54,6 +36,7 @@
                   (val && val.length > 0) ||
                   $t('ForgetPassword.PasswordInputWarning'),
               ]"
+              ref="passwordRef"
             >
               <template v-slot:append>
                 <q-icon
@@ -77,6 +60,7 @@
                   (val && val.length > 0) ||
                   $t('ForgetPassword.ConfirmInputWarning2'),
               ]"
+              ref="confirmPasswordRef"
             >
               <template v-slot:append>
                 <q-icon
@@ -97,54 +81,77 @@
   </div>
 </template>
 <script>
-import { defineComponent, ref } from "vue";
+import { defineComponent, ref, reactive, computed } from "vue";
 import { api } from "src/boot/axios";
+import { useStore } from "vuex";
 import { fail, success, waiting } from "src/notify/notify";
 import { sha256Password } from "src/utils/utils";
 import { throttle } from "quasar";
 import { useI18n } from "vue-i18n";
+import SendCodeInput from "src/components/SendCodeInput.vue";
+import CountryCode from "../../components/CountryCode.vue";
 
 export default defineComponent({
+  components: { SendCodeInput, CountryCode },
   setup() {
     const { locale } = useI18n();
     const count = ref(0);
+    const $store = useStore();
+
+    const verifyCode = computed({
+      get: () => $store.state.verify.verifyCode,
+      set: (val) => {
+        $store.commit("verify/updateVerifyCode", val);
+      },
+    });
+
+    const phoneResponse = {
+      phone: "",
+      code: "",
+    };
+
+    const forgetPasswordInput = computed(() => {
+      return {
+        phone: phoneResponse.code + phoneResponse.phone,
+        verifyCode: verifyCode,
+        password: ref(""),
+        confirmPassword: ref(""),
+      };
+    });
+
+    const passwordRef = ref(null);
+    const confirmPasswordRef = ref(null);
+
     return {
       locale,
       count,
+      verifyCode,
+      forgetPasswordInput,
+      phoneResponse,
+      passwordRef,
+      confirmPasswordRef,
     };
   },
 
   data() {
     return {
-      forgetPasswordInput: {
-        email: "",
-        verifyCode: "",
-        password: "",
-        confirmPassword: "",
-      },
       isPwd: true,
       isCPwd: true,
-      sendDisable: false,
-      isGeting: false,
     };
   },
 
   created: function () {
     this.onConfirm = throttle(this.onConfirm, 1000);
-    this.sendCode = throttle(this.sendCode, 1000);
-  },
-
-  computed: {
-    getCode: function () {
-      if (this.count < 1) {
-        return this.$t("Register.SendCode");
-      }
-      return this.count + "s";
-    },
   },
 
   methods: {
     onConfirm: function () {
+      this.passwordRef.validate();
+      this.confirmPasswordRef.validate();
+      if (this.passwordRef.hasError || this.confirmPasswordRef.hasError) {
+        return;
+      }
+
       const notif = waiting(this.$t("Notify.ForgetPassword.Waiting"));
       if (
         this.forgetPasswordInput.password !==
@@ -156,62 +163,32 @@ export default defineComponent({
       var self = this;
 
       var password = sha256Password(this.forgetPasswordInput.password);
+      this.forgetPasswordInput.phone =
+        this.phoneResponse.code + this.phoneResponse.phone;
 
       api
         .post("/user-management/v1/forget/password", {
-          EmailAddress: self.forgetPasswordInput.email,
+          VerifyParam: self.forgetPasswordInput.phone,
           Password: password,
+          VerifyType: "phone",
           Code: self.forgetPasswordInput.verifyCode,
         })
         .then((resp) => {
           success(notif, self.$t("Notify.ForgetPassword.Success"));
           self.$router.push("/login");
+          self.verifyCode = "";
         })
         .catch((error) => {
           fail(notif, self.$t("Notify.ForgetPassword.Fail2"), error);
-        });
-    },
-
-    sendCode: function () {
-      if (this.forgetPasswordInput.email === "") {
-        fail(undefined, "email is null", null);
-      }
-      const notif = waiting(this.$t("Notify.SendCode.WaitSend"));
-      var failToSend = this.$t("Notify.SendCode.Fail");
-      var self = this;
-      api
-        .post("/verification-door/v1/send/email", {
-          Email: self.forgetPasswordInput.email,
-          Lang: self.locale,
-        })
-        .then(function (resp) {
-          const msg =
-            self.$t("Notify.SendCode.SendTo") +
-            self.forgetPasswordInput.email +
-            ", " +
-            self.$t("Notify.SendCode.CheckEmail");
-          success(notif, msg);
-          self.count = 60;
-          var countDown = setInterval(() => {
-            if (self.count < 1) {
-              self.isGeting = false;
-              self.sendDisable = false;
-              self.count = 60;
-              clearInterval(countDown);
-            } else {
-              self.isGeting = true;
-              self.sendDisable = true;
-              self.count--;
-            }
-          }, 1000);
-        })
-        .catch(function (error) {
-          fail(notif, failToSend, error);
         });
     },
   },
 });
 </script>
 
-<style scoped src="../css/register-style.css"></style>
-<style scoped></style>
+<style scoped src="../../css/register-style.css"></style>
+<style>
+.q-field--error .q-field__bottom {
+  color: #fc4468;
+}
+</style>

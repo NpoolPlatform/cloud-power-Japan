@@ -10,7 +10,7 @@
     "test": "echo \"No test specified\" && exit 0"
   },
   "dependencies": {
-    "@quasar/extras": "^1.0.0",
+    "@quasar/extras": "^1.12.2",
     "axios": "^0.21.1",
     "bcryptjs": "^2.4.3",
     "blueimp-md5": "^2.19.0",
@@ -19,8 +19,9 @@
     "dotenv": "^10.0.0",
     "less-loader": "^10.2.0",
     "lodash": "^4.17.21",
+    "maz-ui": "^2.3.11",
     "mitt": "^2.0.1",
-    "quasar": "^2.0.0",
+    "quasar": "^2.3.4",
     "vue-cookies": "^1.7.4",
     "vue-country-intl": "^1.0.30",
     "vue-i18n": "^9.0.0",
@@ -28,7 +29,7 @@
   },
   "devDependencies": {
     "@babel/eslint-parser": "^7.13.14",
-    "@quasar/app": "^3.0.0",
+    "@quasar/app": "^3.2.5",
     "eslint": "^7.14.0",
     "eslint-config-prettier": "^8.1.0",
     "eslint-plugin-vue": "^7.0.0",

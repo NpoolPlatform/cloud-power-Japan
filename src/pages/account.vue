@@ -6,6 +6,33 @@
         <div class="title" style="margin: 0 0">
           {{ $t("Account.PersonalDetails.Title") }}
         </div>
+
+        <div class="detail-column">
+          <div class="input-style">
+            <q-item-label>{{
+              $t("Account.PersonalDetails.Username")
+            }}</q-item-label>
+            <q-input
+              style="width: 90%; margin: 10px 20px 0 0"
+              outlined
+              v-model="username"
+              bg-color="blue-grey-1"
+            ></q-input>
+          </div>
+
+          <div class="input-style">
+            <q-item-label>{{
+              $t("Account.PersonalDetails.Gender")
+            }}</q-item-label>
+            <q-input
+              style="width: 90%; margin: 10px 20px 0 0"
+              outlined
+              v-model="gender"
+              bg-color="blue-grey-1"
+            ></q-input>
+          </div>
+        </div>
+
         <div class="detail-column">
           <div class="input-style">
             <q-item-label>{{
@@ -124,17 +151,10 @@
               </div>
               <q-space style="margin-bottom: 60px"></q-space>
               <div class="setting-btn-position">
-                <q-tooltip
-                  anchor="top middle"
-                  self="bottom middle"
-                  :offset="[10, 10]"
-                  v-if="!enableGoogleAuthentication"
-                  >{{ $t("Dialog.ChangePassword.HaveGoogle") }}</q-tooltip
-                >
                 <q-btn
                   :disable="!enableGoogleAuthentication"
                   class="account-btn setting-btn"
-                  @click="changePassword = true"
+                  @click="$router.push('/changepassword/email')"
                   >{{ $t("Account.SecuritySetting.ChangePasswordBtn") }}</q-btn
                 >
               </div>
@@ -164,9 +184,19 @@
               </div>
               <q-space style="margin-bottom: 60px"></q-space>
               <div class="setting-btn-position">
-                <q-btn disable color="grey" class="account-btn setting-btn">{{
-                  $t("Account.SecuritySetting.EmailBtn")
-                }}</q-btn>
+                <q-btn
+                  v-if="user.info.UserBasicInfo.EmailAddress === ''"
+                  class="account-btn setting-btn"
+                  @click="emailEnableDialog = true"
+                  >{{ $t("Account.SecuritySetting.EmailEnable") }}</q-btn
+                >
+
+                <q-btn
+                  v-if="user.info.UserBasicInfo.EmailAddress !== ''"
+                  class="account-btn setting-btn"
+                  @click="emailUpdateDialog = true"
+                  >{{ $t("Account.SecuritySetting.EmailUpdate") }}</q-btn
+                >
               </div>
             </div>
           </div>
@@ -196,9 +226,19 @@
               </div>
               <q-space style="margin-bottom: 26px"></q-space>
               <div class="setting-btn-position">
-                <q-btn disable color="grey" class="account-btn setting-btn">{{
-                  $t("Account.SecuritySetting.MobileBtn")
-                }}</q-btn>
+                <q-btn
+                  v-if="user.info.UserBasicInfo.PhoneNumber === ''"
+                  @click="phoneEnableDialog = true"
+                  class="account-btn setting-btn"
+                  >{{ $t("Account.SecuritySetting.PhoneEnable") }}</q-btn
+                >
+
+                <q-btn
+                  v-if="user.info.UserBasicInfo.PhoneNumber !== ''"
+                  @click="phoneUpdateDialog = true"
+                  class="account-btn setting-btn"
+                  >{{ $t("Account.SecuritySetting.PhoneUpdate") }}</q-btn
+                >
               </div>
             </div>
 
@@ -314,99 +354,6 @@
         </div>
       </div>
 
-      <q-dialog v-model="changePassword">
-        <q-card class="dialog-style">
-          <q-card-section>
-            <q-item-label class="text-black">{{
-              $t("Dialog.ChangePassword.EmailLabel")
-            }}</q-item-label>
-            <q-input
-              ref="emailRef"
-              lazy-rules
-              :rules="emailRule"
-              v-model="changePasswordInput.email"
-              :label="$t('Dialog.ChangePassword.EmailInput')"
-            ></q-input>
-          </q-card-section>
-          <q-card-section>
-            <q-item-label class="text-black">{{
-              $t("Dialog.ChangePassword.EmailCodeLabel")
-            }}</q-item-label>
-            <q-input
-              ref="emailCodeRef"
-              lazy-rules
-              :rules="emailCodeRule"
-              v-model="changePasswordInput.emailCode"
-              :label="$t('Dialog.ChangePassword.EmailCodeInput')"
-            >
-              <template v-slot:append>
-                <q-btn flat rounded @click="sendCode">{{
-                  $t("Dialog.ChangePassword.SendCode")
-                }}</q-btn>
-              </template>
-            </q-input>
-          </q-card-section>
-          <q-card-section>
-            <q-item-label class="text-black">{{
-              $t("Dialog.ChangePassword.GoogleAuthLabel")
-            }}</q-item-label>
-            <q-input
-              ref="googleCodeRef"
-              lazy-rules
-              :rules="googleCodeRule"
-              v-model="changePasswordInput.googleCode"
-              :label="$t('Dialog.ChangePassword.GoogleAuthInput')"
-            ></q-input>
-          </q-card-section>
-          <q-card-section>
-            <q-item-label class="text-black">{{
-              $t("Dialog.ChangePassword.OldLabel")
-            }}</q-item-label>
-            <q-input
-              ref="oldPassRef"
-              lazy-rules
-              :rules="oldPasswordRule"
-              v-model="changePasswordInput.old"
-              :label="$t('Dialog.ChangePassword.Old')"
-            ></q-input>
-          </q-card-section>
-          <q-card-section>
-            <q-item-label class="text-black">{{
-              $t("Dialog.ChangePassword.PasswordLabel")
-            }}</q-item-label>
-            <q-input
-              ref="passwordRef"
-              lazy-rules
-              :rules="passwordRule"
-              v-model="changePasswordInput.password"
-              :label="$t('Dialog.ChangePassword.Password')"
-            ></q-input>
-          </q-card-section>
-          <q-card-section>
-            <q-item-label class="text-black">{{
-              $t("Dialog.ChangePassword.ConfirmPasswordLabel")
-            }}</q-item-label>
-            <q-input
-              ref="confirmPassRef"
-              lazy-rules
-              :rules="confirmpassRule"
-              v-model="changePasswordInput.confirmPassword"
-              :label="$t('Dialog.ChangePassword.ConfirmPassword')"
-            ></q-input>
-          </q-card-section>
-          <q-card-section></q-card-section>
-
-          <q-card-actions align="center">
-            <q-btn
-              flat
-              :label="$t('Dialog.ChangePassword.Change')"
-              color="primary"
-              @click="onChangePassword"
-            />
-          </q-card-actions>
-        </q-card>
-      </q-dialog>
-
       <q-dialog v-model="openGaVerify">
         <q-card>
           <q-card-section>
@@ -485,13 +432,170 @@
       </div>
     </div>
 
+    <q-dialog v-model="emailEnableDialog">
+      <q-card class="dialog-box">
+        <q-card-section>
+          <span class="dialog-header">{{
+            $t("Account.Email.Enable.Title")
+          }}</span>
+        </q-card-section>
+        <q-card-section class="dialog-section-style">
+          <q-input
+            outlined
+            bg-color="blue-grey-1"
+            class="register-input"
+            :label="$t('Account.Email.Enable.EmailInput')"
+            v-model="emailEnableInput.email"
+            ref="emailEnableRef"
+            lazy-rules
+            :rules="emailRule"
+          ></q-input>
+        </q-card-section>
+        <q-card-section class="dialog-section-style">
+          <send-code-input
+            :verifyParam="emailEnableInput.email"
+            verifyType="email"
+            :username="user.info.UserBasicInfo.Username"
+          ></send-code-input>
+        </q-card-section>
+        <q-card-section class="dialog-section-style">
+          <q-btn class="dialog-btn-style" @click="onEnableEmail">{{
+            $t("Account.Email.Enable.Btn")
+          }}</q-btn>
+        </q-card-section>
+      </q-card></q-dialog
+    >
+
+    <q-dialog v-model="phoneEnableDialog">
+      <q-card class="dialog-box">
+        <q-card-section>
+          <span class="dialog-header">{{
+            $t("Account.Phone.Enable.Title")
+          }}</span>
+        </q-card-section>
+        <q-card-section class="dialog-section-style">
+          <country-code
+            v-model:userPhoneNumber="phoneEnableResponse.phone"
+            v-model:userCode="phoneEnableResponse.code"
+          ></country-code>
+        </q-card-section>
+        <q-card-section class="dialog-section-style">
+          <send-code-input
+            :verifyParam="phoneEnableInput.phone"
+            verifyType="phone"
+          ></send-code-input>
+        </q-card-section>
+        <q-card-section class="dialog-section-style">
+          <q-btn class="dialog-btn-style" @click="onEnablePhone">{{
+            $t("Account.Phone.Enable.Btn")
+          }}</q-btn>
+        </q-card-section>
+      </q-card>
+    </q-dialog>
+
+    <q-dialog v-model="emailUpdateDialog">
+      <q-card class="dialog-box">
+        <q-card-section>
+          <span class="dialog-header">{{
+            $t("Account.Email.Update.Title")
+          }}</span>
+        </q-card-section>
+        <q-card-section class="dialog-section-style">
+          <q-input
+            outlined
+            bg-color="blue-grey-1"
+            class="register-input"
+            :label="$t('Account.Email.Update.OldEmailInput')"
+            v-model="emailUpdateInput.oldEmail"
+            ref="emailUpdateOldRef"
+            lazy-rules
+            :rules="emailRule"
+          ></q-input>
+        </q-card-section>
+        <q-card-section class="dialog-section-style">
+          <send-code-input
+            :verifyParam="emailUpdateInput.oldEmail"
+            verifyType="email"
+            codeType="old"
+            :username="user.info.UserBasicInfo.Username"
+          ></send-code-input>
+        </q-card-section>
+        <q-card-section class="dialog-section-style">
+          <q-input
+            outlined
+            bg-color="blue-grey-1"
+            class="register-input"
+            :label="$t('Account.Email.Update.EmailInput')"
+            v-model="emailUpdateInput.email"
+            ref="emailUpdateRef"
+            lazy-rules
+            :rules="emailRule"
+          ></q-input>
+        </q-card-section>
+        <q-card-section class="dialog-section-style">
+          <send-code-input
+            :verifyParam="emailUpdateInput.email"
+            verifyType="email"
+            :username="user.info.UserBasicInfo.Username"
+          ></send-code-input>
+        </q-card-section>
+        <q-card-section class="dialog-section-style">
+          <q-btn class="dialog-btn-style" @click="onUpdateEmail">{{
+            $t("Account.Email.Update.Btn")
+          }}</q-btn>
+        </q-card-section>
+      </q-card>
+    </q-dialog>
+
+    <q-dialog v-model="phoneUpdateDialog">
+      <q-card class="dialog-box">
+        <q-card-section>
+          <span class="dialog-header">{{
+            $t("Account.Phone.Update.Title")
+          }}</span>
+        </q-card-section>
+        <q-card-section class="dialog-section-style">
+          <country-code
+            v-model:userPhoneNumber="phoneUpdateResponse.oldPhone"
+            v-model:userCode="phoneUpdateResponse.oldCode"
+            inputType="old"
+          ></country-code>
+        </q-card-section>
+        <q-card-section class="dialog-section-style">
+          <send-code-input
+            :verifyParam="phoneUpdateInput.oldPhone"
+            verifyType="phone"
+            codeType="old"
+          ></send-code-input>
+        </q-card-section>
+        <q-card-section class="dialog-section-style">
+          <country-code
+            v-model:userPhoneNumber="phoneUpdateResponse.phone"
+            v-model:userCode="phoneUpdateResponse.code"
+            inputType="new"
+          ></country-code>
+        </q-card-section>
+        <q-card-section class="dialog-section-style">
+          <send-code-input
+            :verifyParam="phoneUpdateInput.phone"
+            verifyType="phone"
+          ></send-code-input>
+        </q-card-section>
+        <q-card-section class="dialog-section-style">
+          <q-btn class="dialog-btn-style" @click="onUpdatePhone">{{
+            $t("Account.Phone.Update.Btn")
+          }}</q-btn></q-card-section
+        >
+      </q-card>
+    </q-dialog>
+
     <div class="hr"></div>
   </div>
 </template>
 
 <script>
 import { api } from "src/boot/axios";
-import { defineComponent, computed, ref } from "vue";
+import { defineComponent, computed, ref, reactive } from "vue";
 import { useStore } from "vuex";
 import { success, fail, waiting } from "../notify/notify";
 import { throttle, useQuasar } from "quasar";
@@ -499,9 +603,11 @@ import VerifycodeInput from "src/components/VerifycodeInput.vue";
 import { timestampToDate } from "src/utils/utils";
 import { sha256Password } from "src/utils/utils";
 import { useI18n } from "vue-i18n";
+import SendCodeInput from "src/components/SendCodeInput.vue";
+import CountryCode from "src/components/CountryCode.vue";
 
 export default defineComponent({
-  components: { VerifycodeInput },
+  components: { VerifycodeInput, SendCodeInput, CountryCode },
   setup() {
     const $store = useStore();
     const user = computed({
@@ -511,8 +617,29 @@ export default defineComponent({
       },
     });
 
+    const userBasicInfo = computed({
+      get: () => $store.state.user.user.info.UserBasicInfo,
+      set: (val) => {
+        $store.commit("user/updateUserBasicInfo", val);
+      },
+    });
+
     const { locale } = useI18n({ useScope: "global" });
     const { t } = useI18n({ useScope: "global" });
+
+    const username = computed({
+      get: () => $store.state.user.user.info.UserBasicInfo.Username,
+      set: (val) => {
+        $store.commit("user/updateUsername", val);
+      },
+    });
+
+    const gender = computed({
+      get: () => $store.state.user.user.info.UserBasicInfo.Gender,
+      set: (val) => {
+        $store.commit("user/updateGender", val);
+      },
+    });
 
     const firstname = computed({
       get: () => $store.state.user.user.info.UserBasicInfo.FirstName,
@@ -581,6 +708,20 @@ export default defineComponent({
     const q = useQuasar();
     const password = ref(null);
 
+    const verifyCode = computed({
+      get: () => $store.state.verify.verifyCode,
+      set: (val) => {
+        $store.commit("verify/updateVerifyCode", val);
+      },
+    });
+
+    const oldVerifyCode = computed({
+      get: () => $store.state.verify.oldVerifyCode,
+      set: (val) => {
+        $store.commit("verify/updateOldVerifyCode", val);
+      },
+    });
+
     const emailRef = ref(null);
     const emailCodeRef = ref(null);
     const googleCodeRef = ref(null);
@@ -608,11 +749,60 @@ export default defineComponent({
       (val) => (val && val.length > 0) || t("Register.PasswordInputWarning"),
     ]);
 
+    const emailEnableRef = ref(null);
+    const emailUpdateOldRef = ref(null);
+    const emailUpdateRef = ref(null);
+
     const pagination = ref({
       sortBy: "desc",
       descending: false,
       page: 1,
       rowsPerPage: 3,
+    });
+
+    const phoneEnableResponse = {
+      phone: "",
+      code: "",
+    };
+
+    const phoneUpdateResponse = {
+      oldPhone: "",
+      oldCode: "",
+      phone: "",
+      code: "",
+    };
+
+    const emailEnableDialog = ref(false);
+    const phoneEnableDialog = ref(false);
+    const emailUpdateDialog = ref(false);
+    const phoneUpdateDialog = ref(false);
+
+    const emailEnableInput = reactive({
+      email: ref(""),
+      emailCode: verifyCode.value,
+    });
+
+    const phoneEnableInput = computed(() => {
+      return {
+        phone: phoneEnableResponse.code + phoneEnableResponse.phone,
+        phoneCode: verifyCode.value,
+      };
+    });
+
+    const emailUpdateInput = reactive({
+      oldEmail: ref(""),
+      oldEmailCode: oldVerifyCode.value,
+      email: ref(""),
+      emailCode: verifyCode.value,
+    });
+
+    const phoneUpdateInput = computed(() => {
+      return {
+        oldPhone: phoneUpdateResponse.oldCode + phoneUpdateResponse.oldPhone,
+        oldPhoneCode: oldVerifyCode.value,
+        phone: phoneUpdateResponse.code + phoneUpdateResponse.phone,
+        phoneCode: verifyCode.value,
+      };
     });
 
     return {
@@ -625,6 +815,8 @@ export default defineComponent({
       city,
       province,
       country,
+      username,
+      gender,
       enableGoogleAuthentication,
       q,
       pagination,
@@ -642,6 +834,21 @@ export default defineComponent({
       oldPasswordRule,
       locale,
       password,
+      emailEnableDialog,
+      phoneEnableDialog,
+      phoneUpdateDialog,
+      emailUpdateDialog,
+      emailUpdateInput,
+      phoneUpdateInput,
+      emailEnableInput,
+      phoneEnableInput,
+      phoneEnableResponse,
+      phoneUpdateResponse,
+      emailEnableRef,
+      emailUpdateOldRef,
+      emailUpdateRef,
+      verifyCode,
+      oldVerifyCode,
     };
   },
 
@@ -712,8 +919,6 @@ export default defineComponent({
       1000
     );
     this.submitLoginVerify = throttle(this.submitLoginVerify, 1000);
-    this.sendCode = throttle(this.sendCode, 1000);
-    this.onChangePassword = throttle(this.onChangePassword, 1000);
   },
 
   computed: {
@@ -726,7 +931,11 @@ export default defineComponent({
     },
 
     enabledMobile: function () {
-      return false;
+      if (this.user.info.UserBasicInfo.PhoneNumber !== "") {
+        return true;
+      } else {
+        return false;
+      }
     },
 
     enabledID: function () {
@@ -922,12 +1131,146 @@ export default defineComponent({
           fail(notif, failToSend, error);
         });
     },
+
+    onEnableEmail: function () {
+      this.emailEnableRef.validate();
+      if (this.emailEnableRef.hasError) {
+        return;
+      }
+
+      if (this.emailEnableInput.emailCode === "") {
+        fail(undefined, "please input your verify code", "");
+        return;
+      }
+
+      var self = this;
+
+      api
+        .post("/user-management/v1/bind/email", {
+          EmailAddress: self.emailEnableInput.email,
+          Code: self.emailEnableInput.emailCode,
+        })
+        .then((resp) => {
+          success(undefined, "successfully enable email address");
+          self.verifyCode = "";
+          self.emailEnableDialog = false;
+        })
+        .catch((error) => {
+          fail(undefined, "fail to enable email address", error);
+        });
+    },
+
+    onEnablePhone: function () {
+      if (this.phoneEnableInput.phone === "") {
+        fail(undefined, "please input your phone number");
+        return;
+      }
+
+      if (this.phoneEnableInput.phoneCode === "") {
+        fail(undefined, "please input your verify code");
+        return;
+      }
+
+      var self = this;
+      api
+        .post("/user-management/v1/bind/phone", {
+          PhoneNumber: self.phoneEnableInput.phone,
+          Code: self.phoneEnableInput.phoneCode,
+        })
+        .then((resp) => {
+          success(undefined, "successfully enable email address");
+          self.verifyCode = "";
+          self.emailEnableDialog = false;
+        })
+        .catch((error) => {
+          fail(undefined, "fail to enable email address", error);
+        });
+    },
+
+    onUpdateEmail: function () {
+      this.emailUpdateOldRef.validate();
+      this.emailUpdateRef.validate();
+      if (this.emailUpdateOldRef.hasError || this.emailUpdateRef.hasError) {
+        return;
+      }
+
+      if (
+        this.emailUpdateInput.oldEmailCode === "" ||
+        this.emailUpdateInput.emailCode === ""
+      ) {
+        fail(undefined, "please input your verify code");
+        return;
+      }
+
+      api
+        .post("/user-management/v1/update/user/email", {
+          OldEmail: self.emailUpdateInput.oldEmail,
+          OldCode: self.emailUpdateInput.oldEmailCode,
+          NewEmail: self.emailUpdateInput.email,
+          NewCode: self.emailUpdateInput.code,
+        })
+        .then((resp) => {
+          success(undefined, "successfully update user email address");
+          self.verifyCode = "";
+          self.oldVerifyCode = "";
+          self.emailUpdateDialog = false;
+        })
+        .catch((error) => {
+          fail(undefined, "fail to update email address:", error);
+        });
+    },
+
+    onUpdatePhone: function () {
+      if (this.phoneUpdateInput.oldPhone === "") {
+        fail(undefined, "please input your old phone number");
+        return;
+      }
+
+      if (this.phoneUpdateInput.phone === "") {
+        fail(undefined, "please input your phone number");
+        return;
+      }
+
+      if (
+        this.phoneUpdateInput.oldPhoneCode === "" ||
+        this.phoneUpdateInput.phoneCode === ""
+      ) {
+        fail(undefined, "please input your verify code");
+        return;
+      }
+
+      var self = this;
+
+      api
+        .post("/user-management/v1/update/user/phone", {
+          OldPhone: self.phoneUpdateInput.oldPhone,
+          OldCode: self.phoneUpdateInput.oldPhoneCode,
+          NewPhone: self.phoneUpdateInput.phone,
+          NewCode: self.phoneUpdateInput.phoneCode,
+        })
+        .then((resp) => {
+          success(undefined, "successfully update user phone");
+          self.verifyCode = "";
+          self.oldVerifyCode = "";
+          self.phoneUpdateDialog = false;
+        })
+        .catch((error) => {
+          fail(undefined, "fail to update phone number: ", error);
+        });
+    },
   },
 });
 </script>
 
 <style scoped src="../css/account-style.css"></style>
 <style scoped>
+.register-input {
+  border-radius: 12px;
+  color: #27424c;
+  font-size: 14px;
+  width: 100%;
+  margin: 10px 0;
+}
 .card-title {
   color: #e1eeef;
   font-size: 24px;

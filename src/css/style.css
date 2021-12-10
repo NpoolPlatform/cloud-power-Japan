@@ -801,7 +801,8 @@ header.with-sidebar {
   display: inline-block;
   position: absolute;
   top: 0;
-  left: -24px;
+  left: -20px;
+  font-size: 20px;
   -webkit-text-fill-color: #1ec498;
 }
 

@@ -31,23 +31,18 @@
               push
               glossy
               toggle-color="orange-9"
+              @click="changeLang"
               :options="[
-                { label: $t('Footer.Forth.En'), value: 'en_US' },
-                { label: $t('Footer.Forth.Jp'), value: 'ja_JP' },
+                { label: $t('Footer.Forth.En'), value: 'en-US' },
+                { label: $t('Footer.Forth.Jp'), value: 'ja-JP' },
               ]"
             />
           </div>
           <q-btn
-            class="alt"
-            disable
-            style="
-              margin-right: 10px;
-              background-color: grey;
-              border: none;
-              width: 140px;
-            "
+            class="btn-register"
+            style="width: 140px; margin-right: 10px; text-transform: unset"
             flat
-            @click="$router.push('/register')"
+            @click="$router.push('/emailregister')"
             >{{ $t("Register.Register") }}</q-btn
           >
           <q-btn
@@ -106,6 +101,19 @@
                   </q-item-section>
                 </q-item>
 
+                <q-item
+                  clickable
+                  v-close-popup
+                  @click="
+                    $router.push('/invitation');
+                    showList = !showList;
+                  "
+                >
+                  <q-item-section>
+                    <q-item-label>{{ $t("Drawer.Invitation") }}</q-item-label>
+                  </q-item-section>
+                </q-item>
+
                 <q-item clickable v-close-popup @click="logout">
                   <q-item-section>
                     <q-item-label>{{ $t("Drawer.Logout") }}</q-item-label>
@@ -123,6 +131,7 @@
         background: linear-gradient(to bottom right, #1f293a 0, #23292b 100%);
         box-shadow: 0px 0px 60px 15px #051319;
         text-align: center;
+        z-index: -1;
       "
       class="drawer-style text-white"
       :width="200"
@@ -140,6 +149,10 @@
         <router-link href class="drawer-item" :to="{ path: '/wallet' }">
           <q-img :src="walletImg" class="drawer-item-img"></q-img>
           <span class="drawer-item-span">{{ $t("Drawer.Wallet") }}</span>
+        </router-link>
+        <router-link href class="drawer-item" :to="{ path: '/invitation' }">
+          <q-img :src="walletImg" class="drawer-item-img"></q-img>
+          <span class="drawer-item-span">{{ $t("Drawer.Invitation") }}</span>
         </router-link>
       </div>
     </q-drawer>
@@ -159,6 +172,24 @@
               </div>
               <div class="content-h4">{{ $t("Footer.First.Content") }}</div>
             </div>
+
+            <div class="content-items">
+              <h4>{{ $t("Footer.Forth.Title") }}</h4>
+              <div class="button-group">
+                <q-btn-toggle
+                  v-model="locale"
+                  push
+                  glossy
+                  toggle-color="orange-9"
+                  @click="changeLang"
+                  :options="[
+                    { label: $t('Footer.Forth.En'), value: 'en-US' },
+                    { label: $t('Footer.Forth.Jp'), value: 'ja-JP' },
+                  ]"
+                />
+              </div>
+            </div>
+
             <div class="content-items">
               <h4>{{ $t("Footer.Second.Title") }}</h4>
               <div class="item-links">
@@ -176,6 +207,7 @@
                 >
               </div>
             </div>
+
             <div class="content-items">
               <h4>{{ $t("Footer.Third.Title") }}</h4>
               <div class="item-links">
@@ -194,21 +226,6 @@
                 >
               </div>
             </div>
-            <div class="content-items">
-              <h4>{{ $t("Footer.Forth.Title") }}</h4>
-              <div class="button-group">
-                <q-btn-toggle
-                  v-model="locale"
-                  push
-                  glossy
-                  toggle-color="orange-9"
-                  :options="[
-                    { label: $t('Footer.Forth.En'), value: 'en_US' },
-                    { label: $t('Footer.Forth.Jp'), value: 'ja_JP' },
-                  ]"
-                />
-              </div>
-            </div>
           </div>
           <p class="copyright">© 2021 PRCN Technology Ltd.</p>
         </div>
@@ -223,19 +240,14 @@ import { fail, success } from "src/notify/notify";
 import { defineComponent, computed } from "vue";
 import { useI18n } from "vue-i18n";
 import { useStore } from "vuex";
+import { useQuasar } from "quasar";
 
 export default defineComponent({
   name: "MainPage",
   setup() {
-    const { locale } = useI18n({ useScope: "global" });
+    const { t, locale } = useI18n({ useScope: "global" });
     const $store = useStore();
-
-    const lang = computed({
-      get: () => $store.state.lang.lang,
-      set: (val) => {
-        $store.commit("lang/updateLang", val);
-      },
-    });
+    const q = useQuasar();
 
     const openSide = computed({
       get: () => $store.state.router.router.open,
@@ -244,14 +256,25 @@ export default defineComponent({
       },
     });
 
+    const changeLang = () => {
+      var msg = t("Loading.Msg");
+      q.loading.show({
+        message: msg,
+        html: true,
+      });
+      location.reload();
+      q.loading.hide();
+    };
+
     const logined = computed({
       get: () => $store.state.user.user.logined,
     });
     return {
+      q,
       locale,
       openSide,
       logined,
-      lang,
+      changeLang,
     };
   },
 
@@ -278,7 +301,10 @@ export default defineComponent({
       deep: true,
       immediate: true,
       handler: function (n, o) {
-        this.lang = n;
+        var lang = this.q.cookies.get("lang");
+        if (lang !== n) {
+          this.q.cookies.set("lang", n);
+        }
       },
     },
     openSide: {
@@ -337,5 +363,19 @@ export default defineComponent({
 .q-field__suffix {
   font-size: 18px;
   color: white;
+}
+</style>
+
+<style scoped>
+.q-btn-group--glossy > .q-btn-item {
+  background-image: linear-gradient(to bottom right, #6b787c 0, #3d4c52 100%);
+}
+
+.bg-orange-9 {
+  background: linear-gradient(
+    to bottom right,
+    #ff964a 0,
+    #ce5417 100%
+  ) !important;
 }
 </style>

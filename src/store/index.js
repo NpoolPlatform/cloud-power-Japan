@@ -1,11 +1,12 @@
-import { store } from 'quasar/wrappers'
-import { createStore } from 'vuex'
+import { store } from "quasar/wrappers";
+import { createStore } from "vuex";
 
-import user from './module-user'
-import router from './module-router'
-import goods from './module-goods'
-import orders from './module-order'
-import lang from './module-lang'
+import user from "./module-user";
+import router from "./module-router";
+import goods from "./module-goods";
+import orders from "./module-order";
+import lang from "./module-lang";
+import verify from "./module-verify";
 
 /*
  * If not building with SSR mode, you can
@@ -24,12 +25,13 @@ export default store(function (/* { ssrContext } */) {
       goods,
       orders,
       lang,
+      verify,
     },
 
     // enable strict mode (adds overhead!)
     // for dev mode and --debug builds only
-    strict: process.env.DEBUGGING
-  })
+    strict: process.env.DEBUGGING,
+  });
 
-  return Store
-})
+  return Store;
+});

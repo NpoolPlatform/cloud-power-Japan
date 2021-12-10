@@ -4,6 +4,12 @@
       <q-card class="register-card">
         <q-card-section class="card-title">
           <span>{{ $t("Register.Title") }}</span>
+          <router-link
+            class="link"
+            style="font-size: 16px; font-weight: 200; margin-right: 10px"
+            :to="{ path: '/phoneregister' }"
+            >{{ $t("Register.RegisterPhone") }}</router-link
+          >
         </q-card-section>
         <q-card-section>
           <q-form class="register-form">
@@ -18,20 +24,10 @@
               :rules="usernameRule"
             ></q-input>
 
-            <q-input
-              ref="codeRef"
-              class="register-input"
-              outlined
-              bg-color="blue-grey-1"
-              v-model="registerInput.verifyCode"
-              :label="$t('Register.EmailVerifyCode')"
-              lazy-rules
-              :rules="codeRule"
-            >
-              <template v-slot:append>
-                <q-btn flat rounded @click="sendCode">{{ getCode }}</q-btn>
-              </template>
-            </q-input>
+            <send-code-input
+              :verifyParam="registerInput.email"
+              verifyType="email"
+            ></send-code-input>
 
             <q-input
               ref="passRef"
@@ -79,6 +75,9 @@
               bg-color="blue-grey-1"
               v-model="registerInput.invitationCode"
               :label="$t('Register.InvitationCode')"
+              lazy-rules
+              ref="invitationRef"
+              :rules="invitationRule"
             ></q-input>
 
             <q-checkbox v-model="agree"></q-checkbox>
@@ -89,13 +88,9 @@
               <a href class="link">{{ $t("Register.User") }}</a>
             </span>
 
-            <q-btn
-              class="register-btn"
-              disable
-              color="grey"
-              @click="onRegister"
-              >{{ $t("Register.Register") }}</q-btn
-            >
+            <q-btn class="register-btn" @click="onRegister">{{
+              $t("Register.Register")
+            }}</q-btn>
 
             <p class="text-style">
               {{ $t("Register.Have") }}
@@ -111,17 +106,21 @@
 </template>
 
 <script>
-import { defineComponent, ref, reactive } from "vue";
+import { defineComponent, ref, reactive, computed } from "vue";
 import { api } from "boot/axios";
-import { success, fail, waiting } from "../notify/notify";
+import { success, fail, waiting } from "../../notify/notify";
 import { useI18n } from "vue-i18n";
 import { sha256Password } from "src/utils/utils";
 import { throttle } from "quasar";
+import SendCodeInput from "src/components/SendCodeInput.vue";
 
 export default defineComponent({
+  components: { SendCodeInput },
   setup() {
     const email = ref("");
-    const verifyCode = ref("");
+    const verifyCode = computed({
+      get: () => $store.state.verify.verifyCode,
+    });
     const password = ref("");
     const confirmPassword = ref("");
     const invitationCode = ref("");
@@ -133,19 +132,19 @@ export default defineComponent({
       invitationCode,
     });
 
-    const { t } = useI18n();
+    const { t } = useI18n({ useScope: "global" });
 
     const usernameRef = ref(null);
-    const codeRef = ref(null);
     const passRef = ref(null);
     const confirmPassRef = ref(null);
 
+    const invitationRef = ref(null);
+    const invitationRule = ref([
+      (val) => (val && val.length > 0) || t("Register.InvitationWarning"),
+    ]);
+
     const usernameRule = ref([
       (val) => (val && val.length > 0) || t("Register.UsernameInputwarning"),
-    ]);
-    const codeRule = ref([
-      (val) =>
-        (val && val.length > 0) || t("Register.EmailVerifyCodeInpuWarning"),
     ]);
     const passwordRule = ref([
       (val) => (val && val.length > 0) || t("Register.PasswordInputWarning"),
@@ -155,6 +154,7 @@ export default defineComponent({
       (val) =>
         (val && val !== password.value) || t("Register.ConfirmInputWarning2"),
     ]);
+    const agree = ref(false);
 
     return {
       registerInput,
@@ -162,90 +162,32 @@ export default defineComponent({
       isCPwd: ref(true),
       usernameRule,
       usernameRef,
-      codeRule,
-      codeRef,
       passwordRule,
       passRef,
       confirmPassRef,
       confirmPassRule,
-    };
-  },
-
-  data() {
-    return {
-      agree: false,
-      sendDisable: false,
-      isGeting: false,
-      count: 0,
+      agree,
+      invitationRef,
+      invitationRule,
     };
   },
 
   created: function () {
-    this.sendCode = throttle(this.sendCode, 1000);
     this.onRegister = throttle(this.onRegister, 1000);
   },
 
-  computed: {
-    getCode: function () {
-      if (this.count < 1) {
-        return this.$t("Register.SendCode");
-      }
-      return this.count + "s";
-    },
-  },
-
   methods: {
-    sendCode: function () {
-      this.usernameRef.validate();
-      if (this.usernameRef.hasError) {
-        return;
-      }
-
-      const notif = waiting("send code successfully");
-      var failToSend = "fail to send code";
-
-      var thiz = this;
-      api
-        .post("/verification-door/v1/send/email", {
-          Email: this.registerInput.email,
-        })
-        .then(function (resp) {
-          const msg =
-            "code has been sent" +
-            thiz.registerInput.email +
-            ", " +
-            "please check your email";
-          success(notif, msg);
-          thiz.count = 60;
-          var countDown = setInterval(() => {
-            if (thiz.count < 1) {
-              thiz.isGeting = false;
-              thiz.sendDisable = false;
-              thiz.count = 60;
-              clearInterval(countDown);
-            } else {
-              thiz.isGeting = true;
-              thiz.sendDisable = true;
-              thiz.count--;
-            }
-          }, 1000);
-        })
-        .catch(function (error) {
-          fail(notif, failToSend, error);
-        });
-    },
-
     onRegister: function () {
       this.usernameRef.validate();
-      this.codeRef.validate();
       this.passRef.validate();
       this.confirmPassRef.validate();
+      this.invitationRef.validate();
 
       if (
         this.usernameRef.hasError ||
-        this.codeRef.hasError ||
         this.passRef.hasError ||
-        this.confirmPassRef.hasError
+        this.confirmPassRef.hasError ||
+        this.invitationRef.hasError
       ) {
         return;
       }
@@ -277,4 +219,9 @@ export default defineComponent({
 });
 </script>
 
-<style scoped src="../css/register-style.css"></style>
+<style scoped src="../../css/register-style.css"></style>
+<style>
+.q-field--error .q-field__bottom {
+  color: #fc4468;
+}
+</style>

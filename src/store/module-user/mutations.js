@@ -2,6 +2,10 @@ export function updateUserInfo(state, user) {
   state.user = user;
 }
 
+export function updateUserBasicInfo(state, val) {
+  state.user.info.UserBasicInfo = val;
+}
+
 export function updateUserLoginVerify(state, val) {
   state.user.info.UserAppInfo.UserApplicationInfo.GALogin = val;
 }
@@ -36,4 +40,12 @@ export function updateCountry(state, val) {
 
 export function updateGA(state, val) {
   state.user.info.UserAppInfo.UserApplicationInfo.GAVerify = val;
+}
+
+export function updateUsername(state, val) {
+  state.user.info.UserBasicInfo.Username = val;
+}
+
+export function updateGender(state, val) {
+  state.user.info.UserBasicInfo.Gender = val;
 }

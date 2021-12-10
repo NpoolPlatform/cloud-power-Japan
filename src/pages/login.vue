@@ -12,28 +12,11 @@
               class="register-input"
               outlined
               bg-color="blue-grey-1"
-              v-model="loginInput.email"
+              v-model="loginInput.username"
               :label="$t('Register.Username')"
               lazy-rules
               :rules="usernameRule"
             ></q-input>
-
-            <q-input
-              ref="codeRef"
-              class="register-input"
-              outlined
-              bg-color="blue-grey-1"
-              v-model="loginInput.verifyCode"
-              :label="$t('Register.EmailVerifyCode')"
-              lazy-rules
-              :rules="codeRule"
-            >
-              <template v-slot:append>
-                <q-btn flat rounded :disable="sendDisable" @click="sendCode">
-                  {{ getCode }}</q-btn
-                >
-              </template>
-            </q-input>
 
             <q-input
               ref="passRef"
@@ -58,20 +41,26 @@
               <recaptcha-vue @callback="callback"></recaptcha-vue>
             </div>
 
-            <q-btn id="loginBtn" class="register-btn" @click="login">{{
-              $t("Register.Login")
-            }}</q-btn>
+            <q-btn
+              id="loginBtn"
+              class="register-btn"
+              style="margin: 25px 0 10px 0; width: 100%"
+              @click="login"
+              >{{ $t("Register.Login") }}</q-btn
+            >
             <div class="bottom-style">
               <router-link
                 class="link-style"
-                :to="{ path: '/forgetpassword' }"
+                :to="{ path: '/forgetpassword/email' }"
                 >{{ $t("Login.Forget") }}</router-link
               >
               <div>
                 <span>{{ $t("Login.NoAccount") }}</span>
-                <router-link class="link-style" :to="{ path: '/register' }">{{
-                  $t("Login.Register")
-                }}</router-link>
+                <router-link
+                  class="link-style"
+                  :to="{ path: '/emailregister' }"
+                  >{{ $t("Login.Register") }}</router-link
+                >
               </div>
             </div>
           </q-form>
@@ -89,6 +78,33 @@
         </q-card-section>
       </q-card>
     </q-dialog>
+
+    <q-dialog v-model="emailDialog">
+      <q-card>
+        <q-card-section>
+          <span class="card-title text-black">Email Verify</span>
+        </q-card-section>
+        <q-card-section>
+          <q-input
+            ref="usernameRef"
+            class="register-input"
+            outlined
+            bg-color="blue-grey-1"
+            v-model="emailVerifyInput.email"
+            :label="$t('Register.Username')"
+            lazy-rules
+            :rules="usernameRule"
+          ></q-input>
+          <send-code-input
+            :verifyParam="emailVerifyInput.email"
+            verifyType="email"
+          ></send-code-input>
+          <q-btn class="register-btn" @click="onVerifyEmail">{{
+            $t("Register.Register")
+          }}</q-btn>
+        </q-card-section>
+      </q-card>
+    </q-dialog>
   </div>
 </template>
 
@@ -103,9 +119,10 @@ import { useI18n } from "vue-i18n";
 import { useQuasar } from "quasar";
 import { sha256Password } from "src/utils/utils";
 import { throttle } from "quasar";
+import SendCodeInput from "src/components/SendCodeInput.vue";
 
 export default defineComponent({
-  components: { RecaptchaVue, VerifycodeInput },
+  components: { RecaptchaVue, VerifycodeInput, SendCodeInput },
   setup() {
     const { locale } = useI18n({ useScope: "global" });
     const q = useQuasar();
@@ -119,36 +136,37 @@ export default defineComponent({
       },
     });
 
+    const verifyCode = computed({
+      get: () => $store.state.verify.verifyCode,
+    });
+
+    const emailVerifyInput = reactive({
+      email: ref(""),
+      emailCode: verifyCode.value,
+    });
+
     const { t } = useI18n({ useScope: "global" });
 
     const usernameRef = ref(null);
-    const codeRef = ref(null);
+
     const passRef = ref(null);
     const usernameRule = ref([
       (val) => (val && val.length > 0) || t("Register.UsernameInputwarning"),
     ]);
-    const codeRule = ref([
-      (val) =>
-        (val && val.length > 0) || t("Register.EmailVerifyCodeInpuWarning"),
-    ]);
     const passwordRule = ref([
       (val) => (val && val.length > 0) || t("Register.PasswordInputWarning"),
     ]);
-
-    const count = ref(0);
 
     return {
       isPwd: ref(true),
       usernameRule,
       user,
       usernameRef,
-      codeRule,
-      codeRef,
       passwordRule,
       passRef,
-      locale,
+      emailDialog: ref(false),
+      emailVerifyInput,
       q,
-      count,
     };
   },
 
@@ -168,84 +186,30 @@ export default defineComponent({
       authCode: "",
       finish: "",
       loginInput: {
-        email: "",
-        verifyCode: "",
+        username: "",
         password: "",
         response: "",
       },
-      sendDisable: false,
-      isGeting: false,
       refreshRecaptcha: true,
     };
   },
 
   created: function () {
-    this.sendCode = throttle(this.sendCode, 1000);
     this.login = throttle(this.login, 1000);
   },
 
   computed: {
     getCode: function () {
-      if (this.count < 1) {
-        return this.$t("Register.SendCode");
-      }
       return this.count + "s";
     },
   },
 
   methods: {
-    sendCode: function () {
-      this.usernameRef.validate();
-      if (this.usernameRef.hasError) {
-        return;
-      }
-
-      var notif = waiting(this.$t("Notify.SendCode.WaitSend"));
-      var msg =
-        this.$t("Notify.SendCode.SendTo") +
-        " " +
-        this.loginInput.email +
-        ", " +
-        this.$t("Notify.SendCode.CheckEmail");
-      var failToSend = this.$t("Notify.SendCode.Fail");
-
-      var thiz = this;
-      api
-        .post("/verification-door/v1/send/email", {
-          Email: thiz.loginInput.email,
-          Lang: thiz.locale,
-        })
-        .then(function (resp) {
-          success(notif, msg);
-          thiz.count = 60;
-          var countDown = setInterval(() => {
-            if (thiz.count < 1) {
-              thiz.isGeting = false;
-              thiz.sendDisable = false;
-              thiz.count = 60;
-              clearInterval(countDown);
-            } else {
-              thiz.isGeting = true;
-              thiz.sendDisable = true;
-              thiz.count--;
-            }
-          }, 1000);
-        })
-        .catch(function (error) {
-          fail(notif, failToSend, error);
-        });
-    },
-
     login: function () {
       this.usernameRef.validate();
-      this.codeRef.validate();
       this.passRef.validate();
 
-      if (
-        this.usernameRef.hasError ||
-        this.codeRef.hasError ||
-        this.passRef.hasError
-      ) {
+      if (this.usernameRef.hasError || this.passRef.hasError) {
         return;
       }
 
@@ -264,9 +228,8 @@ export default defineComponent({
 
       api
         .post("/login-door/v1/login", {
-          Username: self.loginInput.email,
+          Username: self.loginInput.username,
           Password: password,
-          VerifyCode: self.loginInput.verifyCode,
           GoogleRecaptchaResponse: self.loginInput.response,
         })
         .then((resp) => {
@@ -278,6 +241,9 @@ export default defineComponent({
           if (resp.data.Info.UserAppInfo.UserApplicationInfo.GALogin) {
             self.gaDialog = true;
             return;
+          } else if (resp.data.Info.UserBasicInfo.EmailAddress !== "") {
+            self.emailDialog = true;
+            return;
           } else {
             self.$router.push({
               path: "/",
@@ -287,9 +253,8 @@ export default defineComponent({
         })
         .catch((error) => {
           fail(notif, self.$t("Notify.Login.Fail"), error);
-          self.loginInput.email = "";
+          self.loginInput.username = "";
           self.loginInput.password = "";
-          self.loginInput.verifyCode = "";
           self.loginInput.response = "";
           self.refreshRecaptcha = false;
           self.$nextTick(() => {
@@ -306,7 +271,7 @@ export default defineComponent({
           path: "/",
         });
       } else {
-        self.loginInput.email = "";
+        self.loginInput.username = "";
         self.loginInput.password = "";
         self.loginInput.verifyCode = "";
         self.loginInput.response = "";
@@ -334,6 +299,40 @@ export default defineComponent({
           break;
       }
     },
+
+    onVerifyEmail: function () {
+      this.usernameRef.validate();
+      if (this.usernameRef.hasError) {
+        return;
+      }
+
+      var userid = this.q.cookies.get("UserID");
+      var self = this;
+      api
+        .post("/verification-door/v1/verify/code/with/userid", {
+          UserID: userid,
+          Param: self.emailVerifyInput.email,
+          Code: self.emailVerifyInput.emailCode,
+        })
+        .then((resp) => {
+          self.emailDialog = false;
+          self.$router.push({
+            path: "/",
+          });
+        })
+        .catch((error) => {
+          var msg = $t("ReLogin.Fail");
+          fail(undefined, msg, error);
+          self.loginInput.username = "";
+          self.loginInput.password = "";
+          self.loginInput.verifyCode = "";
+          self.loginInput.response = "";
+          this.q.cookies.remove("UserID");
+          this.q.cookies.remove("AppSession");
+          this.q.cookies.remove("Session");
+          location.reload();
+        });
+    },
   },
 });
 </script>
@@ -350,5 +349,11 @@ export default defineComponent({
   color: #1ec498;
   border-bottom: none;
   text-decoration: none;
+}
+</style>
+
+<style>
+.q-field--error .q-field__bottom {
+  color: #fc4468;
 }
 </style>

@@ -224,8 +224,8 @@ pipeline {
           tag=`git describe --tags $revlist`
 
           git checkout $tag
-          sed -i "s/japan-webui:latest/japan-webui:$tag/g" cmd/japan-webui/k8s/01-japan-webui.yaml
-          kubectl apply -k cmd/japan-webui/k8s
+          sed -i "s/japan-webui:latest/japan-webui:$tag/g" k8s/01-japan-webui.yaml
+          kubectl apply -k k8s
         '''.stripIndent())
       }
     }
@@ -247,8 +247,8 @@ pipeline {
           tag=$major.$minor.$patch
 
           git checkout $tag
-          sed -i "s/japan-webui:latest/japan-webui:$tag/g" cmd/japan-webui/k8s/01-japan-webui.yaml
-          kubectl apply -k cmd/japan-webui/k8s
+          sed -i "s/japan-webui:latest/japan-webui:$tag/g" k8s/01-japan-webui.yaml
+          kubectl apply -k k8s
         '''.stripIndent())
       }
     }

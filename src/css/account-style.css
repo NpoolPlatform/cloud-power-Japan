@@ -67,6 +67,48 @@
   height: 250px;
 }
 
+.dialog-box {
+  background-color: white;
+  box-shadow: 16px 16px 20px 0 #23292b;
+  border-radius: 12px;
+  color: #e1eeef;
+  padding: 24px;
+  margin: 24px;
+  position: relative;
+  overflow-x: hidden;
+}
+
+.dialog-header {
+  display: flex;
+  margin-bottom: 10px;
+  font-style: normal;
+  font-weight: bold;
+  font-size: 28px;
+  line-height: 34px;
+  margin-left: 10px;
+  color: black;
+}
+
+.dialog-btn-style {
+  background: linear-gradient(to bottom right, #ff964a 0, #ce5417 100%);
+  border: 0;
+  color: #e4f4f0;
+  cursor: pointer;
+  font-weight: 600;
+  text-shadow: 1px 1px 1px #ce5417;
+  transition: all ease-in-out 0.1s;
+  border-radius: 12px;
+  font-size: 20px;
+  padding: 8px 20px;
+  height: auto;
+  width: 300px;
+}
+
+.dialog-section-style {
+  text-align: center;
+  padding: 0;
+}
+
 .detail-input {
   background: #e1eeef;
   border-radius: 12px;
@@ -100,6 +142,7 @@
   width: 400px;
 }
 
+.dialog-btn-style:hover,
 .account-btn:hover {
   border-radius: 2px;
   filter: contrast(1.5);
@@ -147,6 +190,7 @@
   text-align: center;
 }
 
+.dialog-header::after,
 .setting-header::after {
   background: linear-gradient(
     to right,
