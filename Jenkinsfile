@@ -45,13 +45,7 @@ pipeline {
         expression { BUILD_TARGET == 'true' }
       }
       steps {
-        sh(returnStdout: true, script: '''
-          images=`docker images | grep entropypool | grep japan-webui | grep latest | awk '{ print $3 }'`
-          for image in $images; do
-            docker rmi $image -f
-          done
-          docker build -t entropypool/japan-webui:latest .
-        '''.stripIndent())
+        sh 'docker build -t entropypool/japan-webui:latest .'
       }
     }
 
@@ -78,6 +72,7 @@ pipeline {
                 ;;
               production)
                 patch=$(( $patch + 1 ))
+                git reset --hard
                 git checkout $tag
                 ;;
             esac
@@ -170,12 +165,8 @@ pipeline {
         sh(returnStdout: true, script: '''
           revlist=`git rev-list --tags --max-count=1`
           tag=`git describe --tags $revlist`
+          git reset --hard
           git checkout $tag
-
-          images=`docker images | grep entropypool | grep japan-webui | grep $tag | awk '{ print $3 }'`
-          for image in $images; do
-            docker rmi $image -f
-          done
           docker build -t entropypool/japan-webui:$tag .
         '''.stripIndent())
       }
@@ -187,18 +178,58 @@ pipeline {
       }
       steps {
         sh 'docker push entropypool/japan-webui:latest'
+        sh(returnStdout: true, script: '''
+          images=`docker images | grep entropypool | grep japan-webui | grep none | awk '{ print $3 }'`
+          for image in $images; do
+            docker rmi $image -f
+          done
+        '''.stripIndent())
       }
     }
 
-    stage('Release docker image for testing or production') {
+    stage('Release docker image for testing') {
       when {
         expression { RELEASE_TARGET == 'true' }
       }
       steps {
-        sh(returnStdout: true, script: '''
+        sh(returnStdout: false, script: '''
           revlist=`git rev-list --tags --max-count=1`
           tag=`git describe --tags $revlist`
-          docker push entropypool/japan-webui:$tag
+
+          set +e
+          docker images | grep japan-webui | grep $tag
+          rc=$?
+          set -e
+          if [ 0 -eq $rc ]; then
+            docker push entropypool/japan-webui:$tag
+          fi
+        '''.stripIndent())
+      }
+    }
+
+    stage('Release docker image for production') {
+      when {
+        expression { RELEASE_TARGET == 'true' }
+      }
+      steps {
+        sh(returnStdout: false, script: '''
+          revlist=`git rev-list --tags --max-count=1`
+          tag=`git describe --tags $revlist`
+
+          major=`echo $tag | awk -F '.' '{ print $1 }'`
+          minor=`echo $tag | awk -F '.' '{ print $2 }'`
+          patch=`echo $tag | awk -F '.' '{ print $3 }'`
+
+          patch=$(( $patch - $patch % 2 ))
+          tag=$major.$minor.$patch
+
+          set +e
+          docker images | grep japan-webui | grep $tag
+          rc=$?
+          set -e
+          if [ 0 -eq $rc ]; then
+            docker push entropypool/japan-webui:$tag
+          fi
         '''.stripIndent())
       }
     }
@@ -209,7 +240,7 @@ pipeline {
         expression { TARGET_ENV == 'development' }
       }
       steps {
-        sh 'kubectl apply -k cmd/japan-webui/k8s'
+        sh 'kubectl apply -k k8s'
       }
     }
 
@@ -223,6 +254,7 @@ pipeline {
           revlist=`git rev-list --tags --max-count=1`
           tag=`git describe --tags $revlist`
 
+          git reset --hard
           git checkout $tag
           sed -i "s/japan-webui:latest/japan-webui:$tag/g" k8s/01-japan-webui.yaml
           kubectl apply -k k8s
@@ -246,6 +278,7 @@ pipeline {
           patch=$(( $patch - $patch % 2 ))
           tag=$major.$minor.$patch
 
+          git reset --hard
           git checkout $tag
           sed -i "s/japan-webui:latest/japan-webui:$tag/g" k8s/01-japan-webui.yaml
           kubectl apply -k k8s
