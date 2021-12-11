@@ -50,7 +50,7 @@
               bg-color="blue-grey-1"
               v-model="registerInput.confirmPassword"
               :label="$t('Register.Confirm')"
-              :type="isPwd ? 'password' : 'text'"
+              :type="isCPwd ? 'password' : 'text'"
               lazy-rules
               :rules="confirmPassRule"
             >
@@ -146,7 +146,7 @@ export default defineComponent({
     const confirmPassRule = ref([
       (val) => (val && val.length > 0) || t("Register.ConfirmInputWarning1"),
       (val) =>
-        (val && val !== password.value) || t("Register.ConfirmInputWarning2"),
+        (val && val == password.value) || t("Register.ConfirmInputWarning2"),
     ]);
     const agree = ref(false);
 
