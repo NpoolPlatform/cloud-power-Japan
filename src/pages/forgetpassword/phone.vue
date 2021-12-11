@@ -90,7 +90,7 @@ import CountryCode from "../../components/CountryCode.vue";
 export default defineComponent({
   components: { SendCodeInput, CountryCode },
   setup() {
-    const { locale } = useI18n();
+    const { locale } = useI18n({ useScope: "global" });
     const count = ref(0);
     const $store = useStore();
 
