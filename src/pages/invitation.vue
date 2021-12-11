@@ -75,41 +75,36 @@ const getInvitationList = () => {
       InviterID: userid,
     })
     .then((resp) => {
-      var father = invitationParam;
+      var father = {
+        username: "",
+        userid: "",
+        email: "",
+        label: "",
+        children: [],
+      };
       father.email = user.value.EmailAddress;
       father.username = user.value.Username;
       father.userid = userid;
       father.label = "01";
       var lists = resp.data.Infos[userid]["Invitees"];
       lists.forEach((list) => {
-        var children = invitationParam;
-        children.email = list.EmailAddress;
-        children.username = list.Username;
-        children.userid = list.UserID;
-        children.label = "02";
-        father.children.push(children);
+        var childrenInvitation = {
+          username: "",
+          userid: "",
+          email: "",
+          label: "",
+          children: [],
+        };
+        childrenInvitation.email = list.EmailAddress;
+        childrenInvitation.username = list.Username;
+        childrenInvitation.userid = list.UserID;
+        childrenInvitation.label = "02";
+        father.children.push(childrenInvitation);
       });
 
       invitationList.value.push(father);
-
-      console.log("invitation list is: ", father);
-      console.log("invitationList is: ", invitationList.value);
     });
 };
-
-const invitations = [
-  {
-    username: "KOKI YOSHIDA",
-    email: "koki@gmail.com",
-    number: "01",
-    children: [
-      { username: "KOKI YOSHIDA1", email: "koki@gmail.com", number: "02" },
-      { username: "KOKI YOSHIDA2", email: "koki@gmail.com", number: "02" },
-      { username: "KOKI YOSHIDA3", email: "koki@gmail.com", number: "02" },
-      { username: "KOKI YOSHIDA4", email: "koki@gmail.com", number: "02" },
-    ],
-  },
-];
 </script>
 
 <style scoped>
