@@ -68,7 +68,7 @@
       </q-card>
     </div>
 
-    <q-dialog v-model="gaDialog">
+    <q-dialog v-model="gaDialog" persistent>
       <q-card>
         <q-card-section>
           <span class="card-title text-black">Google Verify</span>
@@ -79,12 +79,12 @@
       </q-card>
     </q-dialog>
 
-    <q-dialog v-model="emailDialog">
-      <q-card>
+    <q-dialog v-model="emailDialog" persistent>
+      <q-card style="width: 600px; height: auto; margin: 20px">
         <q-card-section>
           <span class="card-title text-black">Email Verify</span>
         </q-card-section>
-        <q-card-section>
+        <q-card-section style="padding: 0 20px">
           <q-input
             ref="usernameRef"
             class="register-input"
@@ -95,12 +95,17 @@
             lazy-rules
             :rules="usernameRule"
           ></q-input>
+        </q-card-section>
+        <q-card-section style="padding: 0 20px">
           <send-code-input
             :verifyParam="emailVerifyInput.email"
             verifyType="email"
           ></send-code-input>
+        </q-card-section>
+
+        <q-card-section style="padding: 0 20px">
           <q-btn class="register-btn" @click="onVerifyEmail">{{
-            $t("Register.Register")
+            $t("Register.ConfirmBtn")
           }}</q-btn>
         </q-card-section>
       </q-card>
@@ -157,6 +162,13 @@ export default defineComponent({
       (val) => (val && val.length > 0) || t("Register.PasswordInputWarning"),
     ]);
 
+    const loginVerify = computed({
+      get: () => $store.state.verify.loginVerify,
+      set: (val) => {
+        $store.commit("verify/updateLoginVerify", val);
+      },
+    });
+
     return {
       isPwd: ref(true),
       usernameRule,
@@ -167,6 +179,8 @@ export default defineComponent({
       emailDialog: ref(false),
       emailVerifyInput,
       q,
+      verifyCode,
+      loginVerify,
     };
   },
 
@@ -218,7 +232,7 @@ export default defineComponent({
         this.loginInput.response === null ||
         this.loginInput.response === undefined
       ) {
-        fail(undefined, this.$t("Notify.Recaptcha.Fail"));
+        fail(undefined, this.$t("Notify.Recaptcha.Fail"), "");
         return;
       }
       let self = this;
@@ -270,6 +284,7 @@ export default defineComponent({
         this.$router.push({
           path: "/",
         });
+        this.loginVerify = true;
       } else {
         self.loginInput.username = "";
         self.loginInput.password = "";
@@ -287,12 +302,8 @@ export default defineComponent({
       var self = this;
       switch (resp) {
         case "expired":
-          console.log("expired");
-          location.reload();
           break;
         case "error":
-          console.log("error");
-          location.reload();
           break;
         default:
           this.loginInput.response = resp;
@@ -312,10 +323,11 @@ export default defineComponent({
         .post("/verification-door/v1/verify/code/with/userid", {
           UserID: userid,
           Param: self.emailVerifyInput.email,
-          Code: self.emailVerifyInput.emailCode,
+          Code: self.verifyCode,
         })
         .then((resp) => {
           self.emailDialog = false;
+          self.loginVerify = true;
           self.$router.push({
             path: "/",
           });
@@ -325,7 +337,7 @@ export default defineComponent({
           fail(undefined, msg, error);
           self.loginInput.username = "";
           self.loginInput.password = "";
-          self.loginInput.verifyCode = "";
+          self.verifyCode = "";
           self.loginInput.response = "";
           this.q.cookies.remove("UserID");
           this.q.cookies.remove("AppSession");

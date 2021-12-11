@@ -176,7 +176,7 @@ export default defineComponent({
   margin: 10px 0;
 }
 
-.row {
-  align-content: flex-start;
-}
+/* .q-field--labeled .q-field__native {
+  padding-top: 12px;
+} */
 </style>

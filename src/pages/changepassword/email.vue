@@ -39,7 +39,7 @@
               bg-color="blue-grey-1"
               v-model="changePasswordInput.oldPassword"
               :label="$t('ChangePassword.OldPassword')"
-              :type="isPwd ? 'password' : 'text'"
+              :type="isOldPwd ? 'password' : 'text'"
               lazy-rules
               :rules="[
                 (val) =>
@@ -87,13 +87,9 @@
               bg-color="blue-grey-1"
               v-model="changePasswordInput.confirmPassword"
               :label="$t('ChangePassword.ConfirmPassword')"
-              :type="isPwd ? 'password' : 'text'"
+              :type="isCPwd ? 'password' : 'text'"
               lazy-rules
-              :rules="[
-                (val) =>
-                  (val && val.length > 0) ||
-                  $t('ChangePassword.ConfirmPasswordInputWarning'),
-              ]"
+              :rules="confirmPassRule"
               ref="confirmPasswordRef"
             >
               <template v-slot:append>
@@ -128,7 +124,7 @@ export default defineComponent({
   components: { SendCodeInput },
   setup() {
     const q = useQuasar();
-    const { locale } = useI18n();
+    const { t, locale } = useI18n({ useScope: "global" });
     const count = ref(0);
     const $store = useStore();
 
@@ -144,15 +140,21 @@ export default defineComponent({
     const passwordRef = ref(null);
     const confirmPasswordRef = ref(null);
 
-    const changePasswordInput = computed(() => {
-      return {
-        email: "",
-        verifyCode: verifyCode,
-        oldPassword: "",
-        password: "",
-        confirmPassword: "",
-      };
+    const changePasswordInput = reactive({
+      email: "",
+      verifyCode: verifyCode.value,
+      oldPassword: "",
+      password: "",
+      confirmPassword: "",
     });
+
+    const confirmPassRule = ref([
+      (val) => (val && val.length > 0) || t("Register.ConfirmInputWarning1"),
+      (val) =>
+        (val && val == changePasswordInput.password) ||
+        t("Register.ConfirmInputWarning2"),
+    ]);
+
     return {
       locale,
       count,
@@ -162,6 +164,7 @@ export default defineComponent({
       oldPasswordRef,
       passwordRef,
       confirmPasswordRef,
+      confirmPassRule,
       q,
     };
   },
@@ -221,6 +224,7 @@ export default defineComponent({
           this.q.cookies.remove("AppSession");
           this.q.cookies.remove("Session");
           self.$router.push("/login");
+          self.verifyCode = "";
           location.reload();
         })
         .catch((error) => {

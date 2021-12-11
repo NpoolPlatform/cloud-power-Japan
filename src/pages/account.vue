@@ -135,6 +135,19 @@
         </div>
       </div>
 
+      <div v-if="invitationCode !== null">
+        <div class="title">{{ $t("Account.Invitation") }}</div>
+        <div class="earn-box">
+          <div class="earn-box-item">
+            <div>
+              <span class="price">{{ invitationCode }}</span>
+            </div>
+            <div class="hr" style="margin: 0"></div>
+            <span class="subtitle">{{ $t("Account.Invitation") }}</span>
+          </div>
+        </div>
+      </div>
+
       <div>
         <div class="title">{{ $t("Account.SecuritySetting.Title") }}</div>
         <div>
@@ -152,7 +165,6 @@
               <q-space style="margin-bottom: 60px"></q-space>
               <div class="setting-btn-position">
                 <q-btn
-                  :disable="!enableGoogleAuthentication"
                   class="account-btn setting-btn"
                   @click="$router.push('/changepassword/email')"
                   >{{ $t("Account.SecuritySetting.ChangePasswordBtn") }}</q-btn
@@ -267,6 +279,7 @@
               <q-space style="margin-bottom: 20px"></q-space>
               <div class="setting-btn-position">
                 <q-tooltip
+                  class="text-body2"
                   anchor="top middle"
                   self="bottom middle"
                   :offset="[10, 10]"
@@ -325,20 +338,21 @@
                 {{ $t("Account.SecuritySetting.LoginVerificationContent") }}
               </div>
               <div class="verify-content">
-                <q-toggle
+                <q-tooltip
+                  anchor="top middle"
+                  self="bottom middle"
+                  :offset="[10, 10]"
+                  v-if="!enableGoogleAuthentication"
+                  >{{ $t("Account.SecuritySetting.tooltip") }}</q-tooltip
+                >
+                <q-option-group
                   v-model="userGALogin"
-                  color="green"
+                  :options="loginOptions"
+                  color="primary"
+                  inline
                   :disable="!enableGoogleAuthentication"
                 >
-                  <q-tooltip
-                    anchor="top middle"
-                    self="bottom middle"
-                    :offset="[10, 10]"
-                    v-if="!enableGoogleAuthentication"
-                    >please do google authenticate verify first!!!</q-tooltip
-                  >
-                </q-toggle>
-                <span>{{ $t("Account.SecuritySetting.GALogin") }}</span>
+                </q-option-group>
               </div>
               <q-space style="margin-bottom: 25px"></q-space>
               <div class="setting-btn-position">
@@ -722,31 +736,8 @@ export default defineComponent({
       },
     });
 
-    const emailRef = ref(null);
-    const emailCodeRef = ref(null);
-    const googleCodeRef = ref(null);
-    const oldPassRef = ref(null);
-    const passwordRef = ref(null);
-    const confirmPassRef = ref(null);
-
     const emailRule = ref([
       (val) => (val && val.length > 0) || t("Register.UsernameInputwarning"),
-    ]);
-    const emailCodeRule = ref([
-      (val) =>
-        (val && val.length > 0) || t("Register.EmailVerifyCodeInpuWarning"),
-    ]);
-    const passwordRule = ref([
-      (val) => (val && val.length > 0) || t("Register.PasswordInputWarning"),
-    ]);
-    const confirmpassRule = ref([
-      (val) => (val && val.length > 0) || t("Register.ConfirmInputWarning1"),
-    ]);
-    const googleCodeRule = ref([
-      (val) => (val && val.length > 0) || t("Register.GooglrCodeInputWarning"),
-    ]);
-    const oldPasswordRule = ref([
-      (val) => (val && val.length > 0) || t("Register.PasswordInputWarning"),
     ]);
 
     const emailEnableRef = ref(null);
@@ -772,6 +763,8 @@ export default defineComponent({
       code: "",
     };
 
+    const invitationCode = ref("");
+
     const emailEnableDialog = ref(false);
     const phoneEnableDialog = ref(false);
     const emailUpdateDialog = ref(false);
@@ -790,9 +783,9 @@ export default defineComponent({
     });
 
     const emailUpdateInput = reactive({
-      oldEmail: ref(""),
+      oldEmail: "",
       oldEmailCode: oldVerifyCode.value,
-      email: ref(""),
+      email: "",
       emailCode: verifyCode.value,
     });
 
@@ -804,6 +797,11 @@ export default defineComponent({
         phoneCode: verifyCode.value,
       };
     });
+
+    const loginOptions = ref([
+      { label: t("Account.SecuritySetting.GALogin"), value: true },
+      { label: t("Account.SecuritySetting.EmailLogin"), value: false },
+    ]);
 
     return {
       user,
@@ -820,18 +818,7 @@ export default defineComponent({
       enableGoogleAuthentication,
       q,
       pagination,
-      emailRef,
-      emailCodeRef,
-      googleCodeRef,
-      passwordRef,
-      confirmPassRef,
       emailRule,
-      emailCodeRule,
-      passwordRule,
-      confirmpassRule,
-      googleCodeRule,
-      oldPassRef,
-      oldPasswordRule,
       locale,
       password,
       emailEnableDialog,
@@ -849,6 +836,8 @@ export default defineComponent({
       emailUpdateRef,
       verifyCode,
       oldVerifyCode,
+      invitationCode,
+      loginOptions,
     };
   },
 
@@ -921,6 +910,10 @@ export default defineComponent({
     this.submitLoginVerify = throttle(this.submitLoginVerify, 1000);
   },
 
+  mounted: function () {
+    this.getUserInvitationCode();
+  },
+
   computed: {
     enabledEmail: function () {
       if (this.user.info.UserBasicInfo.EmailAddress !== "") {
@@ -944,72 +937,24 @@ export default defineComponent({
   },
 
   methods: {
-    onChangePassword: function () {
-      this.emailRef.validate();
-      this.emailCodeRef.validate();
-      this.googleCodeRef.validate();
-      this.oldPassRef.validate();
-      this.passwordRef.validate();
-      this.confirmPassRef.validate();
-
-      if (
-        this.emailRef.hasError ||
-        this.emailCodeRef.hasError ||
-        this.googleCodeRef.hasError ||
-        this.oldPassRef.hasError ||
-        this.passwordRef.hasError ||
-        this.confirmPassRef.hasError
-      ) {
-        return;
-      }
-
-      var self = this;
-
-      if (
-        this.changePasswordInput.password !==
-        this.changePasswordInput.confirmPassword
-      ) {
-        fail(undefined, self.$t("Register.ConfirmInputWarning2"), "");
-        return;
-      }
-
-      var password = sha256Password(this.changePasswordInput.password);
-      var oldPassword = sha256Password(this.changePasswordInput.old);
-      api
-        .post("/user-management/v1/change/password", {
-          OldPassword: oldPassword,
-          Password: password,
-          Email: self.changePasswordInput.email,
-          EmailVerifyCode: self.changePasswordInput.emailCode,
-          GoogleVerifyCode: self.changePasswordInput.googleCode,
-        })
-        .then((resp) => {
-          success(undefined, self.$t("Notify.ChangePassword.Success"));
-          self.changePassword = false;
-          self.q.cookies.remove("UserID");
-          self.q.cookies.remove("AppSession");
-          self.$router.push("/login");
-          return;
-        })
-        .catch((error) => {
-          fail(undefined, self.$t("Notify.ChangePassword.Fail2"), error);
-          return;
-        });
-    },
-
     submitLoginVerify: function () {
       var self = this;
       var appid = this.q.cookies.get("AppID");
       var userid = this.q.cookies.get("UserID");
 
+      console.log("user ga login is", self.userGALogin);
+
       api
         .post("/application-management/v1/set/ga/login", {
           AppID: appid,
           UserID: userid,
-          set: self.userGALogin,
+          Set: self.userGALogin,
         })
         .then((resp) => {
           success(undefined, self.$t("Notify.SubmitLoginVerify.Success"));
+          if (self.userGALogin) {
+            self.userGALogin = true;
+          }
           return;
         })
         .catch((error) => {
@@ -1103,35 +1048,6 @@ export default defineComponent({
         });
     },
 
-    sendCode: function () {
-      this.emailRef.validate();
-      if (this.emailRef.hasError) {
-        return;
-      }
-
-      var notif = waiting(this.$t("Notify.SendCode.WaitSend"));
-      var msg =
-        this.$t("Notify.SendCode.SendTo") +
-        " " +
-        this.changePasswordInput.email +
-        ", " +
-        this.$t("Notify.SendCode.CheckEmail");
-      var failToSend = this.$t("Notify.SendCode.Fail");
-
-      var thiz = this;
-      api
-        .post("/verification-door/v1/send/email", {
-          Email: thiz.changePasswordInput.email,
-          Lang: thiz.locale,
-        })
-        .then(function (resp) {
-          success(notif, msg);
-        })
-        .catch(function (error) {
-          fail(notif, failToSend, error);
-        });
-    },
-
     onEnableEmail: function () {
       this.emailEnableRef.validate();
       if (this.emailEnableRef.hasError) {
@@ -1161,13 +1077,14 @@ export default defineComponent({
     },
 
     onEnablePhone: function () {
+      console.log("phoneEnableInput is", this.phoneEnableInput);
       if (this.phoneEnableInput.phone === "") {
-        fail(undefined, "please input your phone number");
+        fail(undefined, "please input your phone number", "");
         return;
       }
 
       if (this.phoneEnableInput.phoneCode === "") {
-        fail(undefined, "please input your verify code");
+        fail(undefined, "please input your verify code", "");
         return;
       }
 
@@ -1180,7 +1097,7 @@ export default defineComponent({
         .then((resp) => {
           success(undefined, "successfully enable email address");
           self.verifyCode = "";
-          self.emailEnableDialog = false;
+          self.phoneEnableDialog = false;
         })
         .catch((error) => {
           fail(undefined, "fail to enable email address", error);
@@ -1194,20 +1111,20 @@ export default defineComponent({
         return;
       }
 
-      if (
-        this.emailUpdateInput.oldEmailCode === "" ||
-        this.emailUpdateInput.emailCode === ""
-      ) {
-        fail(undefined, "please input your verify code");
+      if (this.verifyCode === "" || this.oldVerifyCode === "") {
+        fail(undefined, "please input your verify code", "");
         return;
       }
 
+      console.log(this.emailUpdateInput);
+
+      var self = this;
       api
         .post("/user-management/v1/update/user/email", {
           OldEmail: self.emailUpdateInput.oldEmail,
-          OldCode: self.emailUpdateInput.oldEmailCode,
+          OldCode: self.oldVerifyCode,
           NewEmail: self.emailUpdateInput.email,
-          NewCode: self.emailUpdateInput.code,
+          NewCode: self.verifyCode,
         })
         .then((resp) => {
           success(undefined, "successfully update user email address");
@@ -1222,12 +1139,12 @@ export default defineComponent({
 
     onUpdatePhone: function () {
       if (this.phoneUpdateInput.oldPhone === "") {
-        fail(undefined, "please input your old phone number");
+        fail(undefined, "please input your old phone number", "");
         return;
       }
 
       if (this.phoneUpdateInput.phone === "") {
-        fail(undefined, "please input your phone number");
+        fail(undefined, "please input your phone number", "");
         return;
       }
 
@@ -1235,7 +1152,7 @@ export default defineComponent({
         this.phoneUpdateInput.oldPhoneCode === "" ||
         this.phoneUpdateInput.phoneCode === ""
       ) {
-        fail(undefined, "please input your verify code");
+        fail(undefined, "please input your verify code", "");
         return;
       }
 
@@ -1256,6 +1173,32 @@ export default defineComponent({
         })
         .catch((error) => {
           fail(undefined, "fail to update phone number: ", error);
+        });
+    },
+
+    getUserInvitationCode: function () {
+      var userid = this.q.cookies.get("UserID");
+      var appid = this.q.cookies.get("AppID");
+      var self = this;
+      api
+        .post(
+          "/cloud-hashing-inspire/v1/get/user/invitation/code/by/app/user",
+          {
+            AppID: appid,
+            UserID: userid,
+          }
+        )
+        .then((resp) => {
+          console.log("info is", resp.data, resp.data.Info);
+          if (resp.data.Info === null) {
+            self.invitationCode = null;
+            return;
+          }
+          self.invitationCode = resp.data.Info.InvitationCode;
+        })
+        .catch((error) => {
+          fail(undefined, "fail to get user invitation code", error);
+          self.invitationCode = "No Data";
         });
     },
   },
@@ -1309,5 +1252,44 @@ export default defineComponent({
 .table-title-style {
   font-size: 18px;
   font-weight: 600;
+}
+
+.earn-box {
+  display: flex;
+  justify-content: center;
+}
+
+.earn-box-item {
+  display: flex;
+  flex-direction: column;
+  padding: 0 36px;
+  text-align: center;
+  min-width: 240px;
+  width: 30%;
+}
+
+.price {
+  font-size: 20px;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.subtitle {
+  font-size: 18px;
+  text-transform: uppercase;
+  font-weight: 600;
+  margin: 12px 0;
+}
+
+.hr {
+  background: linear-gradient(
+    to right,
+    transparent 10%,
+    #1ec498 60%,
+    transparent 90%
+  );
+  opacity: 0.7;
+  height: 2px;
+  width: 100%;
 }
 </style>

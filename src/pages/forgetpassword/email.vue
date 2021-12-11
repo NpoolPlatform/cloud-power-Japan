@@ -63,13 +63,9 @@
               bg-color="blue-grey-1"
               v-model="forgetPasswordInput.confirmPassword"
               :label="$t('ForgetPassword.Confirm')"
-              :type="isPwd ? 'password' : 'text'"
+              :type="isCPwd ? 'password' : 'text'"
               lazy-rules
-              :rules="[
-                (val) =>
-                  (val && val.length > 0) ||
-                  $t('ForgetPassword.ConfirmInputWarning2'),
-              ]"
+              :rules="confirmPassRule"
               ref="confirmPasswordRef"
             >
               <template v-slot:append>
@@ -115,15 +111,22 @@ export default defineComponent({
     });
 
     const forgetPasswordInput = reactive({
-      email: ref(""),
-      verifyCode: verifyCode,
-      password: ref(""),
-      confirmPassword: ref(""),
+      email: "",
+      verifyCode: verifyCode.value,
+      password: "",
+      confirmPassword: "",
     });
 
     const emailRef = ref(null);
     const passwordRef = ref(null);
-    const oldPasswordRef = ref(null);
+    const confirmPasswordRef = ref(null);
+
+    const confirmPassRule = ref([
+      (val) => (val && val.length > 0) || t("Register.ConfirmInputWarning1"),
+      (val) =>
+        (val && val == forgetPasswordInput.password) ||
+        t("Register.ConfirmInputWarning2"),
+    ]);
 
     return {
       locale,
@@ -132,7 +135,8 @@ export default defineComponent({
       forgetPasswordInput,
       emailRef,
       passwordRef,
-      oldPasswordRef,
+      confirmPasswordRef,
+      confirmPassRule,
     };
   },
 
@@ -151,12 +155,12 @@ export default defineComponent({
     onConfirm: function () {
       this.emailRef.validate();
       this.passwordRef.validate();
-      this.oldPasswordRef.validate();
+      this.confirmPasswordRef.validate();
 
       if (
         this.emailRef.hasError ||
         this.passwordRef.hasError ||
-        this.oldPasswordRef.hasError
+        this.confirmPasswordRef.hasError
       ) {
         return;
       }
@@ -178,7 +182,7 @@ export default defineComponent({
           VerifyParam: self.forgetPasswordInput.email,
           Password: password,
           VerifyType: "email",
-          Code: self.forgetPasswordInput.verifyCode,
+          Code: self.verifyCode,
         })
         .then((resp) => {
           success(notif, self.$t("Notify.ForgetPassword.Success"));

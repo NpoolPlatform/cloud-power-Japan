@@ -130,7 +130,6 @@
       style="
         background: linear-gradient(to bottom right, #1f293a 0, #23292b 100%);
         box-shadow: 0px 0px 60px 15px #051319;
-        text-align: center;
         z-index: -1;
       "
       class="drawer-style text-white"
@@ -139,20 +138,28 @@
     >
       <div class="drawer-items">
         <router-link href class="drawer-item" :to="{ path: '/account' }">
-          <q-img :src="accountImg" class="drawer-item-img"></q-img>
-          <span class="drawer-item-span">{{ $t("Drawer.Account") }}</span>
+          <div class="row">
+            <q-img :src="accountImg" class="drawer-item-img"></q-img>
+            <p class="drawer-item-span">{{ $t("Drawer.Account") }}</p>
+          </div>
         </router-link>
         <router-link href class="drawer-item" :to="{ path: '/order' }">
-          <q-img :src="miningImg" class="drawer-item-img"></q-img>
-          <span class="drawer-item-span">{{ $t("Drawer.Order") }}</span>
+          <div class="row">
+            <q-img :src="miningImg" class="drawer-item-img"></q-img>
+            <span class="drawer-item-span">{{ $t("Drawer.Order") }}</span>
+          </div>
         </router-link>
         <router-link href class="drawer-item" :to="{ path: '/wallet' }">
-          <q-img :src="walletImg" class="drawer-item-img"></q-img>
-          <span class="drawer-item-span">{{ $t("Drawer.Wallet") }}</span>
+          <div class="row">
+            <q-img :src="walletImg" class="drawer-item-img"></q-img>
+            <span class="drawer-item-span">{{ $t("Drawer.Wallet") }}</span>
+          </div>
         </router-link>
         <router-link href class="drawer-item" :to="{ path: '/invitation' }">
-          <q-img :src="walletImg" class="drawer-item-img"></q-img>
-          <span class="drawer-item-span">{{ $t("Drawer.Invitation") }}</span>
+          <div class="row">
+            <q-img :src="affiliatesImg" class="drawer-item-img"></q-img>
+            <span class="drawer-item-span">{{ $t("Drawer.Invitation") }}</span>
+          </div>
         </router-link>
       </div>
     </q-drawer>
@@ -284,6 +291,7 @@ export default defineComponent({
       miningImg: require("/src/assets/icon-mining.svg"),
       walletImg: require("/src/assets/icon-wallet.svg"),
       accountImg: require("/src/assets/icon-account.svg"),
+      affiliatesImg: require("/src/assets/icon-affiliates.svg"),
       toggleStyle:
         "background: linear-gradient(to bottom right, #1f293a 0, #23292b 100%) no-repeat; background-size: 200px; border-bottom: 240px #a1d0d0;",
       toggle: null,

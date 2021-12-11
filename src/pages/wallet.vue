@@ -221,4 +221,8 @@ export default defineComponent({
 </script>
 
 <style scoped src="../css/wallet-style.css"></style>
-<style scoped></style>
+<style>
+.q-table--horizontal-separator thead th {
+  font-size: 16px;
+}
+</style>

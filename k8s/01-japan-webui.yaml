@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
         - name: japan-webui
-          image: entropypool/japan-webui:latest
+          image: uhub.service.ucloud.cn/entropypool/japan-webui:latest
           imagePullPolicy: Always
           env:
             - name: ENV_ENVIRONMENT_TARGET

@@ -257,6 +257,7 @@ div.content-h4 {
 .drawer-item-img {
   margin: 0 8px 0 0;
   width: 24px;
+  height: 24px;
 }
 
 .hr {
@@ -299,5 +300,6 @@ div.content-h4 {
 }
 
 .drawer-item-span {
-  bottom: 0;
+  line-height: 24px;
+  margin: 3px 0 0 0;
 }

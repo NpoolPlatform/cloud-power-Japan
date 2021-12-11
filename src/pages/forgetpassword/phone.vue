@@ -53,13 +53,9 @@
               bg-color="blue-grey-1"
               v-model="forgetPasswordInput.confirmPassword"
               :label="$t('ForgetPassword.Confirm')"
-              :type="isPwd ? 'password' : 'text'"
+              :type="isCPwd ? 'password' : 'text'"
               lazy-rules
-              :rules="[
-                (val) =>
-                  (val && val.length > 0) ||
-                  $t('ForgetPassword.ConfirmInputWarning2'),
-              ]"
+              :rules="confirmPassRule"
               ref="confirmPasswordRef"
             >
               <template v-slot:append>
@@ -110,17 +106,22 @@ export default defineComponent({
       code: "",
     };
 
-    const forgetPasswordInput = computed(() => {
-      return {
-        phone: phoneResponse.code + phoneResponse.phone,
-        verifyCode: verifyCode,
-        password: ref(""),
-        confirmPassword: ref(""),
-      };
+    const forgetPasswordInput = reactive({
+      phone: phoneResponse.code + phoneResponse.phone,
+      verifyCode: verifyCode.value,
+      password: "",
+      confirmPassword: "",
     });
 
     const passwordRef = ref(null);
     const confirmPasswordRef = ref(null);
+
+    const confirmPassRule = ref([
+      (val) => (val && val.length > 0) || t("Register.ConfirmInputWarning1"),
+      (val) =>
+        (val && val == forgetPasswordInput.value.password) ||
+        t("Register.ConfirmInputWarning2"),
+    ]);
 
     return {
       locale,
@@ -130,6 +131,7 @@ export default defineComponent({
       phoneResponse,
       passwordRef,
       confirmPasswordRef,
+      confirmPassRule,
     };
   },
 
@@ -171,7 +173,7 @@ export default defineComponent({
           VerifyParam: self.forgetPasswordInput.phone,
           Password: password,
           VerifyType: "phone",
-          Code: self.forgetPasswordInput.verifyCode,
+          Code: self.verifyCode,
         })
         .then((resp) => {
           success(notif, self.$t("Notify.ForgetPassword.Success"));

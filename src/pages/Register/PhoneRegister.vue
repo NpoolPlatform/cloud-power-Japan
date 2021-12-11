@@ -108,10 +108,12 @@ import { sha256Password } from "src/utils/utils";
 import { throttle } from "quasar";
 import SendCodeInput from "src/components/SendCodeInput.vue";
 import CountryCode from "../../components/CountryCode.vue";
+import { useStore } from "vuex";
 
 export default defineComponent({
   components: { SendCodeInput, CountryCode },
   setup() {
+    const $store = useStore();
     const phone = ref("");
     const verifyCode = computed({
       get: () => $store.state.verify.verifyCode,
@@ -129,7 +131,6 @@ export default defineComponent({
 
     const { t } = useI18n({ useScope: "global" });
 
-    const usernameRef = ref(null);
     const passRef = ref(null);
     const confirmPassRef = ref(null);
     const invitationRef = ref(null);
@@ -137,9 +138,6 @@ export default defineComponent({
       (val) => (val && val.length > 0) || t("Register.InvitationWarning"),
     ]);
 
-    const usernameRule = ref([
-      (val) => (val && val.length > 0) || t("Register.PhoneInputWarning"),
-    ]);
     const passwordRule = ref([
       (val) => (val && val.length > 0) || t("Register.PasswordInputWarning"),
     ]);
@@ -159,8 +157,6 @@ export default defineComponent({
       registerInput,
       isPwd: ref(true),
       isCPwd: ref(true),
-      usernameRule,
-      usernameRef,
       passwordRule,
       passRef,
       confirmPassRef,
@@ -169,6 +165,7 @@ export default defineComponent({
       invitationRef,
       invitationRule,
       phoneResponse,
+      verifyCode,
     };
   },
 
@@ -178,13 +175,16 @@ export default defineComponent({
 
   methods: {
     onRegister: function () {
-      this.usernameRef.validate();
+      if (!this.agree) {
+        fail(undefined, "please check agree", "");
+        return;
+      }
+
       this.passRef.validate();
       this.confirmPassRef.validate();
       this.invitationRef.validate();
 
       if (
-        this.usernameRef.hasError ||
         this.passRef.hasError ||
         this.confirmPassRef.hasError ||
         this.invitationRef.hasError
@@ -192,22 +192,19 @@ export default defineComponent({
         return;
       }
 
-      if (!this.agree) {
-        fail(undefined, "please check agree", null);
-        return;
-      }
       var thiz = this;
       var failToRegister = "fail to register";
       var password = sha256Password(this.registerInput.password);
 
       api
-        .post("/user-management/v1/signup", {
+        .post("/cloud-cloud-hashing-apis/v1/signup", {
           Password: password,
           PhoneNumber: thiz.phoneResponse.code + thiz.phoneResponse.phone,
           VerificationCode: thiz.registerInput.verifyCode,
           InvitationCode: thiz.registerInput.invitationCode,
         })
         .then(function (resp) {
+          thiz.verifyCode = "";
           thiz.$router.push({
             path: "/login",
           });

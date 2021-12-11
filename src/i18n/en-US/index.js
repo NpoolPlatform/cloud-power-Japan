@@ -79,15 +79,16 @@ export default {
       Title: "WHY CHOOSE PROCYON?",
       Content1:
         "Procyon is the first Japan-centric, one-stop, multidimensional asset management marketplace. We bring",
-      Content2: "first-to-market products and IDOs",
+      Content2: "first-to-market products and IDOs ",
       Content3:
         "to our clients. Our unique market insights and our extensive network in the crypto space allows us to provide our clients with ",
       Content4:
         " exclusive investment opportunities that cannot be found on the open market",
-      Content5: ". Our unique positioning is our strength and your gain!",
+      Content4Comma: ". ",
+      Content5: "Our unique positioning is our strength and your gain!",
       Content6:
         "Japan boasts the highest investment per capita in Asia. The endless possibilities of the",
-      Content7: "Japanese market attract many global players",
+      Content7: " Japanese market attract many global players",
       Content8:
         ", however Japan suffers from a language and cultural barrier that insulates the country from global markets. This hurdle can result in missed opportunities and a lack of diversity in investment products. At Procyon,",
       Content9:
@@ -100,6 +101,7 @@ export default {
         "First-batch mining begins as soon as the mainnet goes live. This is possible because the first-batch of miners has already acquired hash power through the testnet prior to the launch of the mainnet. Once mainnet goes live these miners are the first to begin the mining process, achieving ",
       Content2:
         " much greater ROI while the mining difficulty is low and the mining output is high",
+      Content2Comma: ".",
       Content3: "There are two core factors that affect a miner's ROI:",
       Content4: "Mining output",
       Content5: "Token price",
@@ -107,6 +109,7 @@ export default {
         "Mining output is directly related to the mining difficulty. The more miners, the greater the total network-wide hash power, the higher the mining difficulty, and the lower the mining output per miner. The total mineable supply is fixed, so the more hash power that flows into mining, the less mining output is released per unit (TB) of hash power.",
       Content7:
         "The output of first-batch mining is usually much greater in comparison to regular mining",
+      Content7Comma: ". ",
       Content8:
         "You can think of it like sharing a pizza. The more people share, the smaller each slice gets. To use Chia mining as a case study, the daily output during first-batch mining was equivalent to 1 year of mining at the rates just 2 months after mainnet launch.",
       Content18: "",
@@ -114,11 +117,13 @@ export default {
         "There is a crypto project called Chia, and to use Chia mining as a case study, Chia's mining difficulty increased rapidly from the first two months after its mainnet launched. As a result,",
       Content15:
         "miners who participated in Chia's first batch mining received daily mining rewards equivalent to what would take 1 year of mining at the mining output levels just 2 months after mainnet launch",
+      Content15Comma: ". ",
       Content16: "This is the power of first batch mining.",
       Content9:
         "Token price is affected by dynamic market conditions. Typically the mainet launch happens simultaneously as ",
       Content10:
-        " listing on an exchange which is when the token experiences price discovery, possibly surging exponentially.",
+        " listing on an exchange which is when the token experiences price discovery, possibly surging exponentially",
+      Content10Comma: ". ",
       Content11:
         "To put it simply, the earlier you can mine, the more tokens you earn. And on top of that, you can sell your tokens at a higher price when the token is listed on exchanges, resulting in a better ROI.",
       Content12:
@@ -177,6 +182,7 @@ export default {
     PhoneInput: "Phone Number",
     PhoneInputWarning: "phone number cannot be null",
     InvitationWarning: "Invitation code is must",
+    ConfirmBtn: "Confirm",
   },
 
   Drawer: {
@@ -246,6 +252,7 @@ export default {
   },
 
   Account: {
+    Invitation: "Invitation Code",
     Email: {
       Update: {
         Title: "Update Email",
@@ -329,9 +336,11 @@ export default {
       LoginVerification: "Login Verification",
       LoginVerificationContent:
         "Enalbe verification methods to add verification when login",
-      GALogin: "Google Authentication",
+      GALogin: "Google Login Authentication",
+      EmailLogin: "Email Login Authentication",
       Submit: "Submit Change",
       HaveDoneGoogle: "you have finished google authentication!!!",
+      tooltip: "please do google authenticate verify or bind email first!",
     },
     History: {
       Title: "RECENT LOGIN HISTORY",
@@ -530,7 +539,8 @@ export default {
       Q1: "When does my contract period officially begin? From the date I signed it?",
       A1: "Your contract period begins from the date your machine begins mining.",
       Q2: "My contract and receipt show the payment amount in USDT, but I paid with BTC. Why is this?",
-      A2: "Due to the daily price fluctuation of BTC and other cryptocurrencies, our sales partners convert payments to USDT (also known as Tether) — a stablecoin whose price is fixed to the US Dollar and does not fluctuate. This is to maintain stability and accuracy for our customers' payments. For any specific inquiries about your payment amount, please contact us at",
+      A2: "Due to the daily price fluctuation of BTC and other cryptocurrencies, our sales partners convert payments to USDT (also known as Tether) — a stablecoin whose price is fixed to the US Dollar and does not fluctuate. This is to maintain stability and accuracy for our customers' payments. For any specific inquiries about your payment amount, please contact us at ",
+      A22: ".",
       Q3: 'I see the term "TiB" written in my contract, but I don\'t quite understand what that means.',
       A3: "TiB stands for Terabyte, a unit used to measure computer hard disk storage space. For cryptocurrencies mined via hard disk space, such as Spacemesh, the storage power (also known as hash power for non-storaged based cryptocurrency mining) is measured in units of TiB.",
     },
@@ -661,11 +671,13 @@ export default {
     hh10: "10. How We Learn About, Acquire, Alter or Delete Your Personal Information",
     pp12: "Please contact us via the contact information stated in the Privacy Policy if you wish to confirm that we are processing your data, or access your personal data that we may hold, alter or delete your personal information we have collected.",
     hh11: "11. Contact Us",
-    pp13: "Please contact us at support@procyon.vip in case of any questions or concerns related to this Privacy Policy.",
+    pp13: "Please contact us at ",
+    pp133:
+      " in case of any questions or concerns related to this Privacy Policy.",
 
     hhh1: "Terms of Service",
     hhh2: "Procyon User Registration Service Agreement",
-    ppp1: 'The Registration Services Agreement (hereinafter referred to as the "agreement"”") concerns the regulation of rights and obligations between the user and Procyon in connection with the services of Procyon and its affiliated companies. By accessing and/or using this website, user accepts and agrees to all the terms and conditions of this agreement. Procyon is entitled to amend the terms of this agreement, and the revised agreement once published will effectively replace the original agreement. Users can check the latest agreement at any time.',
+    ppp1: 'The Registration Services Agreement (hereinafter referred to as the "agreement") concerns the regulation of rights and obligations between the user and Procyon in connection with the services of Procyon and its affiliated companies. By accessing and/or using this website, user accepts and agrees to all the terms and conditions of this agreement. Procyon is entitled to amend the terms of this agreement, and the revised agreement once published will effectively replace the original agreement. Users can check the latest agreement at any time.',
     hhh3: "Content of Services",
     ppp2: "1. Procyon and its affiliated companies adopt our own system to provide users with leasing and management of mining machines and other services that may be added in the future through the Internet.",
     ppp3: "2. For the registration information provided by the user, the user agrees to: (1) provide legal, true, accurate and detailed personal data; (2) in case of changes, update user information timely. If the registration information provided by the user is illegal, untrue, inaccurate and incomplete, the user shall bear the corresponding responsibilities and consequences caused thereby, and Procyon may reserve the right to terminate the user's use of the services provided by Procyon.",

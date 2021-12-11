@@ -45,7 +45,7 @@ pipeline {
         expression { BUILD_TARGET == 'true' }
       }
       steps {
-        sh 'docker build -t entropypool/japan-webui:latest .'
+        sh 'docker build -t $DOCKER_REGISTRY/entropypool/japan-webui:latest .'
       }
     }
 
@@ -180,7 +180,7 @@ pipeline {
 	  fi
 	  PATH=/usr/local/bin:$PATH:./node_modules/@quasar/app/bin all_proxy= yarn install --registry https://registry.npm.taobao.org/
 	  PATH=/usr/local/bin:$PATH:./node_modules/@quasar/app/bin quasar build
-          docker build -t entropypool/japan-webui:$tag .
+          docker build -t $DOCKER_REGISTRY/entropypool/japan-webui:$tag .
         '''.stripIndent())
       }
     }
@@ -190,7 +190,7 @@ pipeline {
         expression { RELEASE_TARGET == 'true' }
       }
       steps {
-        sh 'docker push entropypool/japan-webui:latest'
+        sh 'docker push $DOCKER_REGISTRY/entropypool/japan-webui:latest'
         sh(returnStdout: true, script: '''
           images=`docker images | grep entropypool | grep japan-webui | grep none | awk '{ print $3 }'`
           for image in $images; do
@@ -214,7 +214,7 @@ pipeline {
           rc=$?
           set -e
           if [ 0 -eq $rc ]; then
-            docker push entropypool/japan-webui:$tag
+            docker push $DOCKER_REGISTRY/entropypool/japan-webui:$tag
           fi
         '''.stripIndent())
       }
@@ -241,7 +241,7 @@ pipeline {
           rc=$?
           set -e
           if [ 0 -eq $rc ]; then
-            docker push entropypool/japan-webui:$tag
+            docker push $DOCKER_REGISTRY/entropypool/japan-webui:$tag
           fi
         '''.stripIndent())
       }
@@ -270,6 +270,7 @@ pipeline {
           git reset --hard
           git checkout $tag
           sed -i "s/japan-webui:latest/japan-webui:$tag/g" k8s/01-japan-webui.yaml
+          sed -i "s/uhub.service.ucloud.cn/$DOCKER_REGISTRY/g" k8s/01-japan-webui.yaml
           kubectl apply -k k8s
         '''.stripIndent())
       }
@@ -294,6 +295,7 @@ pipeline {
           git reset --hard
           git checkout $tag
           sed -i "s/japan-webui:latest/japan-webui:$tag/g" k8s/01-japan-webui.yaml
+          sed -i "s/uhub.service.ucloud.cn/$DOCKER_REGISTRY/g" k8s/01-japan-webui.yaml
           kubectl apply -k k8s
         '''.stripIndent())
       }

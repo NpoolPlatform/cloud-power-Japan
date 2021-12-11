@@ -14,6 +14,10 @@
   width: 50%;
 }
 
+.row {
+  align-content: center;
+}
+
 .title {
   margin-top: 12px;
   width: 100%;

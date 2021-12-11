@@ -38,12 +38,20 @@ export default defineComponent({
     const path = computed({
       get: () => router.currentRoute.value.path,
     });
+
+    const loginVerify = computed({
+      get: () => $store.state.verify.loginVerify,
+      set: (val) => {
+        $store.commit("verify/updateLoginVerify", val);
+      },
+    });
     return {
       q,
       user,
       path,
       open,
       locale,
+      loginVerify,
     };
   },
 
@@ -84,6 +92,10 @@ export default defineComponent({
           break;
       }
     }
+
+    if (this.q.cookies.has("UserID")) {
+      this.loginVerify = true;
+    }
   },
 
   mounted: function () {
@@ -104,7 +116,7 @@ export default defineComponent({
       return;
     }
 
-    if (!this.user.logined) {
+    if (!this.user.logined && this.loginVerify) {
       this.getUserInfo();
       return;
     }
@@ -145,13 +157,7 @@ export default defineComponent({
   display: block;
   top: 100;
   right: 0;
-  height: 100%;
+  height: auto;
   width: 100%;
-  background-color: linear-gradient(
-    to bottom right,
-    #23292b 0,
-    #2a3943 50%,
-    #1f293a 100%
-  );
 }
 </style>

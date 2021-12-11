@@ -86,19 +86,19 @@
         <div class="column-2">
           <p>
             {{ $t("Homepage.Why.Content1") }}
-            <strong>{{ $t("Homepage.Why.Content2") }}</strong>
-            {{ $t("Homepage.Why.Content3") }}
-            <strong>{{ $t("Homepage.Why.Content4") }}</strong>
-            {{ $t("Homepage.Why.Content5") }}
+            <strong>{{ $t("Homepage.Why.Content2") }}</strong
+            >{{ $t("Homepage.Why.Content3")
+            }}<strong>{{ $t("Homepage.Why.Content4") }}</strong
+            >{{ $t("Homepage.Why.Content4Comma")
+            }}{{ $t("Homepage.Why.Content5") }}
           </p>
         </div>
 
         <div class="column-2">
           <p>
-            {{ $t("Homepage.Why.Content6") }}
-            <strong>{{ $t("Homepage.Why.Content7") }}</strong>
-            {{ $t("Homepage.Why.Content8") }}
-            {{ $t("Homepage.Why.Content9") }}
+            {{ $t("Homepage.Why.Content6")
+            }}<strong>{{ $t("Homepage.Why.Content7") }}</strong
+            >{{ $t("Homepage.Why.Content8") }}{{ $t("Homepage.Why.Content9") }}
           </p>
         </div>
       </div>
@@ -141,7 +141,8 @@
         <h2 id="why-procyon">{{ $t("Homepage.What.Title") }}</h2>
         <p>
           {{ $t("Homepage.What.Content1") }}
-          <strong>{{ $t("Homepage.What.Content2") }}</strong>
+          <strong>{{ $t("Homepage.What.Content2") }}</strong
+          >{{ $t("Homepage.What.Content2Comma") }}
         </p>
         <p>{{ $t("Homepage.What.Content3") }}</p>
         <ul>
@@ -150,20 +151,23 @@
         </ul>
         <p>
           {{ $t("Homepage.What.Content6") }}
-          <strong>{{ $t("Homepage.What.Content7") }}</strong>
-          . {{ $t("Homepage.What.Content8") }}
+          <strong>{{ $t("Homepage.What.Content7") }}</strong
+          >{{ $t("Homepage.What.Content7Comma")
+          }}{{ $t("Homepage.What.Content8") }}
         </p>
 
         <p>
           {{ $t("Homepage.What.Content14") }}
-          <strong>{{ $t("Homepage.What.Content15") }}</strong>
-          . {{ $t("Homepage.What.Content16") }}
+          <strong>{{ $t("Homepage.What.Content15") }}</strong
+          >{{ $t("Homepage.What.Content15Comma")
+          }}{{ $t("Homepage.What.Content16") }}
         </p>
 
         <p>
           {{ $t("Homepage.What.Content9") }}
-          <strong>{{ $t("Homepage.What.Content10") }}</strong>
-          . {{ $t("Homepage.What.Content11") }}
+          <strong>{{ $t("Homepage.What.Content10") }}</strong
+          >{{ $t("Homepage.What.Content10Comma")
+          }}{{ $t("Homepage.What.Content11") }}
         </p>
 
         <p>{{ $t("Homepage.What.Content12") }}</p>

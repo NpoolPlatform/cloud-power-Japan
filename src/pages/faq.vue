@@ -56,7 +56,8 @@
 
         <p>
           {{ $t("Faq.Header3.A2") }}
-          <a href="mailto:support@procyon.vip">support@procyon.vip</a>.
+          <a href="mailto:support@procyon.vip">support@procyon.vip</a
+          >{{ $t("Faq.Header3.A22") }}
         </p>
 
         <h3>{{ $t("Faq.Header3.Q3") }}</h3>

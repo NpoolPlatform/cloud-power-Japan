@@ -113,13 +113,18 @@ import { useI18n } from "vue-i18n";
 import { sha256Password } from "src/utils/utils";
 import { throttle } from "quasar";
 import SendCodeInput from "src/components/SendCodeInput.vue";
+import { useStore } from "vuex";
 
 export default defineComponent({
   components: { SendCodeInput },
   setup() {
+    const $store = useStore();
     const email = ref("");
     const verifyCode = computed({
       get: () => $store.state.verify.verifyCode,
+      set: () => {
+        $store.commit("verify/updateVerifyCode", val);
+      },
     });
     const password = ref("");
     const confirmPassword = ref("");
@@ -169,6 +174,7 @@ export default defineComponent({
       agree,
       invitationRef,
       invitationRule,
+      verifyCode,
     };
   },
 
@@ -178,6 +184,11 @@ export default defineComponent({
 
   methods: {
     onRegister: function () {
+      if (!this.agree) {
+        fail(undefined, "please check agree", "");
+        return;
+      }
+
       this.usernameRef.validate();
       this.passRef.validate();
       this.confirmPassRef.validate();
@@ -192,22 +203,19 @@ export default defineComponent({
         return;
       }
 
-      if (!this.agree) {
-        fail(undefined, "please check agree", null);
-        return;
-      }
       var thiz = this;
       var failToRegister = "fail to register";
       var password = sha256Password(this.registerInput.password);
 
       api
-        .post("/user-management/v1/signup", {
+        .post("/cloud-hashing-apis/v1/signup", {
           Password: password,
           EmailAddress: thiz.registerInput.email,
           VerificationCode: thiz.registerInput.verifyCode,
           InvitationCode: thiz.registerInput.invitationCode,
         })
         .then(function (resp) {
+          thiz.verifyCode = "";
           thiz.$router.push({
             path: "/login",
           });
