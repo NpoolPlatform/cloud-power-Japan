@@ -273,7 +273,7 @@ pipeline {
           git checkout $tag
           sed -i "s/japan-webui:latest/japan-webui:$tag/g" k8s/01-japan-webui.yaml
           sed -i "s/uhub.service.ucloud.cn/$DOCKER_REGISTRY/g" k8s/01-japan-webui.yaml
-          sed -i "443/$HTTPS_PORT/g" k8s/03-middlewares.yaml
+          sed -i "s/443/$HTTPS_PORT/g" k8s/03-middlewares.yaml
           kubectl apply -k k8s
         '''.stripIndent())
       }
@@ -299,7 +299,7 @@ pipeline {
           git checkout $tag
           sed -i "s/japan-webui:latest/japan-webui:$tag/g" k8s/01-japan-webui.yaml
           sed -i "s/uhub.service.ucloud.cn/$DOCKER_REGISTRY/g" k8s/01-japan-webui.yaml
-          sed -i "443/$HTTPS_PORT/g" k8s/03-middlewares.yaml
+          sed -i "s/443/$HTTPS_PORT/g" k8s/03-middlewares.yaml
           kubectl apply -k k8s
         '''.stripIndent())
       }
