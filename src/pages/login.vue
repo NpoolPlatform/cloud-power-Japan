@@ -143,6 +143,9 @@ export default defineComponent({
 
     const verifyCode = computed({
       get: () => $store.state.verify.verifyCode,
+      set: (val) => {
+        $store.commit("verify/updateVerifyCode", val);
+      },
     });
 
     const emailVerifyInput = reactive({

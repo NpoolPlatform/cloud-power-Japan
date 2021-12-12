@@ -140,7 +140,9 @@
         <div class="earn-box">
           <div class="earn-box-item">
             <div>
-              <span class="price">{{ invitationCode }}</span>
+              <div class="price" style="text-transform: none; color: #1ec498">
+                {{ invitationCode }}
+              </div>
             </div>
             <div class="hr" style="margin: 0"></div>
             <span class="subtitle">{{ $t("Account.Invitation") }}</span>
@@ -378,6 +380,10 @@
 
           <q-card-section class="img-section-style">
             <q-img class="img-style" :src="userGoogleImg"></q-img>
+          </q-card-section>
+
+          <q-card-section class="img-section-style">
+            Google Secret: {{ userSecret }}
           </q-card-section>
 
           <q-card-section class="text-black">{{
@@ -838,6 +844,7 @@ export default defineComponent({
       oldVerifyCode,
       invitationCode,
       loginOptions,
+      userSecret: ref(""),
     };
   },
 
@@ -992,7 +999,8 @@ export default defineComponent({
           Username: username,
         })
         .then((resp) => {
-          self.userGoogleImg = resp.data.Info;
+          self.userGoogleImg = resp.data.Info.CodeURL;
+          self.userSecret = resp.data.Info.Secret;
         })
         .catch((error) => {
           fail(undefined, self.$t("Notify.GaVerify.FailToGetImg"), error);

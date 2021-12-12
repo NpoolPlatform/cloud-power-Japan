@@ -122,7 +122,7 @@ export default defineComponent({
     const email = ref("");
     const verifyCode = computed({
       get: () => $store.state.verify.verifyCode,
-      set: () => {
+      set: (val) => {
         $store.commit("verify/updateVerifyCode", val);
       },
     });

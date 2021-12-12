@@ -263,14 +263,22 @@ export default defineComponent({
       },
     });
 
+    const refresh = computed({
+      get: () => $store.state.verify.refresh,
+      set: (val) => {
+        $store.commit("verify/updateRefresh", val);
+      },
+    });
+
     const changeLang = () => {
-      var msg = t("Loading.Msg");
-      q.loading.show({
-        message: msg,
-        html: true,
-      });
-      location.reload();
-      q.loading.hide();
+      // var msg = t("Loading.Msg");
+      // q.loading.show({
+      //   message: msg,
+      //   html: true,
+      // });
+      // location.reload();
+      // q.loading.hide();
+      refresh.value = true;
     };
 
     const logined = computed({

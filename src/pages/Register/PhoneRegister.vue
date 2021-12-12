@@ -117,7 +117,11 @@ export default defineComponent({
     const phone = ref("");
     const verifyCode = computed({
       get: () => $store.state.verify.verifyCode,
+      set: (val) => {
+        $store.commit("verify/updateVerifyCode", val);
+      },
     });
+
     const password = ref("");
     const confirmPassword = ref("");
     const invitationCode = ref("");

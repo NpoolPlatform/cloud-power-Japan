@@ -19,7 +19,12 @@ export default defineComponent({
     const q = useQuasar();
     const $store = useStore();
     const { locale } = useI18n({ useScope: "global" });
-    locale.value = q.lang.getLocale();
+    var lang = q.lang.getLocale();
+    if (lang.indexOf("en") > -1) {
+      locale.value = "en-US";
+    } else {
+      locale.value = "ja-JP";
+    }
 
     const user = computed({
       get: () => $store.state.user.user,
