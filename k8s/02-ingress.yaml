@@ -11,8 +11,15 @@ metadata:
     traefik.ingress.kubernetes.io/router.middlewares: kube-system-redirect-https@kubernetescrd
 
 spec:
-  tls:  
-    - secretName: procyon-vip-tls
+  tls:
+      - hosts:
+          - www.procyon.vip
+          - procyon.vip
+        secretName: procyon-vip-tls
+      - hosts:
+          - www.npool.top
+          - npool.top
+        secretName: npool-top-tls
   rules:
     - host: www.procyon.vip
       http:
