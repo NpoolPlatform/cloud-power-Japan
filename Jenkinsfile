@@ -254,7 +254,7 @@ pipeline {
       }
       steps {
         sh 'sed -i "s/uhub.service.ucloud.cn/$DOCKER_REGISTRY/g" k8s/01-japan-webui.yaml'
-        sh 'sed -i "443/$HTTPS_PORT/g" k8s/03-middlewares.yaml'
+        sh 'sed -i "s/443/$HTTPS_PORT/g" k8s/03-middlewares.yaml'
         sh 'kubectl apply -k k8s'
       }
     }
