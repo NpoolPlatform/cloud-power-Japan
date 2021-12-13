@@ -11,15 +11,13 @@
             >{{ $t("ChangePassword.UseEmail") }}</router-link
           >
         </q-card-section>
+
         <q-card-section>
           <q-form class="register-form">
-            <country-code
-              v-model:userPhoneNumber="phoneResponse.phone"
-              v-model:userCode="phoneResponse.code"
-            ></country-code>
+            <country-code></country-code>
 
             <send-code-input
-              :verifyParam="changePasswordInput.phone"
+              :verifyParam="phone"
               verifyType="phone"
             ></send-code-input>
 
@@ -33,8 +31,7 @@
               lazy-rules
               :rules="[
                 (val) =>
-                  (val && val.length > 0) ||
-                  $t('ChangePassword.OldPasswordWarning'),
+                  parsePassword(val) || $t('ChangePassword.OldPasswordWarning'),
               ]"
               ref="oldPasswordRef"
             >
@@ -57,7 +54,7 @@
               lazy-rules
               :rules="[
                 (val) =>
-                  (val && val.length > 0) ||
+                  parsePassword(val) ||
                   $t('ChangePassword.PasswordInputWarning'),
               ]"
               ref="passwordRef"
@@ -105,7 +102,7 @@ import { defineComponent, ref, reactive, computed, onMounted } from "vue";
 import { api } from "src/boot/axios";
 import { useStore } from "vuex";
 import { fail, success, waiting } from "src/notify/notify";
-import { sha256Password } from "src/utils/utils";
+import { parsePassword, sha256Password } from "src/utils/utils";
 import { throttle, useQuasar } from "quasar";
 import { useI18n } from "vue-i18n";
 import SendCodeInput from "src/components/SendCodeInput.vue";
@@ -129,10 +126,12 @@ export default defineComponent({
       verifyCode.value = "";
     });
 
-    const phoneResponse = {
-      phone: "",
-      code: "",
-    };
+    const phone = computed({
+      get: () => $store.state.verify.phone,
+      set: (val) => {
+        $store.commit("verify/updatePhone", val);
+      },
+    });
 
     const oldPasswordRef = ref(null);
     const passwordRef = ref(null);
@@ -146,7 +145,7 @@ export default defineComponent({
     });
 
     const confirmPassRule = ref([
-      (val) => (val && val.length > 0) || t("Register.ConfirmInputWarning1"),
+      (val) => parsePassword(val) || t("Register.ConfirmInputWarning1"),
       (val) =>
         (val && val == changePasswordInput.password) ||
         t("Register.ConfirmInputWarning2"),
@@ -159,8 +158,9 @@ export default defineComponent({
       passwordRef,
       confirmPasswordRef,
       q,
-      phoneResponse,
       confirmPassRule,
+      parsePassword,
+      phone,
     };
   },
 
@@ -201,12 +201,10 @@ export default defineComponent({
       var self = this;
 
       var password = sha256Password(this.changePasswordInput.password);
-      this.changePasswordInput.phone =
-        this.phoneResponse.code + this.phoneResponse.phone;
 
       api
         .post("/user-management/v1/change/password", {
-          VerifyParam: self.changePasswordInput.phone,
+          VerifyParam: self.phone,
           Password: password,
           OldPassword: sha256Password(self.changePasswordInput.oldPassword),
           VerifyType: "phone",
@@ -219,6 +217,7 @@ export default defineComponent({
           this.q.cookies.remove("AppSession");
           this.q.cookies.remove("Session");
           self.verifyCode = "";
+          self.phone = "";
           location.reload();
           self.$router.push("/login");
         })

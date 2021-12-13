@@ -13,13 +13,10 @@
         </q-card-section>
         <q-card-section>
           <q-form class="register-form">
-            <country-code
-              v-model:userPhoneNumber="phoneResponse.phone"
-              v-model:userCode="phoneResponse.code"
-            ></country-code>
+            <country-code></country-code>
 
             <send-code-input
-              :verifyParam="phoneResponse.code + phoneResponse.phone"
+              :verifyParam="phone"
               verifyType="phone"
             ></send-code-input>
 
@@ -104,23 +101,25 @@ import { defineComponent, ref, reactive, computed, onMounted } from "vue";
 import { api } from "boot/axios";
 import { success, fail, waiting } from "../../notify/notify";
 import { useI18n } from "vue-i18n";
-import { sha256Password } from "src/utils/utils";
+import { parsePassword, sha256Password } from "src/utils/utils";
 import { throttle } from "quasar";
 import SendCodeInput from "src/components/SendCodeInput.vue";
 import CountryCode from "../../components/CountryCode.vue";
 import { useStore } from "vuex";
+import mitt from "mitt";
 
 export default defineComponent({
   components: { SendCodeInput, CountryCode },
   setup() {
     const $store = useStore();
 
-    const phoneResponse = reactive({
-      phone: "",
-      code: "",
+    const phone = computed({
+      get: () => $store.state.verify.phone,
+      set: (val) => {
+        $store.commit("verify/updatePhone", val);
+      },
     });
 
-    const phone = computed(() => phoneResponse.code + phoneResponse.phone);
     const verifyCode = computed({
       get: () => $store.state.verify.verifyCode,
       set: (val) => {
@@ -136,7 +135,7 @@ export default defineComponent({
     const confirmPassword = ref("");
     const invitationCode = ref("");
     const registerInput = reactive({
-      phone,
+      phone: phone.value,
       verifyCode,
       password,
       confirmPassword,
@@ -153,10 +152,10 @@ export default defineComponent({
     ]);
 
     const passwordRule = ref([
-      (val) => (val && val.length > 0) || t("Register.PasswordInputWarning"),
+      (val) => parsePassword(val) || t("Register.PasswordInputWarning"),
     ]);
     const confirmPassRule = ref([
-      (val) => (val && val.length > 0) || t("Register.ConfirmInputWarning1"),
+      (val) => parsePassword(val) || t("Register.ConfirmInputWarning1"),
       (val) =>
         (val && val == password.value) || t("Register.ConfirmInputWarning2"),
     ]);
@@ -173,7 +172,6 @@ export default defineComponent({
       agree,
       invitationRef,
       invitationRule,
-      phoneResponse,
       verifyCode,
       phone,
     };
@@ -189,7 +187,6 @@ export default defineComponent({
         fail(undefined, "please check agree", "");
         return;
       }
-      console.log("phone number is", this.phoneResponse);
 
       this.passRef.validate();
       this.confirmPassRef.validate();
@@ -216,6 +213,7 @@ export default defineComponent({
         })
         .then(function (resp) {
           thiz.verifyCode = "";
+          thiz.phone = "";
           thiz.$router.push({
             path: "/login",
           });

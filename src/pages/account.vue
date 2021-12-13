@@ -344,7 +344,12 @@
                   anchor="top middle"
                   self="bottom middle"
                   :offset="[10, 10]"
-                  v-if="!enableGoogleAuthentication"
+                  v-if="
+                    !enableGoogleAuthentication ||
+                    email === '' ||
+                    email === null ||
+                    email === undefined
+                  "
                   >{{ $t("Account.SecuritySetting.tooltip") }}</q-tooltip
                 >
                 <q-option-group
@@ -352,7 +357,12 @@
                   :options="loginOptions"
                   color="primary"
                   inline
-                  :disable="!enableGoogleAuthentication"
+                  :disable="
+                    !enableGoogleAuthentication ||
+                    email === '' ||
+                    email === null ||
+                    email === undefined
+                  "
                 >
                 </q-option-group>
               </div>
@@ -361,6 +371,12 @@
                 <q-btn
                   class="account-btn setting-btn"
                   style="top: 0"
+                  :disable="
+                    !enableGoogleAuthentication ||
+                    email === '' ||
+                    email === null ||
+                    email === undefined
+                  "
                   @click="submitLoginVerify"
                   >{{ $t("Account.SecuritySetting.Submit") }}</q-btn
                 >
@@ -501,14 +517,11 @@
           }}</span>
         </q-card-section>
         <q-card-section class="dialog-section-style">
-          <country-code
-            v-model:userPhoneNumber="phoneEnableResponse.phone"
-            v-model:userCode="phoneEnableResponse.code"
-          ></country-code>
+          <country-code></country-code>
         </q-card-section>
         <q-card-section class="dialog-section-style">
           <send-code-input
-            :verifyParam="phoneEnableInput.phone"
+            :verifyParam="phone"
             verifyType="phone"
           ></send-code-input>
         </q-card-section>
@@ -582,29 +595,21 @@
           }}</span>
         </q-card-section>
         <q-card-section class="dialog-section-style">
-          <country-code
-            v-model:userPhoneNumber="phoneUpdateResponse.oldPhone"
-            v-model:userCode="phoneUpdateResponse.oldCode"
-            inputType="old"
-          ></country-code>
+          <country-code inputType="old"></country-code>
         </q-card-section>
         <q-card-section class="dialog-section-style">
           <send-code-input
-            :verifyParam="phoneUpdateInput.oldPhone"
+            :verifyParam="oldPhone"
             verifyType="phone"
             codeType="old"
           ></send-code-input>
         </q-card-section>
         <q-card-section class="dialog-section-style">
-          <country-code
-            v-model:userPhoneNumber="phoneUpdateResponse.phone"
-            v-model:userCode="phoneUpdateResponse.code"
-            inputType="new"
-          ></country-code>
+          <country-code inputType="new"></country-code>
         </q-card-section>
         <q-card-section class="dialog-section-style">
           <send-code-input
-            :verifyParam="phoneUpdateInput.phone"
+            :verifyParam="phone"
             verifyType="phone"
           ></send-code-input>
         </q-card-section>
@@ -627,7 +632,7 @@ import { useStore } from "vuex";
 import { success, fail, waiting } from "../notify/notify";
 import { throttle, useQuasar } from "quasar";
 import VerifycodeInput from "src/components/VerifycodeInput.vue";
-import { timestampToDate } from "src/utils/utils";
+import { parseEmail, timestampToDate } from "src/utils/utils";
 import { sha256Password } from "src/utils/utils";
 import { useI18n } from "vue-i18n";
 import SendCodeInput from "src/components/SendCodeInput.vue";
@@ -651,6 +656,24 @@ export default defineComponent({
       },
     });
 
+    const myPhone = computed({
+      get: () => $store.state.user.user.info.UserBasicInfo.PhoneNumber,
+    });
+
+    const phone = computed({
+      get: () => $store.state.verify.phone,
+      set: (val) => {
+        $store.commit("verify/updatePhone", val);
+      },
+    });
+
+    const oldPhone = computed({
+      get: () => $store.state.verify.oldPhone,
+      set: (val) => {
+        $store.commit("verify/updateOldPhone", val);
+      },
+    });
+
     const verifyCode = computed({
       get: () => $store.state.verify.verifyCode,
       set: (val) => {
@@ -663,11 +686,6 @@ export default defineComponent({
       set: (val) => {
         $store.commit("verify/updateOldVerifyCode", val);
       },
-    });
-
-    onMounted(() => {
-      verifyCode.value = "";
-      oldVerifyCode.value = "";
     });
 
     const userBasicInfo = computed({
@@ -761,15 +779,21 @@ export default defineComponent({
     const password = ref(null);
 
     const emailRule = ref([
-      (val) => (val && val.length > 0) || t("Register.UsernameInputwarning"),
+      (val) => parseEmail(val) || t("Register.UsernameInputwarning"),
     ]);
 
     const enabledMobile = computed({
-      get: () => user.value.info.UserBasicInfo.PhoneNumber !== "",
+      get: () =>
+        myPhone.value !== "" &&
+        myPhone.value !== null &&
+        myPhone.value !== undefined,
     });
 
     const enabledEmail = computed({
-      get: () => user.value.info.UserBasicInfo.EmailAddress !== "",
+      get: () =>
+        user.value.info.UserBasicInfo.EmailAddress !== "" &&
+        user.value.info.UserBasicInfo.EmailAddress !== null &&
+        user.value.info.UserBasicInfo.EmailAddress !== undefined,
     });
 
     const emailEnableRef = ref(null);
@@ -782,18 +806,6 @@ export default defineComponent({
       page: 1,
       rowsPerPage: 3,
     });
-
-    const phoneEnableResponse = reactive({
-      phone: "",
-      code: "",
-    });
-
-    const phoneUpdateResponse = {
-      oldPhone: "",
-      oldCode: "",
-      phone: "",
-      code: "",
-    };
 
     const invitationCode = ref("");
 
@@ -809,7 +821,7 @@ export default defineComponent({
 
     const phoneEnableInput = computed(() => {
       return {
-        phone: phoneEnableResponse.code + phoneEnableResponse.phone,
+        phone: phone.value,
         phoneCode: verifyCode.value,
       };
     });
@@ -823,9 +835,9 @@ export default defineComponent({
 
     const phoneUpdateInput = computed(() => {
       return {
-        oldPhone: phoneUpdateResponse.oldCode + phoneUpdateResponse.oldPhone,
+        oldPhone: oldPhone.value,
         oldPhoneCode: oldVerifyCode.value,
-        phone: phoneUpdateResponse.code + phoneUpdateResponse.phone,
+        phone: phone.value,
         phoneCode: verifyCode.value,
       };
     });
@@ -860,8 +872,6 @@ export default defineComponent({
       phoneUpdateInput,
       emailEnableInput,
       phoneEnableInput,
-      phoneEnableResponse,
-      phoneUpdateResponse,
       emailEnableRef,
       emailUpdateOldRef,
       emailUpdateRef,
@@ -873,6 +883,9 @@ export default defineComponent({
       enabledMobile,
       enabledEmail,
       email,
+      phone,
+      oldPhone,
+      myPhone,
     };
   },
 
@@ -959,6 +972,8 @@ export default defineComponent({
     whenHide: function () {
       this.verifyCode = "";
       this.oldVerifyCode = "";
+      this.phone = "";
+      this.oldPhone = "";
     },
 
     submitLoginVerify: function () {
@@ -1119,6 +1134,7 @@ export default defineComponent({
         .then((resp) => {
           success(undefined, "successfully enable email address");
           self.verifyCode = "";
+          self.phone = "";
           self.phoneEnableDialog = false;
         })
         .catch((error) => {
@@ -1190,6 +1206,8 @@ export default defineComponent({
           success(undefined, "successfully update user phone");
           self.verifyCode = "";
           self.oldVerifyCode = "";
+          self.phone = "";
+          self.oldPhone = "";
           self.phoneUpdateDialog = false;
         })
         .catch((error) => {

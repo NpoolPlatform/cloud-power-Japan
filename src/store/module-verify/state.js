@@ -4,5 +4,7 @@ export default function () {
     verifyCode: "",
     loginVerify: false,
     refresh: false,
+    phone: "",
+    oldPhone: "",
   };
 }

@@ -110,7 +110,7 @@ import { defineComponent, ref, reactive, computed, onMounted } from "vue";
 import { api } from "boot/axios";
 import { success, fail, waiting } from "../../notify/notify";
 import { useI18n } from "vue-i18n";
-import { sha256Password } from "src/utils/utils";
+import { parsePassword, parseEmail, sha256Password } from "src/utils/utils";
 import { throttle } from "quasar";
 import SendCodeInput from "src/components/SendCodeInput.vue";
 import { useStore } from "vuex";
@@ -153,13 +153,13 @@ export default defineComponent({
     ]);
 
     const usernameRule = ref([
-      (val) => (val && val.length > 0) || t("Register.UsernameInputwarning"),
+      (val) => parseEmail(val) || t("Register.UsernameInputwarning"),
     ]);
     const passwordRule = ref([
-      (val) => (val && val.length > 0) || t("Register.PasswordInputWarning"),
+      (val) => parsePassword(val) || t("Register.PasswordInputWarning"),
     ]);
     const confirmPassRule = ref([
-      (val) => (val && val.length > 0) || t("Register.ConfirmInputWarning1"),
+      (val) => parsePassword(val) || t("Register.ConfirmInputWarning1"),
       (val) =>
         (val && val == password.value) || t("Register.ConfirmInputWarning2"),
     ]);

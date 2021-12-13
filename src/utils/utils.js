@@ -65,3 +65,76 @@ export function timestampToDate(timestamp) {
 export function sha256Password(password) {
   return sha256(password).toString();
 }
+
+export function parsePassword(password) {
+  if (password === "" || password === " ") {
+    return false;
+  }
+
+  if (password.length > 16 || password.length < 8) {
+    return false;
+  }
+
+  if (password.indexOf(" ") !== -1) {
+    return false;
+  }
+
+  var reg = /^[0-9]+.?[0-9]*$/;
+  if (reg.test(password)) {
+    return false;
+  }
+
+  reg = /^[a-zA-Z]+$/;
+  if (reg.test(password)) {
+    return false;
+  }
+
+  return true;
+}
+
+export function parseUsername(username) {
+  if (username === "" || username === " ") {
+    return false;
+  }
+
+  if (username.length > 32 || username.length < 4) {
+    return false;
+  }
+
+  if (username.indexOf(" ") !== -1) {
+    return false;
+  }
+
+  var reg = /^[0-9]+.?[0-9]*$/;
+  if (reg.test(username)) {
+    return false;
+  }
+  return true;
+}
+
+export function parseEmail(email) {
+  if (email == null || email == "") {
+    return false;
+  }
+  var regExp = /\w+([-+.]\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*/;
+  if (!regExp.test(email)) {
+    return false;
+  }
+  return true;
+}
+
+export function parsePhone(phone) {
+  if (phone == null || phone == "") {
+    return false;
+  }
+
+  if (phone.length > 11) {
+    return false;
+  }
+  var regExp = /^\d+$/;
+  if (!regExp.test(phone)) {
+    return false;
+  }
+
+  return true;
+}

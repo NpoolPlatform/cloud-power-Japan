@@ -15,7 +15,7 @@ export default function () {
           Province: "",
           City: "",
           PhoneNumber: "",
-          Compony: "string",
+          Compony: "",
           EmailAddress: "",
           SignupMethod: "",
           Career: "",

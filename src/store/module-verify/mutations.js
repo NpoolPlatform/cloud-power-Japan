@@ -13,3 +13,11 @@ export function updateLoginVerify(state, val) {
 export function updateRefresh(state, val) {
   state.refresh = val;
 }
+
+export function updatePhone(state, val) {
+  state.phone = val;
+}
+
+export function updateOldPhone(state, val) {
+  state.oldPhone = val;
+}
