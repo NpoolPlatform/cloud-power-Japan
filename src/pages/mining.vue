@@ -32,15 +32,17 @@
               }}</span>
               <span class="column-item-number"
                 >{{ order.order.Payment.Amount }}
-                {{ order.order.Payment.CoinInfo.Unit }}</span
+                {{ order.good.PriceCurrency.Unit }}</span
               >
 
               <span v-if="order.order.Discount !== 0 || order.order.SpecialReductionAmount !== 0">
-                ({{ order.good.PriceCurrency.Symbol }}
-                <span class="additions" style="text-decoration: line-through">{{
-                  order.order.Units * order.good.Price
-                }}</span
-                >)
+                <span class="additions">
+                  ({{ order.good.PriceCurrency.Symbol }}
+                  <span style="text-decoration: line-through">
+                    {{ order.order.Units * order.good.Price }}
+                  </span>
+                  )
+                </span>
               </span>
             </div>
 
@@ -51,25 +53,29 @@
               <span class="column-item-number"
                 >{{ order.order.Discount }}%</span
               >
-              <span class="additions"
-                >({{ order.good.PriceCurrency.Symbol
-                }}{{
-                  Number(order.order.Units) * Number(order.good.Price) -
-                  Number(order.order.Payment.Amount)
-                }})</span
-              >
+              <span class="additions">
+                ({{ order.good.PriceCurrency.Symbol }}
+                <span style="text-decoration: line-through">
+                  {{
+                    Number(order.order.Units) * Number(order.good.Price) -
+                    Number(order.order.Payment.Amount)
+                  }}
+                </span>
+                )
+              </span>
             </div>
 
             <div class="column-item" v-if="order.order.SpecialReductionAmount !== 0">
               <span class="column-item-title">{{
                 $t("Mining.Column2.Deduction")
               }}</span>
-              <span class="additions"
-                >({{ order.good.PriceCurrency.Symbol
-                }}{{
-                  order.order.SpecialReductionAmount
-                }})</span
-              >
+              <span class="additions">
+                ({{ order.good.PriceCurrency.Symbol }}
+                <span style="text-decoration: line-through">
+                  {{ order.order.SpecialReductionAmount }}
+                </span>
+                )
+              </span>
             </div>
 
             <div class="column-item">
