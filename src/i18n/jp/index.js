@@ -59,6 +59,11 @@ export default {
     Msg: "現在、言語を変更しています、お待ちください。",
   },
 
+  Update: {
+    UsernameInputWarning:
+      "ユーザー名は4～32文字で、純粋な数字やスペースを含むことはできません。",
+  },
+
   Register: {
     Title: "User Registration",
     Username: "ユーザー名 / メールアドレス",

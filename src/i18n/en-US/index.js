@@ -153,6 +153,11 @@ export default {
     ConfirmBtn: "Confirm",
   },
 
+  Update: {
+    UsernameInputWarning:
+      "User name needs to be between 4 and 32 characters and cannot be a pure number, cannot contain spaces",
+  },
+
   Register: {
     Title: "User Registration",
     Username: "Username / E-mail Address",

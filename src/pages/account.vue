@@ -17,6 +17,9 @@
               outlined
               v-model="username"
               bg-color="blue-grey-1"
+              ref="usernameRef"
+              lazy-rules
+              :rules="usernameRules"
             ></q-input>
           </div>
 
@@ -29,6 +32,9 @@
               outlined
               v-model="gender"
               bg-color="blue-grey-1"
+              ref="genderRef"
+              lazy-rules
+              :rules="genderRules"
             ></q-input>
           </div>
         </div>
@@ -612,19 +618,12 @@
 
 <script>
 import { api } from "src/boot/axios";
-import {
-  defineComponent,
-  computed,
-  ref,
-  reactive,
-  onMounted,
-  watch,
-} from "vue";
+import { defineComponent, computed, ref, reactive } from "vue";
 import { useStore } from "vuex";
 import { success, fail, waiting } from "../notify/notify";
 import { throttle, useQuasar } from "quasar";
 import VerifycodeInput from "src/components/VerifycodeInput.vue";
-import { parseEmail, timestampToDate } from "src/utils/utils";
+import { parseEmail, parseUsername, timestampToDate } from "src/utils/utils";
 import { sha256Password } from "src/utils/utils";
 import { useI18n } from "vue-i18n";
 import SendCodeInput from "src/components/SendCodeInput.vue";
@@ -768,7 +767,6 @@ export default defineComponent({
       },
     });
 
-    watch();
     const q = useQuasar();
     const password = ref(null);
 
@@ -841,6 +839,14 @@ export default defineComponent({
       { label: t("Account.SecuritySetting.EmailLogin"), value: false },
     ]);
 
+    const usernameRef = ref(null);
+
+    const usernameRules = ref([
+      (val) => parseUsername(val) || t("Update.UsernameInputWarning"),
+    ]);
+
+    const genderRules = ref([(val) => (val && val.length > 1) || t()]);
+
     return {
       user,
       userGALogin,
@@ -880,6 +886,10 @@ export default defineComponent({
       phone,
       oldPhone,
       myPhone,
+      usernameRef,
+      usernameRules,
+      genderRef: ref(null),
+      genderRules,
     };
   },
 
