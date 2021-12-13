@@ -199,14 +199,14 @@
               <q-space style="margin-bottom: 60px"></q-space>
               <div class="setting-btn-position">
                 <q-btn
-                  v-if="user.info.UserBasicInfo.EmailAddress === ''"
+                  v-if="!enabledEmail"
                   class="account-btn setting-btn"
                   @click="emailEnableDialog = true"
                   >{{ $t("Account.SecuritySetting.EmailEnable") }}</q-btn
                 >
 
                 <q-btn
-                  v-if="user.info.UserBasicInfo.EmailAddress !== ''"
+                  v-if="enabledEmail"
                   class="account-btn setting-btn"
                   @click="emailUpdateDialog = true"
                   >{{ $t("Account.SecuritySetting.EmailUpdate") }}</q-btn
@@ -241,14 +241,14 @@
               <q-space style="margin-bottom: 26px"></q-space>
               <div class="setting-btn-position">
                 <q-btn
-                  v-if="user.info.UserBasicInfo.PhoneNumber === ''"
+                  v-if="!enabledMobile"
                   @click="phoneEnableDialog = true"
                   class="account-btn setting-btn"
                   >{{ $t("Account.SecuritySetting.PhoneEnable") }}</q-btn
                 >
 
                 <q-btn
-                  v-if="user.info.UserBasicInfo.PhoneNumber !== ''"
+                  v-if="enabledMobile"
                   @click="phoneUpdateDialog = true"
                   class="account-btn setting-btn"
                   >{{ $t("Account.SecuritySetting.PhoneUpdate") }}</q-btn
@@ -344,12 +344,7 @@
                   anchor="top middle"
                   self="bottom middle"
                   :offset="[10, 10]"
-                  v-if="
-                    !enableGoogleAuthentication ||
-                    email === '' ||
-                    email === null ||
-                    email === undefined
-                  "
+                  v-if="!enableGoogleAuthentication && !enabledEmail"
                   >{{ $t("Account.SecuritySetting.tooltip") }}</q-tooltip
                 >
                 <q-option-group
@@ -357,12 +352,7 @@
                   :options="loginOptions"
                   color="primary"
                   inline
-                  :disable="
-                    !enableGoogleAuthentication ||
-                    email === '' ||
-                    email === null ||
-                    email === undefined
-                  "
+                  :disable="!enableGoogleAuthentication && !enabledEmail"
                 >
                 </q-option-group>
               </div>
@@ -371,12 +361,7 @@
                 <q-btn
                   class="account-btn setting-btn"
                   style="top: 0"
-                  :disable="
-                    !enableGoogleAuthentication ||
-                    email === '' ||
-                    email === null ||
-                    email === undefined
-                  "
+                  :disable="!enableGoogleAuthentication && !enabledEmail"
                   @click="submitLoginVerify"
                   >{{ $t("Account.SecuritySetting.Submit") }}</q-btn
                 >
@@ -627,7 +612,14 @@
 
 <script>
 import { api } from "src/boot/axios";
-import { defineComponent, computed, ref, reactive, onMounted } from "vue";
+import {
+  defineComponent,
+  computed,
+  ref,
+  reactive,
+  onMounted,
+  watch,
+} from "vue";
 import { useStore } from "vuex";
 import { success, fail, waiting } from "../notify/notify";
 import { throttle, useQuasar } from "quasar";
@@ -775,6 +767,8 @@ export default defineComponent({
         $store.commit("user/updateUserLoginVerify", val);
       },
     });
+
+    watch();
     const q = useQuasar();
     const password = ref(null);
 
@@ -1053,13 +1047,15 @@ export default defineComponent({
           })
           .then((resp) => {
             success(undefined, "successfully set user google verify");
-            this.enableGoogleAuthentication = true;
+            self.enableGoogleAuthentication = true;
+            self.visible = false;
+            self.openGaVerify = false;
+            location.reload();
           })
           .catch((error) => {
             fail(undefined, "fail to set user google verify", error);
+            self.visible = false;
           });
-        this.visible = false;
-        this.openGaVerify = false;
       }
     },
 
@@ -1235,8 +1231,7 @@ export default defineComponent({
           self.invitationCode = resp.data.Info.InvitationCode;
         })
         .catch((error) => {
-          fail(undefined, "fail to get user invitation code", error);
-          self.invitationCode = "No Data";
+          self.invitationCode = null;
         });
     },
   },

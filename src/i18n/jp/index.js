@@ -61,13 +61,14 @@ export default {
 
   Register: {
     Title: "User Registration",
-    Username: "Email アドレス",
+    Username: "ユーザー名 / メールアドレス",
     UsernameInputwarning: "正しいEmailアドレスを記入ください",
     SendCode: "コード送信",
     EmailVerifyCode: "Email アドレスの認証コード",
     EmailVerifyCodeInpuWarning: "認証コードを記入ください",
     Password: "パスワード",
-    PasswordInputWarning: "パスワードを記入ください",
+    PasswordInputWarning:
+      "合法的なパスワードを入力してください。パスワードは8以上16以下の長さで、数字と文字を含んでいなければなりません。",
     Confirm: "パスワードの確認",
     ConfirmInputWarning1: "パスワードを確認してください。",
     ConfirmInputWarning2: "パスワードと確認用パスワードが一致しない",
@@ -89,6 +90,8 @@ export default {
     PhoneInputWarning: "電話番号は空ではありません。",
     InvitationWarning: "招待コードが必要です。",
     ConfirmBtn: "確認",
+    AcceptBtn: "確認",
+    CancelBtn: "キャンセル",
   },
 
   Login: {
@@ -102,7 +105,7 @@ export default {
 
   ForgetPassword: {
     Title: "パスワードを忘れた場合",
-    Username: "Email アドレス",
+    Username: "Username / ",
     UsernameInputwarning: "正しいEmailアドレスを記入ください",
     SendCode: "コードを送信",
     EmailVerifyCode: "Email アドレスの認証コード",
