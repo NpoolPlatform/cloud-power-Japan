@@ -382,8 +382,15 @@
             <q-img class="img-style" :src="userGoogleImg"></q-img>
           </q-card-section>
 
-          <q-card-section class="img-section-style">
+          <q-card-section
+            class="img-section-style text-black"
+            style="font-weight: 600"
+          >
             Google Secret: {{ userSecret }}
+          </q-card-section>
+
+          <q-card-section class="text-red">
+            ({{ $t("GoogleAuthentication.Hint") }})
           </q-card-section>
 
           <q-card-section class="text-black">{{
@@ -452,7 +459,7 @@
       </div>
     </div>
 
-    <q-dialog v-model="emailEnableDialog">
+    <q-dialog v-model="emailEnableDialog" @hide="whenHide">
       <q-card class="dialog-box">
         <q-card-section>
           <span class="dialog-header">{{
@@ -486,7 +493,7 @@
       </q-card></q-dialog
     >
 
-    <q-dialog v-model="phoneEnableDialog">
+    <q-dialog v-model="phoneEnableDialog" @hide="whenHide">
       <q-card class="dialog-box">
         <q-card-section>
           <span class="dialog-header">{{
@@ -513,7 +520,7 @@
       </q-card>
     </q-dialog>
 
-    <q-dialog v-model="emailUpdateDialog">
+    <q-dialog v-model="emailUpdateDialog" @hide="whenHide">
       <q-card class="dialog-box">
         <q-card-section>
           <span class="dialog-header">{{
@@ -567,7 +574,7 @@
       </q-card>
     </q-dialog>
 
-    <q-dialog v-model="phoneUpdateDialog">
+    <q-dialog v-model="phoneUpdateDialog" @hide="whenHide">
       <q-card class="dialog-box">
         <q-card-section>
           <span class="dialog-header">{{
@@ -615,7 +622,7 @@
 
 <script>
 import { api } from "src/boot/axios";
-import { defineComponent, computed, ref, reactive } from "vue";
+import { defineComponent, computed, ref, reactive, onMounted } from "vue";
 import { useStore } from "vuex";
 import { success, fail, waiting } from "../notify/notify";
 import { throttle, useQuasar } from "quasar";
@@ -637,6 +644,32 @@ export default defineComponent({
       },
     });
 
+    const email = computed({
+      get: () => $store.state.user.user.info.UserBasicInfo.EmailAddress,
+      set: (val) => {
+        $store.commit("user/updateUserEmail", val);
+      },
+    });
+
+    const verifyCode = computed({
+      get: () => $store.state.verify.verifyCode,
+      set: (val) => {
+        $store.commit("verify/updateVerifyCode", val);
+      },
+    });
+
+    const oldVerifyCode = computed({
+      get: () => $store.state.verify.oldVerifyCode,
+      set: (val) => {
+        $store.commit("verify/updateOldVerifyCode", val);
+      },
+    });
+
+    onMounted(() => {
+      verifyCode.value = "";
+      oldVerifyCode.value = "";
+    });
+
     const userBasicInfo = computed({
       get: () => $store.state.user.user.info.UserBasicInfo,
       set: (val) => {
@@ -644,7 +677,6 @@ export default defineComponent({
       },
     });
 
-    const { locale } = useI18n({ useScope: "global" });
     const { t } = useI18n({ useScope: "global" });
 
     const username = computed({
@@ -728,23 +760,17 @@ export default defineComponent({
     const q = useQuasar();
     const password = ref(null);
 
-    const verifyCode = computed({
-      get: () => $store.state.verify.verifyCode,
-      set: (val) => {
-        $store.commit("verify/updateVerifyCode", val);
-      },
-    });
-
-    const oldVerifyCode = computed({
-      get: () => $store.state.verify.oldVerifyCode,
-      set: (val) => {
-        $store.commit("verify/updateOldVerifyCode", val);
-      },
-    });
-
     const emailRule = ref([
       (val) => (val && val.length > 0) || t("Register.UsernameInputwarning"),
     ]);
+
+    const enabledMobile = computed({
+      get: () => user.value.info.UserBasicInfo.PhoneNumber !== "",
+    });
+
+    const enabledEmail = computed({
+      get: () => user.value.info.UserBasicInfo.EmailAddress !== "",
+    });
 
     const emailEnableRef = ref(null);
     const emailUpdateOldRef = ref(null);
@@ -757,10 +783,10 @@ export default defineComponent({
       rowsPerPage: 3,
     });
 
-    const phoneEnableResponse = {
+    const phoneEnableResponse = reactive({
       phone: "",
       code: "",
-    };
+    });
 
     const phoneUpdateResponse = {
       oldPhone: "",
@@ -789,7 +815,7 @@ export default defineComponent({
     });
 
     const emailUpdateInput = reactive({
-      oldEmail: "",
+      oldEmail: email.value,
       oldEmailCode: oldVerifyCode.value,
       email: "",
       emailCode: verifyCode.value,
@@ -825,7 +851,6 @@ export default defineComponent({
       q,
       pagination,
       emailRule,
-      locale,
       password,
       emailEnableDialog,
       phoneEnableDialog,
@@ -845,6 +870,9 @@ export default defineComponent({
       invitationCode,
       loginOptions,
       userSecret: ref(""),
+      enabledMobile,
+      enabledEmail,
+      email,
     };
   },
 
@@ -922,34 +950,21 @@ export default defineComponent({
   },
 
   computed: {
-    enabledEmail: function () {
-      if (this.user.info.UserBasicInfo.EmailAddress !== "") {
-        return true;
-      } else {
-        return false;
-      }
-    },
-
-    enabledMobile: function () {
-      if (this.user.info.UserBasicInfo.PhoneNumber !== "") {
-        return true;
-      } else {
-        return false;
-      }
-    },
-
     enabledID: function () {
       return false;
     },
   },
 
   methods: {
+    whenHide: function () {
+      this.verifyCode = "";
+      this.oldVerifyCode = "";
+    },
+
     submitLoginVerify: function () {
       var self = this;
       var appid = this.q.cookies.get("AppID");
       var userid = this.q.cookies.get("UserID");
-
-      console.log("user ga login is", self.userGALogin);
 
       api
         .post("/application-management/v1/set/ga/login", {
@@ -1085,7 +1100,6 @@ export default defineComponent({
     },
 
     onEnablePhone: function () {
-      console.log("phoneEnableInput is", this.phoneEnableInput);
       if (this.phoneEnableInput.phone === "") {
         fail(undefined, "please input your phone number", "");
         return;
@@ -1124,8 +1138,6 @@ export default defineComponent({
         return;
       }
 
-      console.log(this.emailUpdateInput);
-
       var self = this;
       api
         .post("/user-management/v1/update/user/email", {
@@ -1138,6 +1150,7 @@ export default defineComponent({
           success(undefined, "successfully update user email address");
           self.verifyCode = "";
           self.oldVerifyCode = "";
+          self.email = self.emailUpdateInput.email;
           self.emailUpdateDialog = false;
         })
         .catch((error) => {
@@ -1197,7 +1210,6 @@ export default defineComponent({
           }
         )
         .then((resp) => {
-          console.log("info is", resp.data, resp.data.Info);
           if (resp.data.Info === null) {
             self.invitationCode = null;
             return;

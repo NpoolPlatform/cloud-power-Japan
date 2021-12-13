@@ -114,7 +114,8 @@ export default defineComponent({
       if (
         this.path === "/order" ||
         this.path === "/wallet" ||
-        this.path === "/account"
+        this.path === "/account" ||
+        this.path === "/invitation"
       ) {
         this.$router.push("/");
       }

@@ -79,34 +79,41 @@
       </q-card>
     </q-dialog>
 
-    <q-dialog v-model="emailDialog" persistent>
+    <q-dialog v-model="emailDialog" persistent @hide="whenHide">
       <q-card style="width: 600px; height: auto; margin: 20px">
         <q-card-section>
           <span class="card-title text-black">Email Verify</span>
         </q-card-section>
-        <q-card-section style="padding: 0 20px">
-          <q-input
-            ref="usernameRef"
-            class="register-input"
-            outlined
-            bg-color="blue-grey-1"
-            v-model="emailVerifyInput.email"
-            :label="$t('Register.Username')"
-            lazy-rules
-            :rules="usernameRule"
-          ></q-input>
-        </q-card-section>
-        <q-card-section style="padding: 0 20px">
-          <send-code-input
-            :verifyParam="emailVerifyInput.email"
-            verifyType="email"
-          ></send-code-input>
+
+        <q-card-section class="google-content">
+          {{ $t("Notify.Login.EmailInputVerify1")
+          }}{{ user.info.UserBasicInfo.EmailAddress }},
+          {{ $t("Notify.Login.EmailInputVerify2")
+          }}{{ $t("Notify.Login.EmailInputVerify3") }}
         </q-card-section>
 
-        <q-card-section style="padding: 0 20px">
-          <q-btn class="register-btn" @click="onVerifyEmail">{{
-            $t("Register.ConfirmBtn")
-          }}</q-btn>
+        <q-card-section>
+          <div class="row-center captcha_input_wrapper">
+            <input
+              v-for="(item, index) in captchas"
+              :key="index"
+              v-model="item.num"
+              :id="'captcha' + index"
+              @input="inputFinash(index)"
+              @focus="adjust(index)"
+              @keydown="inputDirection(index)"
+              class="captcha_input_box row-center"
+              type="tel"
+              maxlength="1"
+            />
+          </div>
+
+          <q-inner-loading
+            :showing="visible"
+            :label="$t('GoogleVerify.PleaseWait')"
+            label-class="text-teal"
+            label-style="font-size: 1.1em"
+          />
         </q-card-section>
       </q-card>
     </q-dialog>
@@ -114,7 +121,7 @@
 </template>
 
 <script>
-import { defineComponent, ref, reactive, computed } from "vue";
+import { defineComponent, ref, reactive, computed, onMounted } from "vue";
 import RecaptchaVue from "src/components/Recaptcha.vue";
 import { useStore } from "vuex";
 import { api } from "src/boot/axios";
@@ -124,10 +131,9 @@ import { useI18n } from "vue-i18n";
 import { useQuasar } from "quasar";
 import { sha256Password } from "src/utils/utils";
 import { throttle } from "quasar";
-import SendCodeInput from "src/components/SendCodeInput.vue";
 
 export default defineComponent({
-  components: { RecaptchaVue, VerifycodeInput, SendCodeInput },
+  components: { RecaptchaVue, VerifycodeInput },
   setup() {
     const { locale } = useI18n({ useScope: "global" });
     const q = useQuasar();
@@ -148,9 +154,18 @@ export default defineComponent({
       },
     });
 
+    onMounted(() => {
+      verifyCode.value = "";
+      if (q.cookies.has("UserID") && q.cookies.has("AppSession")) {
+        q.cookies.remove("UserID");
+        q.cookies.remove("AppSession");
+        location.reload();
+      }
+    });
+
     const emailVerifyInput = reactive({
-      email: ref(""),
-      emailCode: verifyCode.value,
+      email: "",
+      emailCode: "",
     });
 
     const { t } = useI18n({ useScope: "global" });
@@ -184,6 +199,8 @@ export default defineComponent({
       q,
       verifyCode,
       loginVerify,
+      locale,
+      visible: ref(false),
     };
   },
 
@@ -208,6 +225,15 @@ export default defineComponent({
         response: "",
       },
       refreshRecaptcha: true,
+      activeInput: 0,
+      captchas: [
+        { num: "" },
+        { num: "" },
+        { num: "" },
+        { num: "" },
+        { num: "" },
+        { num: "" },
+      ],
     };
   },
 
@@ -222,6 +248,75 @@ export default defineComponent({
   },
 
   methods: {
+    // 自动校准输入顺序
+    adjust(index) {
+      let dom = document.getElementById("captcha" + this.activeInput);
+      if (index !== this.activeInput && dom) {
+        dom.focus();
+      }
+    },
+    // 控制前后方向
+    inputDirection(index) {
+      let val = this.captchas[index].num;
+      // 回退键处理
+      if (event.keyCode == 8 && val == "") {
+        // 重新校准
+        let dom = document.getElementById("captcha" + (index - 1));
+        this.activeInput = index - 1;
+        if (dom) dom.focus();
+      }
+      if (event.keyCode != 8 && val != "") {
+        let dom = document.getElementById("captcha" + (index + 1));
+        this.activeInput = index + 1;
+        if (dom) dom.focus();
+      }
+    },
+    // 输入框相互联动
+    inputFinash(index) {
+      let val = this.captchas[index].num;
+      this.activeInput = val ? index + 1 : index - 1;
+      let dom = document.getElementById("captcha" + this.activeInput);
+      var self = this;
+      if (dom) dom.focus();
+      if (index == this.captchas.length - 1) {
+        let code = this.captchas.map((x) => x.num).join("");
+        if (code.length == 6) {
+          self.onVerifyEmail(code);
+          self.visible = true;
+        }
+      }
+    },
+
+    whenHide: function () {
+      this.verifyCode = "";
+    },
+
+    sendCode: function () {
+      var self = this;
+      var notif = waiting(this.$t("Notify.SendCode.Email.WaitSend"));
+      var msg =
+        this.$t("Notify.SendCode.SendTo") +
+        " " +
+        this.user.info.UserBasicInfo.EmailAddress +
+        ", " +
+        this.$t("Notify.SendCode.Email.Check");
+      var failToSend = this.$t("Notify.SendCode.Fail");
+
+      api
+        .post("/verification-door/v1/send/email", {
+          Email: self.user.info.UserBasicInfo.EmailAddress,
+          Username: self.user.info.UserBasicInfo.Username,
+          Lang: self.locale,
+        })
+        .then((resp) => {
+          success(notif, msg);
+          self.emailDialog = true;
+        })
+        .catch((error) => {
+          fail(notif, failToSend, error);
+        });
+    },
+
     login: function () {
       this.usernameRef.validate();
       this.passRef.validate();
@@ -258,10 +353,19 @@ export default defineComponent({
           if (resp.data.Info.UserAppInfo.UserApplicationInfo.GALogin) {
             self.gaDialog = true;
             return;
-          } else if (resp.data.Info.UserBasicInfo.EmailAddress !== "") {
-            self.emailDialog = true;
+          } else if (
+            resp.data.Info.UserBasicInfo.EmailAddress !== "" &&
+            resp.data.Info.UserBasicInfo.EmailAddress !== null &&
+            resp.data.Info.UserBasicInfo.EmailAddress !== undefined
+          ) {
+            console.log(
+              "resp email is",
+              resp.data.Info.UserBasicInfo.EmailAddress
+            );
+            self.sendCode();
             return;
           } else {
+            self.loginVerify = true;
             self.$router.push({
               path: "/",
             });
@@ -289,15 +393,15 @@ export default defineComponent({
         });
         this.loginVerify = true;
       } else {
-        self.loginInput.username = "";
-        self.loginInput.password = "";
-        self.loginInput.verifyCode = "";
-        self.loginInput.response = "";
-        this.q.cookies.remove("UserID");
-        this.q.cookies.remove("AppSession");
-        this.q.cookies.remove("Session");
         fail(undefined, "please inoput correct verify code", "");
-        location.reload();
+        // self.loginInput.username = "";
+        // self.loginInput.password = "";
+        // self.loginInput.verifyCode = "";
+        // self.loginInput.response = "";
+        // this.q.cookies.remove("UserID");
+        // this.q.cookies.remove("AppSession");
+        // this.q.cookies.remove("Session");
+        // location.reload();
       }
     },
 
@@ -314,7 +418,7 @@ export default defineComponent({
       }
     },
 
-    onVerifyEmail: function () {
+    onVerifyEmail: function (code) {
       this.usernameRef.validate();
       if (this.usernameRef.hasError) {
         return;
@@ -325,27 +429,29 @@ export default defineComponent({
       api
         .post("/verification-door/v1/verify/code/with/userid", {
           UserID: userid,
-          Param: self.emailVerifyInput.email,
-          Code: self.verifyCode,
+          Param: self.user.info.UserBasicInfo.EmailAddress,
+          Code: code,
         })
         .then((resp) => {
           self.emailDialog = false;
           self.loginVerify = true;
+          self.visible = false;
           self.$router.push({
             path: "/",
           });
         })
         .catch((error) => {
-          var msg = $t("ReLogin.Fail");
+          var msg = self.$t("ReLogin.Fail");
           fail(undefined, msg, error);
-          self.loginInput.username = "";
-          self.loginInput.password = "";
-          self.verifyCode = "";
-          self.loginInput.response = "";
-          this.q.cookies.remove("UserID");
-          this.q.cookies.remove("AppSession");
-          this.q.cookies.remove("Session");
-          location.reload();
+          self.visible = false;
+          // self.loginInput.username = "";
+          // self.loginInput.password = "";
+          // self.verifyCode = "";
+          // self.loginInput.response = "";
+          // this.q.cookies.remove("UserID");
+          // this.q.cookies.remove("AppSession");
+          // this.q.cookies.remove("Session");
+          // location.reload();
         });
     },
   },
@@ -370,5 +476,34 @@ export default defineComponent({
 <style>
 .q-field--error .q-field__bottom {
   color: #fc4468;
+}
+</style>
+
+<style lang="scss">
+.row-center {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+}
+.captcha_input_wrapper {
+  width: 100%;
+}
+.captcha_input_box {
+  height: 100px;
+  width: 60px;
+  margin: 10px;
+  background: white;
+  border-radius: 6px;
+  border: 1px solid #dddddd;
+  font-size: 32px;
+  text-align: center;
+  color: #1e243a;
+}
+
+.google-content {
+  margin: 10px 20px;
+  color: black;
+  font-size: 18px;
 }
 </style>

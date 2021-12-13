@@ -106,7 +106,7 @@
 </template>
 
 <script>
-import { defineComponent, ref, reactive, computed } from "vue";
+import { defineComponent, ref, reactive, computed, onMounted } from "vue";
 import { api } from "boot/axios";
 import { success, fail, waiting } from "../../notify/notify";
 import { useI18n } from "vue-i18n";
@@ -125,6 +125,10 @@ export default defineComponent({
       set: (val) => {
         $store.commit("verify/updateVerifyCode", val);
       },
+    });
+
+    onMounted(() => {
+      verifyCode.value = "";
     });
     const password = ref("");
     const confirmPassword = ref("");

@@ -49,3 +49,15 @@ export function updateUsername(state, val) {
 export function updateGender(state, val) {
   state.user.info.UserBasicInfo.Gender = val;
 }
+
+export function updateUserLogined(state, val) {
+  state.user.logined = val;
+}
+
+export function updateUserEmail(state, val) {
+  state.user.info.UserBasicInfo.EmailAddress = val;
+}
+
+export function updateUserPhone(state, val) {
+  state.user.info.UserBasicInfo.PhoneNumber = val;
+}

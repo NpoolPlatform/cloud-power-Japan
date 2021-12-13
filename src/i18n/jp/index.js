@@ -95,6 +95,9 @@ export default {
     Forget: "パスワードを忘れた場合",
     NoAccount: "アカウントがない場合",
     Register: "今すぐ登録",
+    EmailInputVerify1: "",
+    EmailInputVerify2: "に送ったばかりのメール",
+    EmailInputVerify3: "メールで送られてきた認証コードを入力してください。",
   },
 
   ForgetPassword: {
@@ -447,6 +450,7 @@ export default {
       Fail1: "パスワードと確認用パスワードが一致しない",
       Fail2: "パスワードの変更に失敗しました: ",
       Success: "パスワードの変更に成功",
+      WaitingL: "ベリファイコードの送信 ... ... ",
     },
 
     SubmitLoginVerify: {
@@ -490,6 +494,7 @@ export default {
       "スキャンとバインドの後、「次のステップ」ボタンをクリックして、google authenticatorソフトウェアに表示される検証コードを入力して、google認証を完了してください。",
     NextStepBtn: "次の段階",
     CloseBtn: "閉じる",
+    Hint: '上記のQRコードを読み取れない場合は、"Authenticator"アプリに入り、右下の "セットアップキーを入力"を選択し、"アカウント"を"(Procyon:example{\'@\'}example.com)"のように設定し、上記のgoogle secretをコピーして "追加"をクリックしてください。',
   },
 
   Faq: {

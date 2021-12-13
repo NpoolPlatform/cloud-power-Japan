@@ -101,7 +101,7 @@
   </div>
 </template>
 <script>
-import { defineComponent, ref, reactive, computed } from "vue";
+import { defineComponent, ref, reactive, computed, onMounted } from "vue";
 import { api } from "src/boot/axios";
 import { useStore } from "vuex";
 import { fail, success, waiting } from "src/notify/notify";
@@ -115,9 +115,8 @@ export default defineComponent({
   components: { SendCodeInput, CountryCode },
   setup() {
     const q = useQuasar();
-    const { locale } = useI18n();
-    const count = ref(0);
     const $store = useStore();
+    const t = useI18n({ useScope: "global" });
 
     const verifyCode = computed({
       get: () => $store.state.verify.verifyCode,
@@ -126,19 +125,21 @@ export default defineComponent({
       },
     });
 
+    onMounted(() => {
+      verifyCode.value = "";
+    });
+
     const phoneResponse = {
       phone: "",
       code: "",
     };
 
-    const phoneRef = ref(null);
     const oldPasswordRef = ref(null);
     const passwordRef = ref(null);
     const confirmPasswordRef = ref(null);
 
     const changePasswordInput = reactive({
       phone: "",
-      verifyCode: verifyCode.value,
       oldPassword: "",
       password: "",
       confirmPassword: "",
@@ -152,11 +153,8 @@ export default defineComponent({
     ]);
 
     return {
-      locale,
-      count,
       verifyCode,
       changePasswordInput,
-      phoneRef,
       oldPasswordRef,
       passwordRef,
       confirmPasswordRef,
@@ -180,13 +178,11 @@ export default defineComponent({
 
   methods: {
     onConfirm: function () {
-      this.phoneRef.validate();
       this.oldPasswordRef.validate();
       this.passwordRef.validate();
       this.confirmPasswordRef.validate();
 
       if (
-        this.phoneRef.hasError ||
         this.oldPasswordRef.hasError ||
         this.passwordRef.hasError ||
         this.confirmPasswordRef.hasError
@@ -214,7 +210,7 @@ export default defineComponent({
           Password: password,
           OldPassword: sha256Password(self.changePasswordInput.oldPassword),
           VerifyType: "phone",
-          Code: self.changePasswordInput.verifyCode,
+          Code: self.verifyCode,
         })
         .then((resp) => {
           success(notif, self.$t("Notify.ChangePassword.Success"));
@@ -222,9 +218,9 @@ export default defineComponent({
           this.q.cookies.remove("UserID");
           this.q.cookies.remove("AppSession");
           this.q.cookies.remove("Session");
-          self.$router.push("/login");
           self.verifyCode = "";
           location.reload();
+          self.$router.push("/login");
         })
         .catch((error) => {
           fail(notif, self.$t("Notify.ChangePassword.Fail2"), error);

@@ -1,9 +1,9 @@
 <template>
   <div>
-    <div class="google-content">{{ $t('GoogleVerify.Content') }}</div>
+    <div class="google-content">{{ $t("GoogleVerify.Content") }}</div>
     <div class="row-center captcha_input_wrapper">
       <input
-        v-for="(item,index) in captchas"
+        v-for="(item, index) in captchas"
         :key="index"
         v-model="item.num"
         :id="'captcha' + index"
@@ -25,12 +25,12 @@
 </template>
 
 <script>
-import { success, fail } from '../notify/notify'
-import { api } from 'src/boot/axios';
+import { success, fail } from "../notify/notify";
+import { api } from "src/boot/axios";
 
 export default {
-  emits: ['callback'],
-  data () {
+  emits: ["callback"],
+  data() {
     return {
       // 当前输入框
       activeInput: 0,
@@ -48,14 +48,14 @@ export default {
 
   methods: {
     // 自动校准输入顺序
-    adjust (index) {
+    adjust(index) {
       let dom = document.getElementById("captcha" + this.activeInput);
       if (index !== this.activeInput && dom) {
         dom.focus();
       }
     },
     // 控制前后方向
-    inputDirection (index) {
+    inputDirection(index) {
       let val = this.captchas[index].num;
       // 回退键处理
       if (event.keyCode == 8 && val == "") {
@@ -71,7 +71,7 @@ export default {
       }
     },
     // 输入框相互联动
-    inputFinash (index) {
+    inputFinash(index) {
       let val = this.captchas[index].num;
       this.activeInput = val ? index + 1 : index - 1;
       let dom = document.getElementById("captcha" + this.activeInput);
@@ -80,38 +80,42 @@ export default {
       if (index == this.captchas.length - 1) {
         let code = this.captchas.map((x) => x.num).join("");
         if (code.length == 6) {
-          self.visible = true
-          self.gaVerify(code)
+          self.visible = true;
+          self.gaVerify(code);
         }
       }
     },
 
     gaVerify: function (code) {
-      const fail1 = this.$t('Notify.GaVerify.CantNull')
-      const fail2 = this.$t('Notify.GaVerify.Fail')
-      const successMsg = this.$t('Notify.GaVerify.Success')
+      const fail1 = this.$t("Notify.GaVerify.CantNull");
+      const fail2 = this.$t("Notify.GaVerify.Fail");
+      const successMsg = this.$t("Notify.GaVerify.Success");
       var self = this;
-      if (code === '') {
-        fail(undefined, fail1, "")
-        return
+      if (code === "") {
+        fail(undefined, fail1, "");
+        return;
       }
 
-      api.post('/verification-door/v1/verify/google/auth', {
-        Code: code,
-      }).then(resp => {
-        success(undefined, successMsg)
-        self.$emit('callback', 'pass')
-        self.visible = false
-      }).catch(error => {
-        fail(undefined, fail2, error)
-        self.$emit('callback', 'error')
-      })
+      api
+        .post("/verification-door/v1/verify/google/auth", {
+          Code: code,
+        })
+        .then((resp) => {
+          success(undefined, successMsg);
+          self.$emit("callback", "pass");
+          self.visible = false;
+        })
+        .catch((error) => {
+          self.visible = false;
+          fail(undefined, fail2, error);
+          self.$emit("callback", "error");
+        });
     },
   },
 };
 </script>
 
-<style lang='scss'>
+<style lang="scss">
 .row-center {
   display: flex;
   flex-direction: row;

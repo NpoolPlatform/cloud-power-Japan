@@ -87,7 +87,7 @@
   </div>
 </template>
 <script>
-import { defineComponent, ref, reactive, computed } from "vue";
+import { defineComponent, ref, reactive, computed, onMounted } from "vue";
 import { api } from "src/boot/axios";
 import { useStore } from "vuex";
 import { fail, success, waiting } from "src/notify/notify";
@@ -99,8 +99,7 @@ import SendCodeInput from "src/components/SendCodeInput.vue";
 export default defineComponent({
   components: { SendCodeInput },
   setup() {
-    const { locale } = useI18n();
-    const count = ref(0);
+    const { t } = useI18n({ useScope: "global" });
     const $store = useStore();
 
     const verifyCode = computed({
@@ -108,6 +107,10 @@ export default defineComponent({
       set: (val) => {
         $store.commit("verify/updateVerifyCode", val);
       },
+    });
+
+    onMounted(() => {
+      verifyCode.value = "";
     });
 
     const forgetPasswordInput = reactive({
@@ -129,8 +132,6 @@ export default defineComponent({
     ]);
 
     return {
-      locale,
-      count,
       verifyCode,
       forgetPasswordInput,
       emailRef,
@@ -191,6 +192,7 @@ export default defineComponent({
         })
         .catch((error) => {
           fail(notif, self.$t("Notify.ForgetPassword.Fail2"), error);
+          self.verifyCode = "";
         });
     },
   },

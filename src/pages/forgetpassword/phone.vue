@@ -90,8 +90,7 @@ import CountryCode from "../../components/CountryCode.vue";
 export default defineComponent({
   components: { SendCodeInput, CountryCode },
   setup() {
-    const { locale } = useI18n({ useScope: "global" });
-    const count = ref(0);
+    const { t } = useI18n({ useScope: "global" });
     const $store = useStore();
 
     const verifyCode = computed({
@@ -124,8 +123,6 @@ export default defineComponent({
     ]);
 
     return {
-      locale,
-      count,
       verifyCode,
       forgetPasswordInput,
       phoneResponse,
@@ -177,11 +174,13 @@ export default defineComponent({
         })
         .then((resp) => {
           success(notif, self.$t("Notify.ForgetPassword.Success"));
-          self.$router.push("/login");
           self.verifyCode = "";
+          location.reload();
+          self.$router.push("/login");
         })
         .catch((error) => {
           fail(notif, self.$t("Notify.ForgetPassword.Fail2"), error);
+          self.verifyCode = "";
         });
     },
   },

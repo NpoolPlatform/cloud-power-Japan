@@ -19,7 +19,7 @@
             ></country-code>
 
             <send-code-input
-              :verifyParam="registerInput.phone"
+              :verifyParam="phoneResponse.code + phoneResponse.phone"
               verifyType="phone"
             ></send-code-input>
 
@@ -100,7 +100,7 @@
 </template>
 
 <script>
-import { defineComponent, ref, reactive, computed } from "vue";
+import { defineComponent, ref, reactive, computed, onMounted } from "vue";
 import { api } from "boot/axios";
 import { success, fail, waiting } from "../../notify/notify";
 import { useI18n } from "vue-i18n";
@@ -114,12 +114,22 @@ export default defineComponent({
   components: { SendCodeInput, CountryCode },
   setup() {
     const $store = useStore();
-    const phone = ref("");
+
+    const phoneResponse = reactive({
+      phone: "",
+      code: "",
+    });
+
+    const phone = computed(() => phoneResponse.code + phoneResponse.phone);
     const verifyCode = computed({
       get: () => $store.state.verify.verifyCode,
       set: (val) => {
         $store.commit("verify/updateVerifyCode", val);
       },
+    });
+
+    onMounted(() => {
+      verifyCode.value = "";
     });
 
     const password = ref("");
@@ -152,11 +162,6 @@ export default defineComponent({
     ]);
     const agree = ref(false);
 
-    const phoneResponse = {
-      phone: "",
-      code: "",
-    };
-
     return {
       registerInput,
       isPwd: ref(true),
@@ -170,6 +175,7 @@ export default defineComponent({
       invitationRule,
       phoneResponse,
       verifyCode,
+      phone,
     };
   },
 
@@ -183,6 +189,7 @@ export default defineComponent({
         fail(undefined, "please check agree", "");
         return;
       }
+      console.log("phone number is", this.phoneResponse);
 
       this.passRef.validate();
       this.confirmPassRef.validate();
@@ -201,9 +208,9 @@ export default defineComponent({
       var password = sha256Password(this.registerInput.password);
 
       api
-        .post("/cloud-cloud-hashing-apis/v1/signup", {
+        .post("/cloud-hashing-apis/v1/signup", {
           Password: password,
-          PhoneNumber: thiz.phoneResponse.code + thiz.phoneResponse.phone,
+          PhoneNumber: thiz.phone,
           VerificationCode: thiz.registerInput.verifyCode,
           InvitationCode: thiz.registerInput.invitationCode,
         })

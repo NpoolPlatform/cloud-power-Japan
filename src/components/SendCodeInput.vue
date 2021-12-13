@@ -71,8 +71,10 @@ export default defineComponent({
     const isGetting = ref(false);
     const sendDisable = ref(false);
     const count = ref(60);
-    const sendCodeText = computed(() => {
-      return t("Register.SendCode");
+    const sendCodeText = computed((val) => {
+      return (
+        (val && val.charAt(val.length - 1) === "s") || t("Register.SendCode")
+      );
     });
 
     var verifyCode = ref("");
@@ -130,25 +132,21 @@ export default defineComponent({
             }
           }, 1000);
         })
-        .catch(function (error) {
+        .catch((error) => {
           fail(notif, failToSend, error);
         });
     };
 
     const sendPhoneCode = () => {
-      codeRef.value.validate();
-      if (codeRef.value.hasError) {
-        return;
-      }
-      var sendText = $t("Register.SendCode");
-      var notif = waiting($t("Notify.SendCode.Phone.WaitSend"));
+      var sendText = t("Register.SendCode");
+      var notif = waiting(t("Notify.SendCode.Phone.WaitSend"));
       var msg =
-        $t("Notify.SendCode.SendTo") +
+        t("Notify.SendCode.SendTo") +
         " " +
         props.verifyParam +
         ", " +
-        $t("Notify.SendCode.Phone.Check");
-      var failToSend = $t("Notify.SendCode.Fail");
+        t("Notify.SendCode.Phone.Check");
+      var failToSend = t("Notify.SendCode.Fail");
 
       api
         .post("/verification-door/v1/send/sms", {

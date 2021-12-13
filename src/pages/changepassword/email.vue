@@ -111,7 +111,7 @@
   </div>
 </template>
 <script>
-import { defineComponent, ref, reactive, computed } from "vue";
+import { defineComponent, ref, reactive, computed, onMounted } from "vue";
 import { api } from "src/boot/axios";
 import { useStore } from "vuex";
 import { fail, success, waiting } from "src/notify/notify";
@@ -124,8 +124,7 @@ export default defineComponent({
   components: { SendCodeInput },
   setup() {
     const q = useQuasar();
-    const { t, locale } = useI18n({ useScope: "global" });
-    const count = ref(0);
+    const t = useI18n({ useScope: "global" });
     const $store = useStore();
 
     const verifyCode = computed({
@@ -135,6 +134,10 @@ export default defineComponent({
       },
     });
 
+    onMounted(() => {
+      verifyCode.value = "";
+    });
+
     const emailRef = ref(null);
     const oldPasswordRef = ref(null);
     const passwordRef = ref(null);
@@ -142,7 +145,6 @@ export default defineComponent({
 
     const changePasswordInput = reactive({
       email: "",
-      verifyCode: verifyCode.value,
       oldPassword: "",
       password: "",
       confirmPassword: "",
@@ -156,8 +158,6 @@ export default defineComponent({
     ]);
 
     return {
-      locale,
-      count,
       verifyCode,
       changePasswordInput,
       emailRef,
@@ -215,7 +215,7 @@ export default defineComponent({
           Password: password,
           OldPassword: sha256Password(self.changePasswordInput.oldPassword),
           VerifyType: "email",
-          Code: self.changePasswordInput.verifyCode,
+          Code: self.verifyCode,
         })
         .then((resp) => {
           success(notif, self.$t("Notify.ChangePassword.Success"));
@@ -223,12 +223,13 @@ export default defineComponent({
           this.q.cookies.remove("UserID");
           this.q.cookies.remove("AppSession");
           this.q.cookies.remove("Session");
-          self.$router.push("/login");
           self.verifyCode = "";
           location.reload();
+          self.$router.push("/login");
         })
         .catch((error) => {
           fail(notif, self.$t("Notify.ChangePassword.Fail2"), error);
+          self.verifyCode = "";
         });
     },
   },

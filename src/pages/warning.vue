@@ -29,8 +29,8 @@
               glossy
               toggle-color="orange-9"
               :options="[
-                { label: $t('Footer.Forth.En'), value: 'en_US' },
-                { label: $t('Footer.Forth.Jp'), value: 'ja_JP' },
+                { label: $t('Footer.Forth.En'), value: 'en-US' },
+                { label: $t('Footer.Forth.Jp'), value: 'ja-JP' },
               ]"
             />
           </div>

@@ -248,6 +248,7 @@ import { defineComponent, computed } from "vue";
 import { useI18n } from "vue-i18n";
 import { useStore } from "vuex";
 import { useQuasar } from "quasar";
+import { store } from "quasar/wrappers";
 
 export default defineComponent({
   name: "MainPage",
@@ -283,6 +284,16 @@ export default defineComponent({
 
     const logined = computed({
       get: () => $store.state.user.user.logined,
+      set: (val) => {
+        $store.commit("user/updateUserLogined", val);
+      },
+    });
+
+    const loginVerify = computed({
+      get: () => $store.state.verify.loginVerify,
+      set: (val) => {
+        $store.commit("verify/updateLoginVerify", val);
+      },
     });
     return {
       q,
@@ -290,6 +301,7 @@ export default defineComponent({
       openSide,
       logined,
       changeLang,
+      loginVerify,
     };
   },
 
@@ -360,6 +372,8 @@ export default defineComponent({
         .then((resp) => {
           success(undefined, self.$t("Notify.Logout.Success"));
           self.$q.cookies.remove("UserID");
+          self.loginVerify = false;
+          self.logined = false;
           location.reload();
           self.$router.push("/");
         })

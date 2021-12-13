@@ -438,6 +438,7 @@ export default {
       Fail1: "password and confirm password not same",
       Fail2: "fail to change password:",
       Success: "successfully change your pasword",
+      Waiting: "sending verify code ... ...",
     },
 
     SubmitLoginVerify: {
@@ -455,6 +456,9 @@ export default {
       Wait: "waitting to login... ...",
       Success: "Login successfully",
       Fail: "Fail to login",
+      EmailInputVerify1: "An E-mail just sent to ",
+      EmailInputVerify2: "",
+      EmailInputVerify3: "please input the verify code we sent to your email.",
     },
 
     ForgetPassword: {
@@ -507,6 +511,7 @@ export default {
       "After scan and bind, you need to click the 'next step' button to input the verify code shows in your google authenticator software to finish veirfy your google authentication",
     NextStepBtn: "Next Step",
     CloseBtn: "Close",
+    Hint: 'If you fail to scan the QR code above, please enter your "Authenticator" app and choose "Enter a setup key" at the right bottom and then set your "Account name" like "(Procyon:example{\'@\'}example.com)" and copy the google secret above and click "Add"',
   },
 
   Faq: {
