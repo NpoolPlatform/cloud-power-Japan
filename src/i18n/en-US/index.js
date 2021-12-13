@@ -203,6 +203,7 @@ export default {
       Title: "MINING DASHBOARD",
       Earning: "Total: ",
       Discount: "Discount: ",
+      Deduction: "Deduction: ",
       Capacity: "Capacity: ",
       DailyOutput: "Daily Output (30 day avg.)",
       TechnicalServiceFee: "Technical Service Fee:",

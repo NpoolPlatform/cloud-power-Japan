@@ -215,6 +215,7 @@ export default {
       Title: "MINING DASHBOARD",
       Earning: "合計: ",
       Discount: "ディスカウント: ",
+      Deduction: "控除について：",
       Capacity: "容量: ",
       DailyOutput: "毎日の出力（30日平均）",
       TechnicalServiceFee: "技術サービス料:",

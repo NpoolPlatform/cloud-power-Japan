@@ -35,7 +35,7 @@
                 {{ order.order.Payment.CoinInfo.Unit }}</span
               >
 
-              <span v-if="order.order.Discount !== 0">
+              <span v-if="order.order.Discount !== 0 || order.order.SpecialReductionAmount !== 0">
                 ({{ order.good.PriceCurrency.Symbol }}
                 <span class="additions" style="text-decoration: line-through">{{
                   order.order.Units * order.good.Price
@@ -56,6 +56,18 @@
                 }}{{
                   Number(order.order.Units) * Number(order.good.Price) -
                   Number(order.order.Payment.Amount)
+                }})</span
+              >
+            </div>
+
+            <div class="column-item" v-if="order.order.SpecialReductionAmount !== 0">
+              <span class="column-item-title">{{
+                $t("Mining.Column2.Deduction")
+              }}</span>
+              <span class="additions"
+                >({{ order.good.PriceCurrency.Symbol
+                }}{{
+                  order.order.SpecialReductionAmount
                 }})</span
               >
             </div>
