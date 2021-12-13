@@ -2,7 +2,11 @@
   <div class="content">
     <div class="title">{{ $t("Invitation.Title") }}</div>
 
-    <q-tree :nodes="invitationList" node-key="username" default-expand-all>
+    <q-tree
+      :nodes="invitationList"
+      node-key="userid"
+      default-expand-all
+      :expanded=[userid]>
       <template v-slot:default-header="prop">
         <div>
           <div class="invitation-box">
@@ -85,9 +89,16 @@ const getInvitationList = () => {
       father.email = user.value.EmailAddress;
       father.username = user.value.Username;
       father.userid = userid;
-      father.label = "01";
+      
       var lists = resp.data.Infos[userid]["Invitees"];
+      father.label = "01(" + lists.length + ")";
+      var index = 1;
+
       lists.forEach((list) => {
+        if (list.UserID === userid) {
+          return
+        }
+
         var childrenInvitation = {
           username: "",
           userid: "",
@@ -98,8 +109,9 @@ const getInvitationList = () => {
         childrenInvitation.email = list.EmailAddress;
         childrenInvitation.username = list.Username;
         childrenInvitation.userid = list.UserID;
-        childrenInvitation.label = "02";
+        childrenInvitation.label = "02/" + index;
         father.children.push(childrenInvitation);
+        index += 1;
       });
 
       invitationList.value.push(father);
