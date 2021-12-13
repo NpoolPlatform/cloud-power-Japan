@@ -13,13 +13,10 @@
         </q-card-section>
         <q-card-section>
           <q-form class="register-form">
-            <country-code
-              v-model:userPhoneNumber="phoneResponse.phone"
-              v-model:userCode="phoneResponse.code"
-            ></country-code>
+            <country-code></country-code>
 
             <send-code-input
-              :verifyParam="forgetPasswordInput.phone"
+              :verifyParam="phone"
               verifyType="phone"
             ></send-code-input>
 
@@ -33,7 +30,7 @@
               lazy-rules
               :rules="[
                 (val) =>
-                  (val && val.length > 0) ||
+                  parsePassword(val) ||
                   $t('ForgetPassword.PasswordInputWarning'),
               ]"
               ref="passwordRef"
@@ -81,7 +78,7 @@ import { defineComponent, ref, reactive, computed } from "vue";
 import { api } from "src/boot/axios";
 import { useStore } from "vuex";
 import { fail, success, waiting } from "src/notify/notify";
-import { sha256Password } from "src/utils/utils";
+import { parsePassword, sha256Password } from "src/utils/utils";
 import { throttle } from "quasar";
 import { useI18n } from "vue-i18n";
 import SendCodeInput from "src/components/SendCodeInput.vue";
@@ -100,13 +97,15 @@ export default defineComponent({
       },
     });
 
-    const phoneResponse = {
-      phone: "",
-      code: "",
-    };
+    const phone = computed({
+      get: () => $store.state.verify.phone,
+      set: (val) => {
+        $store.commit("verify/updatePhone", val);
+      },
+    });
 
     const forgetPasswordInput = reactive({
-      phone: phoneResponse.code + phoneResponse.phone,
+      phone: phone.value,
       verifyCode: verifyCode.value,
       password: "",
       confirmPassword: "",
@@ -116,19 +115,20 @@ export default defineComponent({
     const confirmPasswordRef = ref(null);
 
     const confirmPassRule = ref([
-      (val) => (val && val.length > 0) || t("Register.ConfirmInputWarning1"),
+      (val) => parsePassword(val) || t("Register.ConfirmInputWarning1"),
       (val) =>
-        (val && val == forgetPasswordInput.value.password) ||
+        (val && val == forgetPasswordInput.password) ||
         t("Register.ConfirmInputWarning2"),
     ]);
 
     return {
       verifyCode,
       forgetPasswordInput,
-      phoneResponse,
       passwordRef,
       confirmPasswordRef,
       confirmPassRule,
+      parsePassword,
+      phone,
     };
   },
 
@@ -162,12 +162,10 @@ export default defineComponent({
       var self = this;
 
       var password = sha256Password(this.forgetPasswordInput.password);
-      this.forgetPasswordInput.phone =
-        this.phoneResponse.code + this.phoneResponse.phone;
 
       api
         .post("/user-management/v1/forget/password", {
-          VerifyParam: self.forgetPasswordInput.phone,
+          VerifyParam: self.phone,
           Password: password,
           VerifyType: "phone",
           Code: self.verifyCode,
@@ -175,6 +173,7 @@ export default defineComponent({
         .then((resp) => {
           success(notif, self.$t("Notify.ForgetPassword.Success"));
           self.verifyCode = "";
+          self.phone = "";
           location.reload();
           self.$router.push("/login");
         })

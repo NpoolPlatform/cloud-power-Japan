@@ -53,13 +53,14 @@
 </template>
 
 <script>
+import { parsePhone } from "src/utils/utils";
 import { defineComponent, ref, computed, reactive } from "vue";
 import { useI18n } from "vue-i18n";
+import { useStore } from "vuex";
 import { countries } from "../utils/coutrycode";
 
 export default defineComponent({
   props: {
-    userPhoneNumber: String,
     inputType: String,
   },
 
@@ -67,8 +68,10 @@ export default defineComponent({
     const { t } = useI18n({ useScope: "global" });
     const beNull = ref([]);
     const phoneRef = ref(null);
+
+    const store = useStore();
     const phoneRule = ref([
-      (val) => (val && val.length > 0) || t("Register.PhoneInputWarning"),
+      (val) => parsePhone(val) || t("Register.PhoneInputWarning"),
     ]);
     const inputText = ref(t("Account.Phone.Enable.PhoneInput"));
 
@@ -81,25 +84,28 @@ export default defineComponent({
       default:
         break;
     }
+
+    const type = ref(props.inputType);
+
+    const countryCode = ref({
+      name: "Japan",
+      chinese_name: "日本",
+      country_code: "JP",
+      label: "+81",
+    });
+
     return {
       countries,
       myCountries: ref(null),
-      countryCode: ref({
-        name: "Japan",
-        chinese_name: "日本",
-        country_code: "JP",
-        label: "+81",
-      }),
+      countryCode,
       searchInput: ref(null),
       phoneNumber: ref(null),
       beNull,
-      phoneResponse: reactive({
-        phone: "",
-        code: "",
-      }),
       phoneRef,
       phoneRule,
       inputText,
+      store,
+      type,
     };
   },
 
@@ -125,12 +131,41 @@ export default defineComponent({
       },
     },
 
+    countryCode: {
+      deep: true,
+      immediate: true,
+      handler: function (n, o) {
+        var phone = n.label + this.phoneNumber;
+        switch (this.type) {
+          case "old":
+            this.store.commit("verify/updateOldPhone", phone);
+            break;
+          case "new":
+            this.store.commit("verify/updatePhone", phone);
+            break;
+          default:
+            this.store.commit("verify/updatePhone", phone);
+            break;
+        }
+      },
+    },
+
     phoneNumber: {
       deep: true,
       immediate: true,
       handler: function (n, o) {
-        this.$emit("update:userPhoneNumber", n);
-        this.$emit("update:userCode", this.countryCode.label);
+        var phone = this.countryCode.label + n;
+        switch (this.type) {
+          case "old":
+            this.store.commit("verify/updateOldPhone", phone);
+            break;
+          case "new":
+            this.store.commit("verify/updatePhone", phone);
+            break;
+          default:
+            this.store.commit("verify/updatePhone", phone);
+            break;
+        }
       },
     },
   },

@@ -22,8 +22,7 @@
               lazy-rules
               :rules="[
                 (val) =>
-                  (val && val.length > 0) ||
-                  $t('ForgetPassword.UsernameInputwarning'),
+                  parseEmail(val) || $t('ForgetPassword.UsernameInputwarning'),
               ]"
               ref="emailRef"
             ></q-input>
@@ -43,7 +42,7 @@
               lazy-rules
               :rules="[
                 (val) =>
-                  (val && val.length > 0) ||
+                  parsePassword(val) ||
                   $t('ForgetPassword.PasswordInputWarning'),
               ]"
               ref="passwordRef"
@@ -91,7 +90,7 @@ import { defineComponent, ref, reactive, computed, onMounted } from "vue";
 import { api } from "src/boot/axios";
 import { useStore } from "vuex";
 import { fail, success, waiting } from "src/notify/notify";
-import { sha256Password } from "src/utils/utils";
+import { parsePassword, sha256Password, parseEmail } from "src/utils/utils";
 import { throttle } from "quasar";
 import { useI18n } from "vue-i18n";
 import SendCodeInput from "src/components/SendCodeInput.vue";
@@ -125,7 +124,7 @@ export default defineComponent({
     const confirmPasswordRef = ref(null);
 
     const confirmPassRule = ref([
-      (val) => (val && val.length > 0) || t("Register.ConfirmInputWarning1"),
+      (val) => parsePassword(val) || t("Register.ConfirmInputWarning1"),
       (val) =>
         (val && val == forgetPasswordInput.password) ||
         t("Register.ConfirmInputWarning2"),
@@ -138,6 +137,8 @@ export default defineComponent({
       passwordRef,
       confirmPasswordRef,
       confirmPassRule,
+      parsePassword,
+      parseEmail,
     };
   },
 

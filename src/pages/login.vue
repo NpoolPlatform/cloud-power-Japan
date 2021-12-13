@@ -1,9 +1,23 @@
 <template>
   <div class="main">
     <div class="content">
-      <q-card class="register-card">
+      <q-card class="register-card" v-if="showEmail">
         <q-card-section class="card-title">
           <span>{{ $t("Register.LoginTitle") }}</span>
+          <a
+            class="link"
+            style="
+              font-size: 16px;
+              font-weight: 200;
+              margin-right: 10px;
+              cursor: pointer;
+            "
+            @click="
+              showEmail = false;
+              showPhone = true;
+            "
+            >{{ $t("ChangePassword.UsePhone") }}</a
+          >
         </q-card-section>
         <q-card-section>
           <q-form class="register-form">
@@ -45,13 +59,84 @@
               id="loginBtn"
               class="register-btn"
               style="margin: 25px 0 10px 0; width: 100%"
-              @click="login"
+              @click="loginByUsername"
               >{{ $t("Register.Login") }}</q-btn
             >
             <div class="bottom-style">
               <router-link
                 class="link-style"
                 :to="{ path: '/forgetpassword/email' }"
+                >{{ $t("Login.Forget") }}</router-link
+              >
+              <div>
+                <span>{{ $t("Login.NoAccount") }}</span>
+                <router-link
+                  class="link-style"
+                  :to="{ path: '/emailregister' }"
+                  >{{ $t("Login.Register") }}</router-link
+                >
+              </div>
+            </div>
+          </q-form>
+        </q-card-section>
+      </q-card>
+
+      <q-card class="register-card" v-if="showPhone">
+        <q-card-section class="card-title">
+          <span>{{ $t("Register.LoginTitle") }}</span>
+          <a
+            style="
+              font-size: 16px;
+              font-weight: 200;
+              margin-right: 10px;
+              cursor: pointer;
+            "
+            class="link"
+            @click="
+              showEmail = true;
+              showPhone = false;
+            "
+            >{{ $t("ChangePassword.UseEmail") }}</a
+          >
+        </q-card-section>
+        <q-card-section>
+          <q-form class="register-form">
+            <country-code></country-code>
+
+            <q-input
+              ref="passRef"
+              class="register-input"
+              outlined
+              bg-color="blue-grey-1"
+              v-model="loginInput.password"
+              :label="$t('Register.Password')"
+              :type="isPwd ? 'password' : 'text'"
+              lazy-rules
+              :rules="passwordRule"
+            >
+              <template v-slot:append>
+                <q-icon
+                  :name="isPwd ? 'visibility_off' : 'visibility'"
+                  class="cursor-pointer"
+                  @click="isPwd = !isPwd"
+                />
+              </template>
+            </q-input>
+            <div v-if="refreshRecaptcha">
+              <recaptcha-vue @callback="callback"></recaptcha-vue>
+            </div>
+
+            <q-btn
+              id="loginBtn"
+              class="register-btn"
+              style="margin: 25px 0 10px 0; width: 100%"
+              @click="loginByPhone"
+              >{{ $t("Register.Login") }}</q-btn
+            >
+            <div class="bottom-style">
+              <router-link
+                class="link-style"
+                :to="{ path: '/forgetpassword/phone' }"
                 >{{ $t("Login.Forget") }}</router-link
               >
               <div>
@@ -131,9 +216,10 @@ import { useI18n } from "vue-i18n";
 import { useQuasar } from "quasar";
 import { sha256Password } from "src/utils/utils";
 import { throttle } from "quasar";
+import CountryCode from "src/components/CountryCode.vue";
 
 export default defineComponent({
-  components: { RecaptchaVue, VerifycodeInput },
+  components: { RecaptchaVue, VerifycodeInput, CountryCode },
   setup() {
     const { locale } = useI18n({ useScope: "global" });
     const q = useQuasar();
@@ -144,6 +230,13 @@ export default defineComponent({
       get: () => $store.state.user.user,
       set: (val) => {
         $store.commit("user/updateUserInfo", val);
+      },
+    });
+
+    const phone = computed({
+      get: () => $store.state.verify.phone,
+      set: (val) => {
+        $store.commit("verify/updatePhone", val);
       },
     });
 
@@ -176,6 +269,7 @@ export default defineComponent({
     const usernameRule = ref([
       (val) => (val && val.length > 0) || t("Register.UsernameInputwarning"),
     ]);
+
     const passwordRule = ref([
       (val) => (val && val.length > 0) || t("Register.PasswordInputWarning"),
     ]);
@@ -201,6 +295,9 @@ export default defineComponent({
       loginVerify,
       locale,
       visible: ref(false),
+      showEmail: ref(true),
+      showPhone: ref(false),
+      phone,
     };
   },
 
@@ -317,7 +414,7 @@ export default defineComponent({
         });
     },
 
-    login: function () {
+    loginByUsername: function () {
       this.usernameRef.validate();
       this.passRef.validate();
 
@@ -358,10 +455,6 @@ export default defineComponent({
             resp.data.Info.UserBasicInfo.EmailAddress !== null &&
             resp.data.Info.UserBasicInfo.EmailAddress !== undefined
           ) {
-            console.log(
-              "resp email is",
-              resp.data.Info.UserBasicInfo.EmailAddress
-            );
             self.sendCode();
             return;
           } else {
@@ -375,6 +468,65 @@ export default defineComponent({
         .catch((error) => {
           fail(notif, self.$t("Notify.Login.Fail"), error);
           self.loginInput.username = "";
+          self.loginInput.password = "";
+          self.loginInput.response = "";
+          self.refreshRecaptcha = false;
+          self.$nextTick(() => {
+            self.refreshRecaptcha = true;
+          }, 500);
+        });
+    },
+
+    loginByPhone: function () {
+      this.passRef.validate();
+
+      if (
+        this.loginInput.response === "" ||
+        this.loginInput.response === null ||
+        this.loginInput.response === undefined
+      ) {
+        fail(undefined, this.$t("Notify.Recaptcha.Fail"), "");
+        return;
+      }
+      let self = this;
+
+      var notif = waiting(this.$t("Notify.Login.Wait"));
+      var password = sha256Password(this.loginInput.password);
+
+      api
+        .post("/login-door/v1/login", {
+          Phone: self.phone,
+          Password: password,
+          GoogleRecaptchaResponse: self.loginInput.response,
+        })
+        .then((resp) => {
+          self.user = {
+            logined: true,
+            info: resp.data.Info,
+          };
+          success(notif, self.$t("Notify.Login.Success"));
+          self.phone = "";
+          if (resp.data.Info.UserAppInfo.UserApplicationInfo.GALogin) {
+            self.gaDialog = true;
+            return;
+          } else if (
+            resp.data.Info.UserBasicInfo.EmailAddress !== "" &&
+            resp.data.Info.UserBasicInfo.EmailAddress !== null &&
+            resp.data.Info.UserBasicInfo.EmailAddress !== undefined
+          ) {
+            self.sendCode();
+            return;
+          } else {
+            self.loginVerify = true;
+            self.$router.push({
+              path: "/",
+            });
+          }
+          return;
+        })
+        .catch((error) => {
+          fail(notif, self.$t("Notify.Login.Fail"), error);
+          self.phone = "";
           self.loginInput.password = "";
           self.loginInput.response = "";
           self.refreshRecaptcha = false;
