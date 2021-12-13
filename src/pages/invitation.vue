@@ -2,7 +2,11 @@
   <div class="content">
     <div class="title">{{ $t("Invitation.Title") }}</div>
 
-    <q-tree :nodes="invitationList" node-key="username" default-expand-all>
+    <q-tree
+      :nodes="invitationList"
+      node-key="userid"
+      default-expand-all
+      :expanded=[userid]>
       <template v-slot:default-header="prop">
         <div>
           <div class="invitation-box">
