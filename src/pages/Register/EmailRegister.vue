@@ -312,9 +312,9 @@ export default defineComponent({
 
     const { t } = useI18n({ useScope: "global" });
 
-    const usernameRef = ref(null);
-    const passRef = ref(null);
-    const confirmPassRef = ref(null);
+    const usernameRef = ref("");
+    const passRef = ref("");
+    const confirmPassRef = ref("");
 
     const invitationRef = ref(null);
     const invitationRule = ref([

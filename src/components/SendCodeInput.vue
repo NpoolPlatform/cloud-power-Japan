@@ -183,9 +183,6 @@ export default defineComponent({
         });
     };
 
-    sendEmailCode = throttle(sendEmailCode, 1000);
-    sendPhoneCode = throttle(sendPhoneCode, 1000);
-
     return {
       codeRef,
       codeRule,
@@ -230,6 +227,11 @@ export default defineComponent({
         }
       },
     },
+  },
+
+  created: function () {
+    this.sendEmailCode = throttle(this.sendEmailCode, 1000);
+    this.sendPhoneCode = throttle(this.sendPhoneCode, 1000);
   },
 });
 </script>
