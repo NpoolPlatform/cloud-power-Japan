@@ -400,10 +400,29 @@ export default defineComponent({
         this.$t("Notify.SendCode.Phone.Check");
       var failToSend = this.$t("Notify.SendCode.Fail");
 
+      var username = "";
+      if (this.locale === "en-US") {
+        if (
+          this.user.info.UserBasicInfo.FirstName !== "" &&
+          this.user.info.UserBasicInfo.FirstName !== null &&
+          this.user.info.UserBasicInfo.FirstName !== undefined
+        ) {
+          username = this.user.info.UserBasicInfo.FirstName;
+        }
+      } else {
+        if (
+          this.user.info.UserBasicInfo.LastName !== "" &&
+          this.user.info.UserBasicInfo.LastName !== null &&
+          this.user.info.UserBasicInfo.LastName !== undefined
+        ) {
+          username = this.user.info.UserBasicInfo.LastName;
+        }
+      }
+
       api
         .post("/verification-door/v1/send/email", {
           Email: self.user.info.UserBasicInfo.EmailAddress,
-          Username: self.user.info.UserBasicInfo.Username,
+          Username: username,
           Lang: self.locale,
         })
         .then((resp) => {
@@ -541,20 +560,23 @@ export default defineComponent({
       var self = this;
       if (resp === "pass") {
         this.gaDialog = false;
+        this.loginVerify = true;
+
         this.$router.push({
           path: "/",
         });
-        this.loginVerify = true;
       } else {
         fail(undefined, "please inoput correct verify code", "");
-        // self.loginInput.username = "";
-        // self.loginInput.password = "";
-        // self.loginInput.verifyCode = "";
-        // self.loginInput.response = "";
-        // this.q.cookies.remove("UserID");
-        // this.q.cookies.remove("AppSession");
-        // this.q.cookies.remove("Session");
-        // location.reload();
+        self.loginInput.username = "";
+        self.loginInput.password = "";
+        self.loginInput.verifyCode = "";
+        self.loginInput.response = "";
+        self.q.cookies.remove("UserID");
+        self.q.cookies.remove("AppSession");
+        self.q.cookies.remove("Session");
+        self.phone = "";
+        self.verifyCode = "";
+        self.user.logined = false;
       }
     },
 
@@ -589,6 +611,7 @@ export default defineComponent({
           self.emailDialog = false;
           self.loginVerify = true;
           self.visible = false;
+
           self.$router.push({
             path: "/",
           });
@@ -597,14 +620,15 @@ export default defineComponent({
           var msg = self.$t("ReLogin.Fail");
           fail(undefined, msg, error);
           self.visible = false;
-          // self.loginInput.username = "";
-          // self.loginInput.password = "";
-          // self.verifyCode = "";
-          // self.loginInput.response = "";
-          // this.q.cookies.remove("UserID");
-          // this.q.cookies.remove("AppSession");
-          // this.q.cookies.remove("Session");
-          // location.reload();
+          self.loginInput.username = "";
+          self.loginInput.password = "";
+          self.verifyCode = "";
+          self.loginInput.response = "";
+          self.q.cookies.remove("UserID");
+          self.q.cookies.remove("AppSession");
+          self.q.cookies.remove("Session");
+          self.phone = "";
+          self.user.logined = false;
         });
     },
   },
