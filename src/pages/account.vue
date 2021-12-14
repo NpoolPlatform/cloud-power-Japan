@@ -887,7 +887,9 @@ export default defineComponent({
       (val) => parseUsername(val) || t("Update.UsernameInputWarning"),
     ]);
 
-    const genderRules = ref([(val) => (val && val.length > 1) || t()]);
+    const genderRules = ref([
+      (val) => (val && val.length > 1) || t("Update.UsernameInputWarning"),
+    ]);
 
     return {
       user,

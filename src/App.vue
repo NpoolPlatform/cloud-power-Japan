@@ -45,10 +45,13 @@ export default defineComponent({
           }
         )
         .then((resp) => {
+          console.log("api resp");
           if (resp.data.Info === null) {
+            console.log("invitation code is null");
             $store.commit("verify/setHasInvitationCode", false);
             return;
           }
+          console.log("invitation code not null");
           $store.commit("verify/setHasInvitationCode", true);
         });
     };
@@ -144,6 +147,8 @@ export default defineComponent({
     if (this.q.cookies.has("UserID")) {
       this.loginVerify = true;
     }
+
+    this.getUserInvitationCode();
   },
 
   mounted: function () {
@@ -169,8 +174,6 @@ export default defineComponent({
       this.getUserInfo();
       return;
     }
-
-    this.getUserInvitationCode();
   },
 
   methods: {

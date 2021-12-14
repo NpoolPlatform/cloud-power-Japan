@@ -167,6 +167,7 @@ export default defineComponent({
 
     watch([password, confirmPassword], ([p, cp], [prep, precp]) => {
       if (p === cp) {
+        passwordRef.value.validate();
         confirmPasswordRef.value.validate();
       }
     });
@@ -216,7 +217,6 @@ export default defineComponent({
         return;
       }
 
-      const notif = waiting(this.$t("Notify.ChangePassword.Waiting"));
       var self = this;
 
       var password = sha256Password(this.password);
@@ -230,7 +230,7 @@ export default defineComponent({
           Code: self.verifyCode,
         })
         .then((resp) => {
-          success(notif, self.$t("Notify.ChangePassword.Success"));
+          success(undefined, self.$t("Notify.ChangePassword.Success"));
           self.verifyCode = "";
           this.q.cookies.remove("UserID");
           this.q.cookies.remove("AppSession");
@@ -242,7 +242,9 @@ export default defineComponent({
         })
         .catch((error) => {
           failCodeError(
+            undefined,
             error,
+            self.$t("Notify.ChangePassword.Fail2"),
             self.$t("CodeFail.Fail1"),
             self.$t("CodeFail.Fail2")
           );

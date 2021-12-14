@@ -107,6 +107,14 @@ export default {
         })
         .catch((error) => {
           self.visible = false;
+          self.captchas = [
+            { num: "" },
+            { num: "" },
+            { num: "" },
+            { num: "" },
+            { num: "" },
+            { num: "" },
+          ];
           fail(undefined, fail2, error);
           self.$emit("callback", "error");
         });

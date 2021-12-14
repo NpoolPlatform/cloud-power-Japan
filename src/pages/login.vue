@@ -632,6 +632,14 @@ export default defineComponent({
           );
           self.visible = false;
           self.verifyCode = "";
+          self.captchas = [
+            { num: "" },
+            { num: "" },
+            { num: "" },
+            { num: "" },
+            { num: "" },
+            { num: "" },
+          ];
           self.loginInput.response = "";
           self.q.cookies.remove("UserID");
           self.q.cookies.remove("AppSession");

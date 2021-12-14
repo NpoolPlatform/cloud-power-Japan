@@ -123,6 +123,7 @@ export default defineComponent({
 
     watch([password, confirmPassword], ([p, cp], [prep, precp]) => {
       if (p === cp) {
+        passwordRef.value.validate();
         confirmPasswordRef.value.validate();
       }
     });
@@ -181,6 +182,7 @@ export default defineComponent({
         })
         .catch((error) => {
           failCodeError(
+            notif,
             error,
             self.$t("CodeFail.Fail1"),
             self.$t("CodeFail.Fail2")

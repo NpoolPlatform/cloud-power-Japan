@@ -139,10 +139,10 @@ export function parsePhone(phone) {
   return true;
 }
 
-export function failCodeError(error, reason1, reason2) {
+export function failCodeError(notif, error, reason, reason1, reason2) {
   if (error.response.data.message.indexOf("redis: nil") !== -1) {
-    fail(undefined, reason1, reason2);
+    fail(notif, reason1, reason2);
   } else {
-    fail(undefined, "", error.response.data.message);
+    fail(notif, reason, error.response.data.message);
   }
 }

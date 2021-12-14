@@ -347,6 +347,7 @@ export default defineComponent({
 
     watch([password, confirmPassword], ([p, cp], [prep, precp]) => {
       if (p === cp) {
+        passRef.value.validate();
         confirmPassRef.value.validate();
       }
     });
@@ -398,7 +399,6 @@ export default defineComponent({
       }
 
       var self = this;
-      var failToRegister = this.$t("Register.Fail");
       var successToRegister = this.$t("Register.Success");
       var password = sha256Password(this.password);
 
@@ -418,6 +418,7 @@ export default defineComponent({
         })
         .catch(function (error) {
           failCodeError(
+            undefined,
             error,
             self.$t("CodeFail.Fail1"),
             self.$t("CodeFail.Fail2")
