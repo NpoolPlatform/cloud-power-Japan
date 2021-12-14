@@ -12,7 +12,31 @@ export default {
     Signin: "Sign in",
   },
 
-  AccountNotify: {},
+  AccountNotify: {
+    EnableEmail: {
+      VerifyCode: "please input your verify code",
+      Success: "successfully enable email address",
+      Fail: "fail to enable email address: ",
+    },
+    EnablePhone: {
+      Phone: "please input your phone number",
+      VerifyCode: "please input your verify code",
+      Success: "successfully enable phone number",
+      Fail: "fail to enable phone number: ",
+    },
+    UpdateEmail: {
+      VerifyCode: "please input your verify code",
+      Success: "successfully update user email address",
+      Fail: "fail to update email address: ",
+    },
+    UpdatePhone: {
+      OldPhone: "please input your old phone number",
+      Phone: "please input your phone number",
+      VerifyCode: "please input your verify code",
+      Success: "successfully update user phone",
+      Fail: "fail to update phone number: ",
+    },
+  },
 
   Footer: {
     First: {
@@ -40,6 +64,7 @@ export default {
 
   Invitation: {
     Title: "INFLUENCER PROGRAM",
+    Wait: "Please wait... ...",
   },
 
   Homepage: {
@@ -195,6 +220,8 @@ export default {
     AcceptBtn: "Accept",
     CancelBtn: "Cancel",
     AgreeWarning: 'please choose agree and then click "Register"',
+    Fail: "Fail to register",
+    Success: "Successfully register!",
   },
 
   Drawer: {
@@ -354,6 +381,7 @@ export default {
       Submit: "Submit Change",
       HaveDoneGoogle: "you have finished google authentication!!!",
       tooltip: "please do google authenticate verify or bind email first!",
+      tooltip2: "you are default to do email login authentication",
     },
     History: {
       Title: "RECENT LOGIN HISTORY",
@@ -415,6 +443,8 @@ export default {
     Content:
       "You have choose to verify login by google authenticate. Please enter your verify code in your google authenticator.",
     PleaseWait: "Please wait for verify... ...",
+    Success: "successfully set user google verify",
+    Fail: "fail to set user google verify: ",
   },
 
   Notify: {

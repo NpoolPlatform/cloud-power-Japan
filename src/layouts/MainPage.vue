@@ -102,6 +102,7 @@
                 </q-item>
 
                 <q-item
+                  v-if="hasInvitationCode"
                   clickable
                   v-close-popup
                   @click="
@@ -155,7 +156,12 @@
             <span class="drawer-item-span">{{ $t("Drawer.Wallet") }}</span>
           </div>
         </router-link>
-        <router-link href class="drawer-item" :to="{ path: '/invitation' }">
+        <router-link
+          href
+          class="drawer-item"
+          :to="{ path: '/invitation' }"
+          v-if="hasInvitationCode"
+        >
           <div class="row">
             <q-img :src="affiliatesImg" class="drawer-item-img"></q-img>
             <span class="drawer-item-span">{{ $t("Drawer.Invitation") }}</span>
@@ -246,11 +252,10 @@
 <script>
 import { api } from "src/boot/axios";
 import { fail, success } from "src/notify/notify";
-import { defineComponent, computed } from "vue";
+import { defineComponent, computed, onMounted, ref } from "vue";
 import { useI18n } from "vue-i18n";
 import { useStore } from "vuex";
 import { useQuasar } from "quasar";
-import { store } from "quasar/wrappers";
 
 export default defineComponent({
   name: "MainPage",
@@ -258,6 +263,32 @@ export default defineComponent({
     const { t, locale } = useI18n({ useScope: "global" });
     const $store = useStore();
     const q = useQuasar();
+
+    const hasInvitationCode = ref(false);
+
+    const getUserInvitationCode = () => {
+      var userid = q.cookies.get("UserID");
+      var appid = q.cookies.get("AppID");
+      api
+        .post(
+          "/cloud-hashing-inspire/v1/get/user/invitation/code/by/app/user",
+          {
+            AppID: appid,
+            UserID: userid,
+          }
+        )
+        .then((resp) => {
+          if (resp.data.Info === null) {
+            hasInvitationCode.value = false;
+            return;
+          }
+          hasInvitationCode.value = true;
+        });
+    };
+
+    onMounted(() => {
+      getUserInvitationCode();
+    });
 
     const openSide = computed({
       get: () => $store.state.router.router.open,
@@ -304,6 +335,7 @@ export default defineComponent({
       logined,
       changeLang,
       loginVerify,
+      hasInvitationCode,
     };
   },
 

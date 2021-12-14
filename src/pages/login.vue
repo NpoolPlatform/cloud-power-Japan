@@ -392,11 +392,12 @@ export default defineComponent({
       var self = this;
       var notif = waiting(this.$t("Notify.SendCode.Email.WaitSend"));
       var msg =
-        this.$t("Notify.SendCode.SendTo") +
-        " " +
+        this.$t("Notify.SendCode.Send1") +
+        " <" +
         this.user.info.UserBasicInfo.EmailAddress +
-        ", " +
-        this.$t("Notify.SendCode.Email.Check");
+        ">, " +
+        this.$t("Notify.SendCode.Send2") +
+        this.$t("Notify.SendCode.Phone.Check");
       var failToSend = this.$t("Notify.SendCode.Fail");
 
       api

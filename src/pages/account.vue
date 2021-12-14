@@ -374,10 +374,17 @@
               </div>
               <q-space style="margin-bottom: 25px"></q-space>
               <div class="setting-btn-position">
+                <q-tooltip
+                  anchor="top middle"
+                  self="bottom middle"
+                  :offset="[10, 10]"
+                  v-if="!enableGoogleAuthentication && enabledEmail"
+                  >{{ $t("Account.SecuritySetting.tooltip2") }}</q-tooltip
+                >
                 <q-btn
                   class="account-btn setting-btn"
                   style="top: 0"
-                  :disable="!enableGoogleAuthentication && !enabledEmail"
+                  :disable="!enableGoogleAuthentication"
                   @click="submitLoginVerify"
                   >{{ $t("Account.SecuritySetting.Submit") }}</q-btn
                 >
@@ -1072,8 +1079,22 @@ export default defineComponent({
     onGoogleVerificationBtnClick: function () {
       this.openGaVerify = true;
       var self = this;
-      var username =
-        "(Procyon:" + this.user.info.UserBasicInfo.EmailAddress + ")";
+      var username = "";
+      if (
+        this.user.info.UserBasicInfo.EmailAddress != "" &&
+        this.user.info.UserBasicInfo.EmailAddress != null &&
+        this.user.info.UserBasicInfo.EmailAddress != undefined
+      ) {
+        username =
+          "(Procyon:" + this.user.info.UserBasicInfo.EmailAddress + ")";
+      } else if (
+        this.user.info.UserBasicInfo.PhoneNumber != "" &&
+        this.user.info.UserBasicInfo.PhoneNumber != null &&
+        this.user.info.UserBasicInfo.PhoneNumber != undefined
+      ) {
+        username = "(Procyon:" + this.user.info.UserBasicInfo.PhoneNumber + ")";
+      }
+
       api
         .post("verification-door/v1/get/qrcode/url", {
           Username: username,
@@ -1102,14 +1123,14 @@ export default defineComponent({
             Status: true,
           })
           .then((resp) => {
-            success(undefined, "successfully set user google verify");
+            success(undefined, self.$t("GoogleVerify.Success"));
             self.enableGoogleAuthentication = true;
             self.visible = false;
             self.openGaVerify = false;
             location.reload();
           })
           .catch((error) => {
-            fail(undefined, "fail to set user google verify", error);
+            fail(undefined, self.$t("GoogleVerify.Fail"), error);
             self.visible = false;
           });
       }
@@ -1145,7 +1166,7 @@ export default defineComponent({
       }
 
       if (this.verifyCode === "") {
-        fail(undefined, "please input your verify code", "");
+        fail(undefined, this.$t("AccountNotify.EnableEmail.VerifyCode"), "");
         return;
       }
 
@@ -1157,25 +1178,25 @@ export default defineComponent({
           Code: self.verifyCode,
         })
         .then((resp) => {
-          success(undefined, "successfully enable email address");
+          success(undefined, self.$t("AccountNotify.EnableEmail.Success"));
           self.verifyCode = "";
           self.emailEnableDialog = false;
           location.reload();
         })
         .catch((error) => {
-          fail(undefined, "fail to enable email address", error);
+          fail(undefined, self.$t("AccountNotify.EnableEmail.Fail"), error);
           self.email = "";
         });
     },
 
     onEnablePhone: function () {
       if (this.phoneEnableInput.phone === "") {
-        fail(undefined, "please input your phone number", "");
+        fail(undefined, this.$t("AccountNotify.EnablePhone.Phone"), "");
         return;
       }
 
       if (this.verifyCode === "") {
-        fail(undefined, "please input your verify code", "");
+        fail(undefined, this.$t("AccountNotify.EnablePhone.VerifyCode"), "");
         return;
       }
 
@@ -1185,15 +1206,16 @@ export default defineComponent({
           PhoneNumber: self.phoneEnableInput.phone,
           Code: self.verifyCode,
         })
+
         .then((resp) => {
-          success(undefined, "successfully enable email address");
+          success(undefined, self.$t("AccountNotify.EnablePhone.Success"));
           self.verifyCode = "";
           self.phone = "";
           self.phoneEnableDialog = false;
           location.reload();
         })
         .catch((error) => {
-          fail(undefined, "fail to enable email address", error);
+          fail(undefined, self.$t("AccountNotify.EnablePhone.Fail"), error);
         });
     },
 
@@ -1204,7 +1226,7 @@ export default defineComponent({
       }
 
       if (this.verifyCode === "" || this.oldVerifyCode === "") {
-        fail(undefined, "please input your verify code", "");
+        fail(undefined, this.$t("AccountNotify.UpdateEmail.VerifyCode"), "");
         return;
       }
 
@@ -1217,30 +1239,30 @@ export default defineComponent({
           NewCode: self.verifyCode,
         })
         .then((resp) => {
-          success(undefined, "successfully update user email address");
+          success(undefined, self.$t("AccountNotify.UpdateEmail.Success"));
           self.verifyCode = "";
           self.oldVerifyCode = "";
           self.emailUpdateDialog = false;
           location.reload();
         })
         .catch((error) => {
-          fail(undefined, "fail to update email address:", error);
+          fail(undefined, self.$t("AccountNotify.UpdateEmail.fail"), error);
         });
     },
 
     onUpdatePhone: function () {
       if (this.phoneUpdateInput.oldPhone === "") {
-        fail(undefined, "please input your old phone number", "");
+        fail(undefined, this.$t("AccountNotify.UpdatePhone.OldPhone"), "");
         return;
       }
 
       if (this.phoneUpdateInput.phone === "") {
-        fail(undefined, "please input your phone number", "");
+        fail(undefined, this.$t("AccountNotify.UpdatePhone.Phone"), "");
         return;
       }
 
       if (this.verifyCode === "" || this.oldVerifyCode === "") {
-        fail(undefined, "please input your verify code", "");
+        fail(undefined, this.$t("AccountNotify.UpdatePhone.VeirfyCode"), "");
         return;
       }
 
@@ -1254,7 +1276,7 @@ export default defineComponent({
           NewCode: self.verifyCode,
         })
         .then((resp) => {
-          success(undefined, "successfully update user phone");
+          success(undefined, self.$t("AccountNotify.UpdatePhone.Success"));
           self.verifyCode = "";
           self.oldVerifyCode = "";
           self.phone = "";
@@ -1263,7 +1285,7 @@ export default defineComponent({
           location.reload();
         })
         .catch((error) => {
-          fail(undefined, "fail to update phone number: ", error);
+          fail(undefined, self.$t("AccountNotify.UpdatePhone.Fail"), error);
         });
     },
 

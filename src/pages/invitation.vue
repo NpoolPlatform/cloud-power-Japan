@@ -6,7 +6,8 @@
       :nodes="invitationList"
       node-key="userid"
       default-expand-all
-      :expanded=[userid]>
+      :expanded="[userid]"
+    >
       <template v-slot:default-header="prop">
         <div>
           <div class="invitation-box">
@@ -32,6 +33,10 @@
         </div>
       </template>
     </q-tree>
+
+    <q-inner-loading :showing="visible" :label="$t('Invitation.Wait')">
+      <q-spinner-gears size="50px" color="primary" />
+    </q-inner-loading>
   </div>
 </template>
 
@@ -44,8 +49,10 @@ import { api } from "src/boot/axios";
 
 const q = useQuasar();
 const userid = q.cookies.get("UserID");
+const visible = ref(true);
 
 onMounted(() => {
+  visible.value = true;
   if (userid === "" || userid === null || userid === undefined) {
     var $router = useRouter();
     $router.push("/login");
@@ -89,14 +96,14 @@ const getInvitationList = () => {
       father.email = user.value.EmailAddress;
       father.username = user.value.Username;
       father.userid = userid;
-      
+
       var lists = resp.data.Infos[userid]["Invitees"];
       father.label = "01(" + lists.length + ")";
       var index = 1;
 
       lists.forEach((list) => {
         if (list.UserID === userid) {
-          return
+          return;
         }
 
         var childrenInvitation = {
@@ -115,6 +122,7 @@ const getInvitationList = () => {
       });
 
       invitationList.value.push(father);
+      visible.value = false;
     });
 };
 </script>

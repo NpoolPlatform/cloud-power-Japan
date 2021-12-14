@@ -37,6 +37,7 @@
 </template>
 
 <script>
+import { throttle } from "quasar";
 import { api } from "src/boot/axios";
 import { ref, computed, defineComponent, defineProps, watch } from "vue";
 import { useI18n } from "vue-i18n";
@@ -130,8 +131,8 @@ export default defineComponent({
               sendCodeText.value = sendText;
               clearInterval(countDown);
             } else {
-              isGetting.value = true;
               sendDisable.value = true;
+              isGetting.value = true;
               sendCodeText.value = count.value + "s";
               count.value--;
             }
@@ -181,6 +182,9 @@ export default defineComponent({
           fail(notif, failToSend, error);
         });
     };
+
+    sendEmailCode = throttle(sendEmailCode, 1000);
+    sendPhoneCode = throttle(sendPhoneCode, 1000);
 
     return {
       codeRef,

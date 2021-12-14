@@ -45,6 +45,7 @@ export default {
 
   Invitation: {
     Title: "INFLUENCER PROGRAM",
+    Wait: "お待ちください ......",
   },
 
   Drawer: {
@@ -53,6 +54,32 @@ export default {
     Account: "アカウント",
     Logout: "ログアウト",
     Invitation: "AFFILIATES",
+  },
+
+  AccountNotify: {
+    EnableEmail: {
+      VerifyCode: "お客様の認証コードを入力してください。",
+      Success: "を正常に有効にする電子メールアドレス",
+      Fail: "メールアドレスを有効にするのに失敗しました。",
+    },
+    EnablePhone: {
+      Phone: "電話番号を入力してください。",
+      VerifyCode: "お客様の認証コードを入力してください。",
+      Success: "電話番号の有効化に成功",
+      Fail: "電話番号の有効化に失敗します。",
+    },
+    UpdateEmail: {
+      VerifyCode: "お客様の認証コードを入力してください。",
+      Success: "ユーザーのメールアドレスの更新に成功",
+      Fail: "メールアドレスの更新に失敗しました。",
+    },
+    UpdatePhone: {
+      OldPhone: "旧電話番号を入力してください。",
+      Phone: "電話番号を入力してください。",
+      VerifyCode: "お客様の認証コードを入力してください。",
+      Success: "ユーザーフォンのアップデートに成功",
+      Fail: "電話番号の更新に失敗した。",
+    },
   },
 
   Loading: {
@@ -97,6 +124,8 @@ export default {
     ConfirmBtn: "確認",
     AcceptBtn: "確認",
     CancelBtn: "キャンセル",
+    Fail: "アカウント登録の失敗",
+    Success: "アカウントの登録が完了しました!",
   },
 
   Login: {
@@ -363,6 +392,7 @@ export default {
       Submit: "変更を申請",
       HaveDoneGoogle: "Googleの認証が完了しました!!!",
       tooltip: "まず、google認証を行うか、メールをバインドしてください。",
+      tooltip2: "電子メールでのログイン認証がデフォルトとなっています。",
     },
     History: {
       Title: "最近のログイン履歴",
@@ -425,6 +455,8 @@ export default {
     Content:
       "Google認証によるログイン認証を選択しました。認証コードをgoogle authenticatorに入力してください。",
     PleaseWait: "検証をお待ちください... ...",
+    Success: "google verify の設定に成功しました。",
+    Fail: "google verifyの設定に失敗しました。",
   },
 
   Notify: {
