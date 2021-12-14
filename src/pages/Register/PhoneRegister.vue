@@ -370,7 +370,8 @@ export default defineComponent({
       }
 
       var thiz = this;
-      var failToRegister = "fail to register";
+      var failToRegister = this.$t("Register.Fail");
+      var successToRegister = this.$t("Register.Success");
       var password = sha256Password(this.registerInput.password);
 
       api
@@ -382,7 +383,9 @@ export default defineComponent({
         })
         .then(function (resp) {
           thiz.verifyCode = "";
+          success(undefined, successToRegister);
           thiz.phone = "";
+
           thiz.$router.push({
             path: "/login",
           });

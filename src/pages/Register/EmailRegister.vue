@@ -379,8 +379,8 @@ export default defineComponent({
       }
 
       var thiz = this;
-      var failToRegister = $t("Register.Fail");
-      var successToRegister = $t("Register.Success");
+      var failToRegister = this.$t("Register.Fail");
+      var successToRegister = this.$t("Register.Success");
       var password = sha256Password(this.registerInput.password);
 
       api
