@@ -214,14 +214,14 @@ import { success, fail, waiting } from "../notify/notify";
 import VerifycodeInput from "src/components/VerifycodeInput.vue";
 import { useI18n } from "vue-i18n";
 import { useQuasar } from "quasar";
-import { parseUsername, sha256Password } from "src/utils/utils";
+import { parseUsername, sha256Password, failCodeError } from "src/utils/utils";
 import { throttle } from "quasar";
 import CountryCode from "src/components/CountryCode.vue";
 
 export default defineComponent({
   components: { RecaptchaVue, VerifycodeInput, CountryCode },
   setup() {
-    const { locale } = useI18n({ useScope: "global" });
+    const { t, locale } = useI18n({ useScope: "global" });
     const q = useQuasar();
 
     const $store = useStore();
@@ -237,6 +237,13 @@ export default defineComponent({
       get: () => $store.state.verify.phone,
       set: (val) => {
         $store.commit("verify/updatePhone", val);
+      },
+    });
+
+    const logined = computed({
+      get: () => $store.state.user.user.logined,
+      set: (val) => {
+        $store.commit("user/updateUserLogined", val);
       },
     });
 
@@ -260,8 +267,6 @@ export default defineComponent({
       email: "",
       emailCode: "",
     });
-
-    const { t } = useI18n({ useScope: "global" });
 
     const usernameRef = ref(null);
 
@@ -298,6 +303,7 @@ export default defineComponent({
       showEmail: ref(true),
       showPhone: ref(false),
       phone,
+      logined,
     };
   },
 
@@ -566,17 +572,19 @@ export default defineComponent({
           path: "/",
         });
       } else {
-        fail(undefined, "please inoput correct verify code", "");
-        self.loginInput.username = "";
-        self.loginInput.password = "";
-        self.loginInput.verifyCode = "";
+        fail(undefined, "please inoput correct verify code", "login again");
         self.loginInput.response = "";
         self.q.cookies.remove("UserID");
         self.q.cookies.remove("AppSession");
         self.q.cookies.remove("Session");
         self.phone = "";
         self.verifyCode = "";
-        self.user.logined = false;
+        self.logined = false;
+        self.refreshRecaptcha = false;
+        self.$nextTick(() => {
+          self.refreshRecaptcha = true;
+        }, 500);
+        self.gaDialog = false;
       }
     },
 
@@ -617,18 +625,24 @@ export default defineComponent({
           });
         })
         .catch((error) => {
-          var msg = self.$t("ReLogin.Fail");
-          fail(undefined, msg, error);
+          failCodeError(
+            error,
+            self.$t("CodeFail.Fail1"),
+            self.$t("CodeFail.Fail2")
+          );
           self.visible = false;
-          self.loginInput.username = "";
-          self.loginInput.password = "";
           self.verifyCode = "";
           self.loginInput.response = "";
           self.q.cookies.remove("UserID");
           self.q.cookies.remove("AppSession");
           self.q.cookies.remove("Session");
           self.phone = "";
-          self.user.logined = false;
+          self.logined = false;
+          self.refreshRecaptcha = false;
+          self.$nextTick(() => {
+            self.refreshRecaptcha = true;
+          }, 500);
+          self.emailDialog = false;
         });
     },
   },

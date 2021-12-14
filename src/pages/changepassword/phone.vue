@@ -48,14 +48,13 @@
               class="register-input"
               outlined
               bg-color="blue-grey-1"
-              v-model="changePasswordInput.password"
+              v-model="password"
               :label="$t('ChangePassword.Password')"
               :type="isPwd ? 'password' : 'text'"
               lazy-rules
               :rules="[
                 (val) =>
-                  parsePassword(val) ||
-                  $t('ChangePassword.PasswordInputWarning'),
+                  parsePassword(val) || $t('Register.PasswordInputWarning'),
               ]"
               ref="passwordRef"
             >
@@ -72,7 +71,7 @@
               class="register-input"
               outlined
               bg-color="blue-grey-1"
-              v-model="changePasswordInput.confirmPassword"
+              v-model="confirmPassword"
               :label="$t('ChangePassword.ConfirmPassword')"
               :type="isCPwd ? 'password' : 'text'"
               lazy-rules
@@ -98,11 +97,18 @@
   </div>
 </template>
 <script>
-import { defineComponent, ref, reactive, computed, onMounted } from "vue";
+import {
+  defineComponent,
+  ref,
+  reactive,
+  computed,
+  onMounted,
+  watch,
+} from "vue";
 import { api } from "src/boot/axios";
 import { useStore } from "vuex";
 import { fail, success, waiting } from "src/notify/notify";
-import { parsePassword, sha256Password } from "src/utils/utils";
+import { failCodeError, parsePassword, sha256Password } from "src/utils/utils";
 import { throttle, useQuasar } from "quasar";
 import { useI18n } from "vue-i18n";
 import SendCodeInput from "src/components/SendCodeInput.vue";
@@ -113,7 +119,7 @@ export default defineComponent({
   setup() {
     const q = useQuasar();
     const $store = useStore();
-    const t = useI18n({ useScope: "global" });
+    const { t } = useI18n({ useScope: "global" });
 
     const verifyCode = computed({
       get: () => $store.state.verify.verifyCode,
@@ -137,19 +143,25 @@ export default defineComponent({
     const passwordRef = ref(null);
     const confirmPasswordRef = ref(null);
 
+    const password = ref("");
+    const confirmPassword = ref("");
+
     const changePasswordInput = reactive({
       phone: "",
       oldPassword: "",
-      password: "",
-      confirmPassword: "",
     });
 
     const confirmPassRule = ref([
-      (val) => parsePassword(val) || t("Register.ConfirmInputWarning1"),
+      (val) => parsePassword(val) || t("Register.PasswordInputWarning"),
       (val) =>
-        (val && val == changePasswordInput.password) ||
-        t("Register.ConfirmInputWarning2"),
+        (val && val == password.value) || t("Register.ConfirmInputWarning2"),
     ]);
+
+    watch([password, confirmPassword], ([p, cp], [prep, precp]) => {
+      if (p === cp) {
+        confirmPasswordRef.value.validate();
+      }
+    });
 
     return {
       verifyCode,
@@ -160,6 +172,8 @@ export default defineComponent({
       q,
       confirmPassRule,
       parsePassword,
+      password,
+      confirmPassword,
       phone,
     };
   },
@@ -223,7 +237,11 @@ export default defineComponent({
           self.$router.push("/login");
         })
         .catch((error) => {
-          fail(notif, self.$t("Notify.ChangePassword.Fail2"), error);
+          failCodeError(
+            error,
+            self.$t("CodeFail.Fail1"),
+            self.$t("CodeFail.Fail2")
+          );
         });
     },
   },

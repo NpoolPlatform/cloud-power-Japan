@@ -21,3 +21,7 @@ export function updatePhone(state, val) {
 export function updateOldPhone(state, val) {
   state.oldPhone = val;
 }
+
+export function setHasInvitationCode(state, val) {
+  state.hasInvitationCode = val;
+}

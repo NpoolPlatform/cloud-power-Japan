@@ -138,3 +138,11 @@ export function parsePhone(phone) {
 
   return true;
 }
+
+export function failCodeError(error, reason1, reason2) {
+  if (error.response.data.message.indexOf("redis: nil") !== -1) {
+    fail(undefined, reason1, reason2);
+  } else {
+    fail(undefined, "", error.response.data.message);
+  }
+}

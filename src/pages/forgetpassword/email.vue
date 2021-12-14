@@ -18,7 +18,7 @@
               outlined
               bg-color="blue-grey-1"
               v-model="forgetPasswordInput.email"
-              :label="$t('ForgetPassword.Username')"
+              :label="$t('ChangePassword.Email.EmailInput')"
               lazy-rules
               :rules="[
                 (val) =>
@@ -36,7 +36,7 @@
               class="register-input"
               outlined
               bg-color="blue-grey-1"
-              v-model="forgetPasswordInput.password"
+              v-model="password"
               :label="$t('ForgetPassword.Password')"
               :type="isPwd ? 'password' : 'text'"
               lazy-rules
@@ -60,7 +60,7 @@
               class="register-input"
               outlined
               bg-color="blue-grey-1"
-              v-model="forgetPasswordInput.confirmPassword"
+              v-model="confirmPassword"
               :label="$t('ForgetPassword.Confirm')"
               :type="isCPwd ? 'password' : 'text'"
               lazy-rules
@@ -86,11 +86,23 @@
   </div>
 </template>
 <script>
-import { defineComponent, ref, reactive, computed, onMounted } from "vue";
+import {
+  defineComponent,
+  ref,
+  reactive,
+  computed,
+  onMounted,
+  watch,
+} from "vue";
 import { api } from "src/boot/axios";
 import { useStore } from "vuex";
 import { fail, success, waiting } from "src/notify/notify";
-import { parsePassword, sha256Password, parseEmail } from "src/utils/utils";
+import {
+  parsePassword,
+  sha256Password,
+  parseEmail,
+  failCodeError,
+} from "src/utils/utils";
 import { throttle } from "quasar";
 import { useI18n } from "vue-i18n";
 import SendCodeInput from "src/components/SendCodeInput.vue";
@@ -115,9 +127,10 @@ export default defineComponent({
     const forgetPasswordInput = reactive({
       email: "",
       verifyCode: verifyCode.value,
-      password: "",
-      confirmPassword: "",
     });
+
+    const password = ref("");
+    const confirmPassword = ref("");
 
     const emailRef = ref(null);
     const passwordRef = ref(null);
@@ -126,9 +139,14 @@ export default defineComponent({
     const confirmPassRule = ref([
       (val) => parsePassword(val) || t("Register.ConfirmInputWarning1"),
       (val) =>
-        (val && val == forgetPasswordInput.password) ||
-        t("Register.ConfirmInputWarning2"),
+        (val && val == password.value) || t("Register.ConfirmInputWarning2"),
     ]);
+
+    watch([password, confirmPassword], ([p, cp], [prep, precp]) => {
+      if (p === cp) {
+        confirmPasswordRef.value.validate();
+      }
+    });
 
     return {
       verifyCode,
@@ -139,6 +157,8 @@ export default defineComponent({
       confirmPassRule,
       parsePassword,
       parseEmail,
+      password,
+      confirmPassword,
     };
   },
 
@@ -168,16 +188,9 @@ export default defineComponent({
       }
 
       const notif = waiting(this.$t("Notify.ForgetPassword.Waiting"));
-      if (
-        this.forgetPasswordInput.password !==
-        this.forgetPasswordInput.confirmPassword
-      ) {
-        fail(notif, this.$t("Notify.ForgetPassword.Fail1"), "");
-        return;
-      }
       var self = this;
 
-      var password = sha256Password(this.forgetPasswordInput.password);
+      var password = sha256Password(this.password);
 
       api
         .post("/user-management/v1/forget/password", {
@@ -192,8 +205,11 @@ export default defineComponent({
           self.verifyCode = "";
         })
         .catch((error) => {
-          fail(notif, self.$t("Notify.ForgetPassword.Fail2"), error);
-          self.verifyCode = "";
+          failCodeError(
+            error,
+            self.$t("CodeFail.Fail1"),
+            self.$t("CodeFail.Fail2")
+          );
         });
     },
   },

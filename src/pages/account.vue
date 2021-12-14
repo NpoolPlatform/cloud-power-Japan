@@ -548,7 +548,10 @@
             $t("Account.Email.Update.Title")
           }}</span>
         </q-card-section>
-        <q-card-section class="dialog-section-style">
+        <q-card-section
+          class="dialog-section-style"
+          style="margin-bottom: 30px"
+        >
           <q-input
             outlined
             bg-color="blue-grey-1"
@@ -638,7 +641,12 @@ import { useStore } from "vuex";
 import { success, fail, waiting } from "../notify/notify";
 import { throttle, useQuasar } from "quasar";
 import VerifycodeInput from "src/components/VerifycodeInput.vue";
-import { parseEmail, parseUsername, timestampToDate } from "src/utils/utils";
+import {
+  failCodeError,
+  parseEmail,
+  parseUsername,
+  timestampToDate,
+} from "src/utils/utils";
 import { useI18n } from "vue-i18n";
 import SendCodeInput from "src/components/SendCodeInput.vue";
 import CountryCode from "src/components/CountryCode.vue";
@@ -1020,7 +1028,7 @@ export default defineComponent({
       this.showDetails = false;
       setTimeout(() => {
         this.showDetails = true;
-      }, 1000);
+      }, 100);
     },
 
     submitLoginVerify: function () {
@@ -1184,7 +1192,11 @@ export default defineComponent({
           location.reload();
         })
         .catch((error) => {
-          fail(undefined, self.$t("AccountNotify.EnableEmail.Fail"), error);
+          failCodeError(
+            error,
+            self.$t("CodeFail.Fail1"),
+            self.$t("CodeFail.Fail2")
+          );
           self.email = "";
         });
     },
@@ -1215,7 +1227,11 @@ export default defineComponent({
           location.reload();
         })
         .catch((error) => {
-          fail(undefined, self.$t("AccountNotify.EnablePhone.Fail"), error);
+          failCodeError(
+            error,
+            self.$t("CodeFail.Fail1"),
+            self.$t("CodeFail.Fail2")
+          );
         });
     },
 
@@ -1246,7 +1262,11 @@ export default defineComponent({
           location.reload();
         })
         .catch((error) => {
-          fail(undefined, self.$t("AccountNotify.UpdateEmail.fail"), error);
+          failCodeError(
+            error,
+            self.$t("CodeFail.Fail1"),
+            self.$t("CodeFail.Fail2")
+          );
         });
     },
 
@@ -1285,7 +1305,11 @@ export default defineComponent({
           location.reload();
         })
         .catch((error) => {
-          fail(undefined, self.$t("AccountNotify.UpdatePhone.Fail"), error);
+          failCodeError(
+            error,
+            self.$t("CodeFail.Fail1"),
+            self.$t("CodeFail.Fail2")
+          );
         });
     },
 

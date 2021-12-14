@@ -6,5 +6,6 @@ export default function () {
     refresh: false,
     phone: "",
     oldPhone: "",
+    hasInvitationCode: false,
   };
 }
