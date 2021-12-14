@@ -2,7 +2,7 @@
   <div>
     <div class="content">
       <div class="title">{{ $t("Account.Title") }}</div>
-      <div class="details-box">
+      <div class="details-box" v-if="showDetails">
         <div class="title" style="margin: 0 0">
           {{ $t("Account.PersonalDetails.Title") }}
         </div>
@@ -354,6 +354,16 @@
                   >{{ $t("Account.SecuritySetting.tooltip") }}</q-tooltip
                 >
                 <q-option-group
+                  v-if="!enabledEmail && !userGALogin"
+                  v-model="emptyNull"
+                  :options="loginOptions"
+                  color="primary"
+                  inline
+                  :disable="!enableGoogleAuthentication && !enabledEmail"
+                >
+                </q-option-group>
+                <q-option-group
+                  v-else
                   v-model="userGALogin"
                   :options="loginOptions"
                   color="primary"
@@ -479,7 +489,7 @@
             bg-color="blue-grey-1"
             class="register-input"
             :label="$t('Account.Email.Enable.EmailInput')"
-            v-model="emailEnableInput.email"
+            v-model="email"
             ref="emailEnableRef"
             lazy-rules
             :rules="emailRule"
@@ -487,7 +497,7 @@
         </q-card-section>
         <q-card-section class="dialog-section-style">
           <send-code-input
-            :verifyParam="emailEnableInput.email"
+            :verifyParam="email"
             verifyType="email"
             :username="user.info.UserBasicInfo.Username"
           ></send-code-input>
@@ -537,15 +547,13 @@
             bg-color="blue-grey-1"
             class="register-input"
             :label="$t('Account.Email.Update.OldEmailInput')"
-            v-model="emailUpdateInput.oldEmail"
-            ref="emailUpdateOldRef"
-            lazy-rules
-            :rules="emailRule"
+            v-model="email"
+            disable
           ></q-input>
         </q-card-section>
         <q-card-section class="dialog-section-style">
           <send-code-input
-            :verifyParam="emailUpdateInput.oldEmail"
+            :verifyParam="email"
             verifyType="email"
             codeType="old"
             :username="user.info.UserBasicInfo.Username"
@@ -618,13 +626,12 @@
 
 <script>
 import { api } from "src/boot/axios";
-import { defineComponent, computed, ref, reactive } from "vue";
+import { defineComponent, computed, ref, reactive, onMounted } from "vue";
 import { useStore } from "vuex";
 import { success, fail, waiting } from "../notify/notify";
 import { throttle, useQuasar } from "quasar";
 import VerifycodeInput from "src/components/VerifycodeInput.vue";
 import { parseEmail, parseUsername, timestampToDate } from "src/utils/utils";
-import { sha256Password } from "src/utils/utils";
 import { useI18n } from "vue-i18n";
 import SendCodeInput from "src/components/SendCodeInput.vue";
 import CountryCode from "src/components/CountryCode.vue";
@@ -633,11 +640,41 @@ export default defineComponent({
   components: { VerifycodeInput, SendCodeInput, CountryCode },
   setup() {
     const $store = useStore();
+    const q = useQuasar();
+
     const user = computed({
       get: () => $store.state.user.user,
       set: (val) => {
         $store.commit("user/updateUserInfo", val);
       },
+    });
+
+    const { t } = useI18n({ useScope: "global" });
+
+    const getUserBasicInfo = () => {
+      var failToGetUserinfo = t("Notify.User.Fail");
+
+      var appid = q.cookies.get("AppID");
+      var userid = q.cookies.get("UserID");
+
+      api
+        .post("/user-management/v1/get/user/details", {
+          AppID: appid,
+          UserID: userid,
+        })
+        .then((resp) => {
+          user.value = {
+            info: resp.data.Info,
+            logined: true,
+          };
+        })
+        .catch((error) => {
+          fail(undefined, failToGetUserinfo, error);
+        });
+    };
+
+    onMounted(() => {
+      getUserBasicInfo();
     });
 
     const email = computed({
@@ -679,71 +716,54 @@ export default defineComponent({
       },
     });
 
-    const userBasicInfo = computed({
-      get: () => $store.state.user.user.info.UserBasicInfo,
-      set: (val) => {
-        $store.commit("user/updateUserBasicInfo", val);
-      },
-    });
-
-    const { t } = useI18n({ useScope: "global" });
-
     const username = computed({
       get: () => $store.state.user.user.info.UserBasicInfo.Username,
       set: (val) => {
         $store.commit("user/updateUsername", val);
       },
     });
-
     const gender = computed({
       get: () => $store.state.user.user.info.UserBasicInfo.Gender,
       set: (val) => {
         $store.commit("user/updateGender", val);
       },
     });
-
     const firstname = computed({
       get: () => $store.state.user.user.info.UserBasicInfo.FirstName,
       set: (val) => {
         $store.commit("user/updateFirstname", val);
       },
     });
-
     const lastname = computed({
       get: () => $store.state.user.user.info.UserBasicInfo.LastName,
       set: (val) => {
         $store.commit("user/updateLastname", val);
       },
     });
-
     const street1 = computed({
       get: () => $store.state.user.user.info.UserBasicInfo.StreetAddress1,
       set: (val) => {
         $store.commit("user/updateStreet1", val);
       },
     });
-
     const street2 = computed({
       get: () => $store.state.user.user.info.UserBasicInfo.StreetAddress2,
       set: (val) => {
         $store.commit("user/updateStreet2", val);
       },
     });
-
     const city = computed({
       get: () => $store.state.user.user.info.UserBasicInfo.City,
       set: (val) => {
         $store.commit("user/updateCity", val);
       },
     });
-
     const province = computed({
       get: () => $store.state.user.user.info.UserBasicInfo.Province,
       set: (val) => {
         $store.commit("user/updateProvince", val);
       },
     });
-
     const country = computed({
       get: () => $store.state.user.user.info.UserBasicInfo.Country,
       set: (val) => {
@@ -767,7 +787,6 @@ export default defineComponent({
       },
     });
 
-    const q = useQuasar();
     const password = ref(null);
 
     const emailRule = ref([
@@ -835,8 +854,16 @@ export default defineComponent({
     });
 
     const loginOptions = ref([
-      { label: t("Account.SecuritySetting.GALogin"), value: true },
-      { label: t("Account.SecuritySetting.EmailLogin"), value: false },
+      {
+        label: t("Account.SecuritySetting.GALogin"),
+        value: true,
+        disable: !enableGoogleAuthentication.value,
+      },
+      {
+        label: t("Account.SecuritySetting.EmailLogin"),
+        value: false,
+        disable: !enabledEmail.value,
+      },
     ]);
 
     const usernameRef = ref(null);
@@ -890,6 +917,8 @@ export default defineComponent({
       usernameRules,
       genderRef: ref(null),
       genderRules,
+      showDetails: ref(true),
+      emptyNull: ref(""),
     };
   },
 
@@ -980,16 +1009,30 @@ export default defineComponent({
       this.oldPhone = "";
     },
 
+    refreshUserInfo: function () {
+      this.showDetails = false;
+      setTimeout(() => {
+        this.showDetails = true;
+      }, 1000);
+    },
+
     submitLoginVerify: function () {
       var self = this;
       var appid = this.q.cookies.get("AppID");
       var userid = this.q.cookies.get("UserID");
 
+      var set = false;
+      if (!this.enabledEmail && !this.userGALogin) {
+        set = this.emptyNull;
+      } else {
+        set = this.userGALogin;
+      }
+
       api
         .post("/application-management/v1/set/ga/login", {
           AppID: appid,
           UserID: userid,
-          Set: self.userGALogin,
+          Set: set,
         })
         .then((resp) => {
           success(undefined, self.$t("Notify.SubmitLoginVerify.Success"));
@@ -1007,6 +1050,7 @@ export default defineComponent({
     onSaveChange: function () {
       var appid = this.q.cookies.get("AppID");
       var userid = this.q.cookies.get("UserID");
+      var notif = waiting(this.$t("Notify.ChangeUserInfo.Waiting"));
 
       var self = this;
       api
@@ -1016,10 +1060,12 @@ export default defineComponent({
           Info: self.user.info.UserBasicInfo,
         })
         .then((resp) => {
-          success(undefined, self.$t("Notify.ChangeUserInfo.Success"));
+          success(notif, self.$t("Notify.ChangeUserInfo.Success"));
+          self.refreshUserInfo();
         })
         .catch((error) => {
-          fail(undefined, self.$t("Notify.ChangeUserInfo.Fail"), error);
+          fail(notif, self.$t("Notify.ChangeUserInfo.Fail"), error);
+          location.reload();
         });
     },
 
@@ -1098,7 +1144,7 @@ export default defineComponent({
         return;
       }
 
-      if (this.emailEnableInput.emailCode === "") {
+      if (this.verifyCode === "") {
         fail(undefined, "please input your verify code", "");
         return;
       }
@@ -1107,16 +1153,18 @@ export default defineComponent({
 
       api
         .post("/user-management/v1/bind/email", {
-          EmailAddress: self.emailEnableInput.email,
-          Code: self.emailEnableInput.emailCode,
+          EmailAddress: self.email,
+          Code: self.verifyCode,
         })
         .then((resp) => {
           success(undefined, "successfully enable email address");
           self.verifyCode = "";
           self.emailEnableDialog = false;
+          location.reload();
         })
         .catch((error) => {
           fail(undefined, "fail to enable email address", error);
+          self.email = "";
         });
     },
 
@@ -1126,7 +1174,7 @@ export default defineComponent({
         return;
       }
 
-      if (this.phoneEnableInput.phoneCode === "") {
+      if (this.verifyCode === "") {
         fail(undefined, "please input your verify code", "");
         return;
       }
@@ -1135,13 +1183,14 @@ export default defineComponent({
       api
         .post("/user-management/v1/bind/phone", {
           PhoneNumber: self.phoneEnableInput.phone,
-          Code: self.phoneEnableInput.phoneCode,
+          Code: self.verifyCode,
         })
         .then((resp) => {
           success(undefined, "successfully enable email address");
           self.verifyCode = "";
           self.phone = "";
           self.phoneEnableDialog = false;
+          location.reload();
         })
         .catch((error) => {
           fail(undefined, "fail to enable email address", error);
@@ -1149,9 +1198,8 @@ export default defineComponent({
     },
 
     onUpdateEmail: function () {
-      this.emailUpdateOldRef.validate();
       this.emailUpdateRef.validate();
-      if (this.emailUpdateOldRef.hasError || this.emailUpdateRef.hasError) {
+      if (this.emailUpdateRef.hasError) {
         return;
       }
 
@@ -1163,7 +1211,7 @@ export default defineComponent({
       var self = this;
       api
         .post("/user-management/v1/update/user/email", {
-          OldEmail: self.emailUpdateInput.oldEmail,
+          OldEmail: self.email,
           OldCode: self.oldVerifyCode,
           NewEmail: self.emailUpdateInput.email,
           NewCode: self.verifyCode,
@@ -1172,8 +1220,8 @@ export default defineComponent({
           success(undefined, "successfully update user email address");
           self.verifyCode = "";
           self.oldVerifyCode = "";
-          self.email = self.emailUpdateInput.email;
           self.emailUpdateDialog = false;
+          location.reload();
         })
         .catch((error) => {
           fail(undefined, "fail to update email address:", error);
@@ -1191,10 +1239,7 @@ export default defineComponent({
         return;
       }
 
-      if (
-        this.phoneUpdateInput.oldPhoneCode === "" ||
-        this.phoneUpdateInput.phoneCode === ""
-      ) {
+      if (this.verifyCode === "" || this.oldVerifyCode === "") {
         fail(undefined, "please input your verify code", "");
         return;
       }
@@ -1204,9 +1249,9 @@ export default defineComponent({
       api
         .post("/user-management/v1/update/user/phone", {
           OldPhone: self.phoneUpdateInput.oldPhone,
-          OldCode: self.phoneUpdateInput.oldPhoneCode,
+          OldCode: self.oldVerifyCode,
           NewPhone: self.phoneUpdateInput.phone,
-          NewCode: self.phoneUpdateInput.phoneCode,
+          NewCode: self.verifyCode,
         })
         .then((resp) => {
           success(undefined, "successfully update user phone");
@@ -1215,6 +1260,7 @@ export default defineComponent({
           self.phone = "";
           self.oldPhone = "";
           self.phoneUpdateDialog = false;
+          location.reload();
         })
         .catch((error) => {
           fail(undefined, "fail to update phone number: ", error);

@@ -25,13 +25,13 @@ export default {
       Content: "暗号資産のグローバルマーケットプレイス",
     },
     Second: {
-      Title: "LINKS",
+      Title: "Links",
       Home: "ホームページ",
       Products: "商品",
       Blog: "ブログ",
     },
     Third: {
-      Title: "HELP",
+      Title: "Help",
       Faqs: "FAQ",
       Support: "サポート",
       Legal: "規約",
@@ -65,17 +65,17 @@ export default {
   },
 
   Register: {
-    Title: "User Registration",
-    Username: "ユーザー名 / メールアドレス",
+    Title: "ユーザー登録",
+    Username: "メールアドレス",
     UsernameInputwarning: "正しいEmailアドレスを記入ください",
     SendCode: "コード送信",
     EmailVerifyCode: "Email アドレスの認証コード",
     EmailVerifyCodeInpuWarning: "認証コードを記入ください",
     Password: "パスワード",
     PasswordInputWarning:
-      "合法的なパスワードを入力してください。パスワードは8以上16以下の長さで、数字と文字を含んでいなければなりません。",
+      "合法的なパスワードを入力してください。パスワードは8以上16以下の長さで、数字と文字を含んでいなければなりません",
     Confirm: "パスワードの確認",
-    ConfirmInputWarning1: "パスワードを確認してください。",
+    ConfirmInputWarning1: "パスワードを確認してください",
     ConfirmInputWarning2: "パスワードと確認用パスワードが一致しない",
     InvitationCode: "招待コード",
     Agree1: "を読み、同意しました",
@@ -87,7 +87,7 @@ export default {
     Click: "ここをクリックしてサインインしてください。",
     Login: "ログイン",
     LoginTitle: "ユーザーログイン",
-    GooglrCodeInputWarning: "あなたのGoogle認証コードを入力してください。",
+    GooglrCodeInputWarning: "あなたのGoogle認証コードを入力してください",
     VerifyCodeInput: "認証コードを入力してください。",
     RegisterEmail: "メールボックスの登録",
     RegisterPhone: "モバイル登録",
@@ -103,9 +103,9 @@ export default {
     Forget: "パスワードを忘れた場合",
     NoAccount: "アカウントがない場合",
     Register: "今すぐ登録",
-    EmailInputVerify1: "",
-    EmailInputVerify2: "に送ったばかりのメール",
-    EmailInputVerify3: "メールで送られてきた認証コードを入力してください。",
+    LoginUsername: "ユーザー名 / メールアドレス",
+    UsernameInputwarning: "ユーザー名またはメールアドレスを入力してください",
+    PasswordInputWarning: "パスワードを入力してください。",
   },
 
   ForgetPassword: {
@@ -129,7 +129,7 @@ export default {
 
   Homepage: {
     Title: {
-      Title: "SHOOT FOR THE STARS WITH PROCYON!",
+      Title: "SHOOT FOR THE STARS WITH PROCYON",
       Subtitle: "暗号資産のグローバルマーケットプレイス",
       Register: "アカウント登録",
     },
@@ -192,12 +192,13 @@ export default {
       Content7: "ファーストバッチマイニングのマイニング量は格段に多いです",
       Content7Comma: "。",
       Content8:
-        "ピザをシェアするようなものです。多くの人とシェアすればするほど、1枚1枚のスライスが小さくなります。Chiaというプロジェクトがありますが、Chiaのマイニングで事例を話すと、Chiaはメインネット開始後の2カ月からマイニングディフィカルティが急激に上がりました。結果、その後のマイニングできる量が日に日に減っていきました。Chiaのファーストバッチマイニングに参加したマイナーは、メインネットが開始して最初の数日間で得たマイニング量が、最初の2カ月を過ぎてから参加したマイナーが1年間で得るマイニング量に相当しました。",
-      Content18: "これがファーストバッチの威力です。",
+        "ピザをシェアするようなものです。多くの人とシェアすればするほど、1枚1枚のスライスが小さくなります。",
+      Content88: "",
+      Content88Comma: "",
       Content14:
-        "Chiaというプロジェクトがありますが、Chiaのマイニングで事例を話すと、Chiaはメインネット開始後の2カ月からマイニングディフィカルティが急激に上がりました。結果、",
+        "Chiaというプロジェクトがありますが、Chiaのマイニングで事例を話すと、Chiaはメインネット開始後の2カ月からマイニングディフィカルティが急激に上がりました。結果、その後のマイニングできる量が日に日に減っていきました。",
       Content15:
-        "その後のマイニングできる量が日に日に減っていきました。Chiaのファーストバッチマイニングに参加したマイナーは、メインネットが開始して最初の数日間で得たマイニング量が、最初の2カ月を過ぎてから参加したマイナーが1年間で得るマイニング量に相当しています",
+        "Chiaのファーストバッチマイニングに参加したマイナーは、メインネットが開始して最初の数日間で得たマイニング量が、最初の2カ月を過ぎてから参加したマイナーが1年間で得るマイニング量に相当しています",
       Content15Comma: "。",
       Content16: "これがファーストバッチの威力です。",
       Content9:
@@ -385,7 +386,8 @@ export default {
     OldPassword: "旧パスワード",
     OldPasswordWarning: "旧パスワードを入力してください。",
     Password: "新しいパスワード",
-    PasswordInputWarning: "新しいパスワードを入力してください。",
+    PasswordInputWarning:
+      "合法的なパスワードを入力してください。パスワードは8以上16以下の長さで、数字と文字を含んでいなければなりません。",
     ConfirmPassword: "パスワードの確認",
     ConfirmPasswordInputWarning: "確認用パスワードを入力してください。",
     Email: {
@@ -435,7 +437,8 @@ export default {
         WaitSend: "smsテキストメッセージの送信... ...",
         Check: "携帯電話のメッセージをご確認ください。",
       },
-      SendTo: "E_mailの検証コードが送信されました",
+      Send1: "認証コードが ",
+      Send2: "に送信されました。",
       Fail: "検証コードの送信失敗",
     },
 
@@ -469,6 +472,7 @@ export default {
 
     ChangeUserInfo: {
       Success: "個人情報の更新に成功",
+      Waiting: "ユーザー情報の保存 ... ...",
       Fail: "ユーザー情報の更新に失敗する",
     },
 
@@ -476,6 +480,9 @@ export default {
       Wait: "ログインを待つ... ...",
       Success: "ログイン成功",
       Fail: "ログインに失敗する",
+      EmailInputVerify1: "",
+      EmailInputVerify2: "に送ったばかりのメール",
+      EmailInputVerify3: "メールで送られてきた認証コードを入力してください。",
     },
 
     ForgetPassword: {
@@ -509,8 +516,9 @@ export default {
   Faq: {
     A: "サポート",
     B: "FAQ",
-    C: "以下の質問及び回答に該当しない場合は、 ",
-    Contact: "メールにてお問い合わせ",
+    C: "以下の質問及び回答に該当しない場合は、",
+    Contact: "メールにてお問い合わせください",
+    ContactComma: "。",
     Contactt:
       "または、Procyonの公式LINEアカウントを追加の上、お問い合わせください。",
     Header1: {
@@ -524,7 +532,8 @@ export default {
     Header2: {
       Title: "プラットフォームの仕様とトラブル対応",
       Q1: "Procyonのプラットフォームとは、暗号通貨のウォレットでしょうか？",
-      A1: "はい。マイニングが実装してから日々受け取れるマイニング報酬はすべて、お客様のProcyonウォレットに直接入金されます。Procyonのウォレットは、当社のマイニング商品をご購入されることで、お客様専用の口座を開設させて頂きます。",
+      A1: "はい。マイニングが実装してから日々受け取れるマイニング報酬はすべて、お客様のProcyonウォレットに直接入金されます。",
+      A11: "Procyonのウォレットは、当社のマイニング商品をご購入されることで、お客様専用の口座を開設させて頂きます。",
       Q2: "マイニング報酬を売却したり、他の暗号通貨に交換することは可能ですか？",
       A2: "マイニング報酬はProcyonアカウントのウォレットに日々送金され、Procyonのウォレットからお好きな暗号通貨取引所のウォレットh送金して、ご自由に売買することができます。",
       Q3: "アカウントにGoogle認証をリンクしていて、携帯電話を紛失した場合はどうなりますか？",

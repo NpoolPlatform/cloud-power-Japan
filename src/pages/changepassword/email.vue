@@ -226,7 +226,8 @@ export default defineComponent({
           this.q.cookies.remove("AppSession");
           this.q.cookies.remove("Session");
           self.verifyCode = "";
-          location.reload();
+
+          self.$store.commit("user/updateUserLogined", false);
           self.$router.push("/login");
         })
         .catch((error) => {

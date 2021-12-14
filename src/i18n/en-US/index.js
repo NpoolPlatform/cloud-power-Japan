@@ -11,19 +11,22 @@ export default {
     Contact: "Contact",
     Signin: "Sign in",
   },
+
+  AccountNotify: {},
+
   Footer: {
     First: {
       Title: "Shoot for the stars with Procyon!",
       Content: "YOUR GLOBAL CONSTELLATION OF CRYPTOCURRENCIES",
     },
     Second: {
-      Title: "LINKS",
+      Title: "Links",
       Home: "Home",
       Products: "Products",
       Blog: "Blog",
     },
     Third: {
-      Title: "HELP",
+      Title: "Help",
       Faqs: "FAQ",
       Support: "Support",
       Legal: "Legal",
@@ -41,7 +44,7 @@ export default {
 
   Homepage: {
     Title: {
-      Title: "SHOOT FOR THE STARS WITH PROCYON!",
+      Title: "SHOOT FOR THE STARS WITH PROCYON",
       Subtitle: "Your global constellation of cryptocurrencies",
       Register: "Register",
     },
@@ -66,7 +69,7 @@ export default {
     Feature: {
       VCBacking: "MARKET LEADER",
       VCBackingContent:
-        "Our partners include top tier global VCs as well as the world's largest PoC mining pool. Our years of experience allow us to accurately identify market trends, conduct in-depth due diligence, and target upcoming superstar projects across multiple sectors in the industry, bringing them to our community of key opinion leaders and investors.",
+        "Our partners include top tier global VCs as well as the world's largest PoC mining pool. Through years of experience we have managed to accurately identify market trends, conduct in depth due diligence, and target upcoming superstar projects across multiple sectors in the industry that we bring to our exclusive community of key opinion leaders and investors.",
       TopTeam: "DREAM TEAM",
       TopTeamContent:
         "Procyon's founders have over 10 years of cryptocurrency market experience with a track record that includes investment projects with average ROI of over 100x. Our tech team has over 5 years of experience managing assets totalling over 160 million USD. Our Japan-based team provides exceptional, localized, and reliable customer service within 24 hours.",
@@ -90,7 +93,7 @@ export default {
         "Japan boasts the highest investment per capita in Asia. The endless possibilities of the",
       Content7: " Japanese market attract many global players",
       Content8:
-        ", however Japan suffers from a language and cultural barrier that insulates the country from global markets. This hurdle can result in missed opportunities and a lack of diversity in investment products. At Procyon,",
+        ", however Japan suffers from a language and cultural barrier that insulates the country from global markets. This hurdle can result in missed opportunities and a lack of diversity in investment products. At Procyon, ",
       Content9:
         "we lead our exclusive communities of investors to the global stage.",
     },
@@ -111,14 +114,14 @@ export default {
         "The output of first-batch mining is usually much greater in comparison to regular mining",
       Content7Comma: ". ",
       Content8:
-        "You can think of it like sharing a pizza. The more people share, the smaller each slice gets. To use Chia mining as a case study, the daily output during first-batch mining was equivalent to 1 year of mining at the rates just 2 months after mainnet launch.",
-      Content18: "",
-      Content14:
-        "There is a crypto project called Chia, and to use Chia mining as a case study, Chia's mining difficulty increased rapidly from the first two months after its mainnet launched. As a result,",
-      Content15:
-        "miners who participated in Chia's first batch mining received daily mining rewards equivalent to what would take 1 year of mining at the mining output levels just 2 months after mainnet launch",
-      Content15Comma: ". ",
-      Content16: "This is the power of first batch mining.",
+        "You can think of it like sharing a pizza. The more people share, the smaller each slice gets. To use Chia mining as a case study, ",
+      Content88:
+        "the daily output during first-batch mining was equivalent to 1 year of mining at the rates just 2 months after mainnet launch",
+      Content88Comma: ".",
+      Content14: "",
+      Content15: "",
+      Content15Comma: "",
+      Content16: "",
       Content9:
         "Token price is affected by dynamic market conditions. Typically the mainet launch happens simultaneously as ",
       Content10:
@@ -160,13 +163,14 @@ export default {
 
   Register: {
     Title: "User Registration",
-    Username: "Username / E-mail Address",
+    Username: "E-mail Address",
     UsernameInputwarning: "Please enter your correct email address",
     SendCode: "Send Code",
     EmailVerifyCode: "E-mail Verification Code",
     EmailVerifyCodeInpuWarning: "Please enter a verification code",
     Password: "Password",
-    PasswordInputWarning: "Please enter your password",
+    PasswordInputWarning:
+      "Please enter a legal password, which should be longer than 8 and less than 16 and contain numbers and letters",
     Confirm: "Confirm Password",
     ConfirmInputWarning1: "Please enter your confirm password",
     ConfirmInputWarning2: "password and confirm password not equal",
@@ -190,6 +194,7 @@ export default {
     ConfirmBtn: "Confirm",
     AcceptBtn: "Accept",
     CancelBtn: "Cancel",
+    AgreeWarning: 'please choose agree and then click "Register"',
   },
 
   Drawer: {
@@ -422,8 +427,9 @@ export default {
         WaitSend: "sending sms text message... ...",
         Check: "please check your phone message",
       },
-      SendTo: "code has been sent to",
-      Fail: "fail to send code",
+      Send1: "A verification code has been sent to ",
+      Send2: "",
+      Fail: "Fail to send code",
     },
 
     GaVerify: {
@@ -457,6 +463,7 @@ export default {
 
     ChangeUserInfo: {
       Success: "successfully update personal details",
+      Waiting: "Saving user details ... ...",
       Fail: "fail to update user info",
     },
 
@@ -490,6 +497,9 @@ export default {
     Forget: "Forgot password?",
     NoAccount: "No account? ",
     Register: "Register now.",
+    LoginUsername: "Username / Email",
+    UsernameInputwarning: "please enter your username or email address",
+    PasswordInputWarning: "please enter your password",
   },
 
   ForgetPassword: {
@@ -527,7 +537,8 @@ export default {
     A: "Support",
     B: "FAQ",
     C: "If you do not see your question below, please ",
-    Contact: "send us an email.",
+    Contact: "send us an email",
+    ContactComma: ". ",
     Contactt: "Or connect with Procyon on LINE",
     Header1: {
       Title: "THE PROCYON PLATFORM",
@@ -541,6 +552,7 @@ export default {
       Title: "PLATFORM FUNCTIONS AND TROUBLESHOOTING",
       Q1: "Does the platform include some sort of wallet function as well? Do I need to open an account?",
       A1: "Yes. All of your mining rewards will be deposited directly into your Procyon wallet, which is unique to you and automatically created when you register an account on our platform.",
+      A11: "",
       Q2: "How do I sell my mining rewards or convert them into other currencies?",
       A2: "Mining rewards will be distributed to your Procyon account's wallet, which you can then transfer to the wallet of the cryptocurrency exchange of your choice and freely trade or sell them however you wish.",
       Q3: "What happens if I have a Google Authenticator linked to my account, but I lose my phone?",

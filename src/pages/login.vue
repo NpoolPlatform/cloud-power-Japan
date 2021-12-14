@@ -27,7 +27,7 @@
               outlined
               bg-color="blue-grey-1"
               v-model="loginInput.username"
-              :label="$t('Register.Username')"
+              :label="$t('Login.LoginUsername')"
               lazy-rules
               :rules="usernameRule"
             ></q-input>
@@ -214,7 +214,7 @@ import { success, fail, waiting } from "../notify/notify";
 import VerifycodeInput from "src/components/VerifycodeInput.vue";
 import { useI18n } from "vue-i18n";
 import { useQuasar } from "quasar";
-import { sha256Password } from "src/utils/utils";
+import { parseUsername, sha256Password } from "src/utils/utils";
 import { throttle } from "quasar";
 import CountryCode from "src/components/CountryCode.vue";
 
@@ -267,11 +267,11 @@ export default defineComponent({
 
     const passRef = ref(null);
     const usernameRule = ref([
-      (val) => (val && val.length > 0) || t("Register.UsernameInputwarning"),
+      (val) => parseUsername(val) || t("Login.UsernameInputwarning"),
     ]);
 
     const passwordRule = ref([
-      (val) => (val && val.length > 0) || t("Register.PasswordInputWarning"),
+      (val) => (val && val.length > 0) || t("Login.PasswordInputWarning"),
     ]);
 
     const loginVerify = computed({

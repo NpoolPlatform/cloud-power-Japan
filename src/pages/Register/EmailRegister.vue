@@ -80,17 +80,27 @@
               :rules="invitationRule"
             ></q-input>
 
-            <q-checkbox v-model="agree"></q-checkbox>
-            <span class="text-style">
-              {{ $t("Register.Agree1") }}
-              <span href class="link" @click="showPolicy = true">{{
-                $t("Register.Policy")
-              }}</span>
-              {{ $t("Register.And") }}
-              <span href class="link" @click="showPolicy = true">{{
-                $t("Register.User")
-              }}</span>
-            </span>
+            <q-field ref="agreeRef" :model-value="agree" :rules="agreeRules">
+              <q-checkbox v-model="agree"></q-checkbox>
+              <span class="text-style">
+                {{ $t("Register.Agree1") }}
+                <span
+                  href
+                  class="link"
+                  @click="showPolicy = true"
+                  style="cursor: pointer"
+                  >{{ $t("Register.Policy") }}</span
+                >
+                {{ $t("Register.And") }}
+                <span
+                  href
+                  class="link"
+                  @click="showPolicy = true"
+                  style="cursor: pointer"
+                  >{{ $t("Register.User") }}</span
+                >
+              </span>
+            </q-field>
 
             <q-btn class="register-btn" @click="onRegister">{{
               $t("Register.Register")
@@ -341,6 +351,8 @@ export default defineComponent({
       invitationRule,
       verifyCode,
       showPolicy: ref(false),
+      agreeRef: ref(null),
+      agreeRules: ref([(val) => val || t("Register.AgreeWarning")]),
     };
   },
 
@@ -350,11 +362,7 @@ export default defineComponent({
 
   methods: {
     onRegister: function () {
-      if (!this.agree) {
-        this.showPolicy = true;
-        return;
-      }
-
+      this.agreeRef.validate();
       this.usernameRef.validate();
       this.passRef.validate();
       this.confirmPassRef.validate();
@@ -364,7 +372,8 @@ export default defineComponent({
         this.usernameRef.hasError ||
         this.passRef.hasError ||
         this.confirmPassRef.hasError ||
-        this.invitationRef.hasError
+        this.invitationRef.hasError ||
+        this.agreeRef.hasError
       ) {
         return;
       }

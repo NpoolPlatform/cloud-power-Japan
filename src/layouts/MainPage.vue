@@ -218,14 +218,16 @@
             <div class="content-items">
               <h4>{{ $t("Footer.Third.Title") }}</h4>
               <div class="item-links">
-                <router-link class="footer-link nav-link" :to="{ path: '/faq' }"
-                  >{{ $t("Footer.Third.Faqs") }} &
-                  {{ $t("Footer.Third.Support") }}</router-link
+                <router-link
+                  class="footer-link nav-link"
+                  :to="{ path: '/faq' }"
+                  >{{ $t("Footer.Third.Faqs") }}</router-link
                 >
                 <router-link
                   class="footer-link nav-link"
                   :to="{ path: '/faq' }"
-                ></router-link>
+                  >{{ $t("Footer.Third.Support") }}</router-link
+                >
                 <router-link
                   class="footer-link nav-link"
                   :to="{ path: '/legal' }"
@@ -362,6 +364,7 @@ export default defineComponent({
     bodyCloseSelected: function () {
       this.showList = false;
     },
+
     logout: function () {
       var self = this;
       var appSession = this.$q.cookies.get("AppSession");
@@ -374,7 +377,6 @@ export default defineComponent({
           self.$q.cookies.remove("UserID");
           self.loginVerify = false;
           self.logined = false;
-          location.reload();
           self.$router.push("/");
         })
         .catch((error) => {

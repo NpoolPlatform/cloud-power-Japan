@@ -218,7 +218,8 @@ export default defineComponent({
           this.q.cookies.remove("Session");
           self.verifyCode = "";
           self.phone = "";
-          location.reload();
+
+          self.$store.commit("user/updateUserLogined", false);
           self.$router.push("/login");
         })
         .catch((error) => {

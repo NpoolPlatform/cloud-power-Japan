@@ -153,7 +153,9 @@
           {{ $t("Homepage.What.Content6") }}
           <strong>{{ $t("Homepage.What.Content7") }}</strong
           >{{ $t("Homepage.What.Content7Comma")
-          }}{{ $t("Homepage.What.Content8") }}
+          }}{{ $t("Homepage.What.Content8")
+          }}<strong>{{ $t("Homepage.What.Content88") }}</strong
+          >{{ $t("Homepage.What.Content88Comma") }}
         </p>
 
         <p>

@@ -6,8 +6,8 @@
           <h1>{{ $t("Faq.A") }} &amp; {{ $t("Faq.B") }}</h1>
           <h2>
             {{ $t("Faq.C") }}
-            <a href="mailto:support@procyon.vip">{{ $t("Faq.Contact") }}</a>
-            {{ $t("Faq.Contactt")
+            <a href="mailto:support@procyon.vip">{{ $t("Faq.Contact") }}</a
+            >{{ $t("Faq.ContactComma") }} {{ $t("Faq.Contactt")
             }}<a href="https://lin.ee/g4JEj66"
               ><img
                 src="https://scdn.line-apps.com/n/line_add_friends/btn/ja.png"
@@ -33,6 +33,7 @@
         <h3>{{ $t("Faq.Header2.Q1") }}</h3>
 
         <p>{{ $t("Faq.Header2.A1") }}</p>
+        <p>{{ $t("Faq.Header2.A11") }}</p>
 
         <h3>{{ $t("Faq.Header2.Q2") }}</h3>
 
