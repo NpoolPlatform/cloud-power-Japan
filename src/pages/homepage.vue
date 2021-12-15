@@ -6,6 +6,7 @@
         <div class="title-2">{{ $t("Homepage.Title.Subtitle") }}</div>
         <div class="btn-list">
           <q-btn
+            v-if="!logined"
             @click="$router.push('/emailregister')"
             class="btn-register"
             style="width: 175px; text-transform: unset"
@@ -203,12 +204,15 @@ export default defineComponent({
     });
     const { locale } = useI18n({ useScope: "global" });
 
+    const logined = computed(() => $store.state.user.user.logined);
+
     return {
       goods,
       emitter: mitt(),
       locale,
       persistent: ref(false),
       show: ref(true),
+      logined,
     };
   },
 

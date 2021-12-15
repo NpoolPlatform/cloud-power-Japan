@@ -51,9 +51,6 @@
                 />
               </template>
             </q-input>
-            <div v-if="refreshRecaptcha">
-              <recaptcha-vue @callback="callback"></recaptcha-vue>
-            </div>
 
             <q-btn
               id="loginBtn"
@@ -122,9 +119,6 @@
                 />
               </template>
             </q-input>
-            <div v-if="refreshRecaptcha">
-              <recaptcha-vue @callback="callback"></recaptcha-vue>
-            </div>
 
             <q-btn
               id="loginBtn"
@@ -155,7 +149,7 @@
 
     <q-dialog v-model="gaDialog" persistent>
       <q-card>
-        <q-card-section>
+        <q-card-section style="margin-left: 10px">
           <span class="card-title text-black">Google Verify</span>
         </q-card-section>
         <q-card-section>
@@ -166,7 +160,7 @@
 
     <q-dialog v-model="emailDialog" persistent @hide="whenHide">
       <q-card style="width: 600px; height: auto; margin: 20px">
-        <q-card-section>
+        <q-card-section style="margin-left: 10px">
           <span class="card-title text-black">Email Verify</span>
         </q-card-section>
 
@@ -207,7 +201,6 @@
 
 <script>
 import { defineComponent, ref, reactive, computed, onMounted } from "vue";
-import RecaptchaVue from "src/components/Recaptcha.vue";
 import { useStore } from "vuex";
 import { api } from "src/boot/axios";
 import { success, fail, waiting } from "../notify/notify";
@@ -219,7 +212,7 @@ import { throttle } from "quasar";
 import CountryCode from "src/components/CountryCode.vue";
 
 export default defineComponent({
-  components: { RecaptchaVue, VerifycodeInput, CountryCode },
+  components: { VerifycodeInput, CountryCode },
   setup() {
     const { t, locale } = useI18n({ useScope: "global" });
     const q = useQuasar();
@@ -254,13 +247,31 @@ export default defineComponent({
       },
     });
 
+    const gResponse = ref("");
+
+    const initGrecaptcha = () => {
+      window.grecaptcha.ready(function () {
+        var self = this;
+
+        window.grecaptcha
+          .execute("6LclwaIdAAAAAKVQTwz8FYinU0rP43_m6EedDv2S", {
+            action: "login",
+          })
+          .then(function (token) {
+            gResponse.value = token;
+            console.log("token is", token);
+          });
+      });
+    };
+
     onMounted(() => {
       verifyCode.value = "";
       if (q.cookies.has("UserID") && q.cookies.has("AppSession")) {
         q.cookies.remove("UserID");
         q.cookies.remove("AppSession");
-        location.reload();
+        logined.value = false;
       }
+      initGrecaptcha();
     });
 
     const emailVerifyInput = reactive({
@@ -304,6 +315,8 @@ export default defineComponent({
       showPhone: ref(false),
       phone,
       logined,
+      gResponse,
+      initGrecaptcha,
     };
   },
 
@@ -327,7 +340,6 @@ export default defineComponent({
         password: "",
         response: "",
       },
-      refreshRecaptcha: true,
       activeInput: 0,
       captchas: [
         { num: "" },
@@ -449,9 +461,9 @@ export default defineComponent({
       }
 
       if (
-        this.loginInput.response === "" ||
-        this.loginInput.response === null ||
-        this.loginInput.response === undefined
+        this.gResponse === "" ||
+        this.gResponse === null ||
+        this.gResponse === undefined
       ) {
         fail(undefined, this.$t("Notify.Recaptcha.Fail"), "");
         return;
@@ -465,7 +477,7 @@ export default defineComponent({
         .post("/login-door/v1/login", {
           Username: self.loginInput.username,
           Password: password,
-          GoogleRecaptchaResponse: self.loginInput.response,
+          GoogleRecaptchaResponse: self.gResponse,
         })
         .then((resp) => {
           self.user = {
@@ -495,11 +507,8 @@ export default defineComponent({
           fail(notif, self.$t("Notify.Login.Fail"), error);
           self.loginInput.username = "";
           self.loginInput.password = "";
-          self.loginInput.response = "";
-          self.refreshRecaptcha = false;
-          self.$nextTick(() => {
-            self.refreshRecaptcha = true;
-          }, 500);
+          self.gResponse = "";
+          self.initGrecaptcha();
         });
     },
 
@@ -507,9 +516,9 @@ export default defineComponent({
       this.passRef.validate();
 
       if (
-        this.loginInput.response === "" ||
-        this.loginInput.response === null ||
-        this.loginInput.response === undefined
+        this.gResponse === "" ||
+        this.gResponse === null ||
+        this.gResponse === undefined
       ) {
         fail(undefined, this.$t("Notify.Recaptcha.Fail"), "");
         return;
@@ -523,7 +532,7 @@ export default defineComponent({
         .post("/login-door/v1/login", {
           Phone: self.phone,
           Password: password,
-          GoogleRecaptchaResponse: self.loginInput.response,
+          GoogleRecaptchaResponse: self.gResponse,
         })
         .then((resp) => {
           self.user = {
@@ -554,11 +563,8 @@ export default defineComponent({
           fail(notif, self.$t("Notify.Login.Fail"), error);
           self.phone = "";
           self.loginInput.password = "";
-          self.loginInput.response = "";
-          self.refreshRecaptcha = false;
-          self.$nextTick(() => {
-            self.refreshRecaptcha = true;
-          }, 500);
+          self.gResponse = "";
+          self.initGrecaptcha();
         });
     },
 
@@ -573,31 +579,15 @@ export default defineComponent({
         });
       } else {
         fail(undefined, "please inoput correct verify code", "login again");
-        self.loginInput.response = "";
+        self.gResponse = "";
         self.q.cookies.remove("UserID");
         self.q.cookies.remove("AppSession");
         self.q.cookies.remove("Session");
         self.phone = "";
         self.verifyCode = "";
         self.logined = false;
-        self.refreshRecaptcha = false;
-        self.$nextTick(() => {
-          self.refreshRecaptcha = true;
-        }, 500);
+        self.initGrecaptcha();
         self.gaDialog = false;
-      }
-    },
-
-    callback: function (resp) {
-      var self = this;
-      switch (resp) {
-        case "expired":
-          break;
-        case "error":
-          break;
-        default:
-          this.loginInput.response = resp;
-          break;
       }
     },
 
@@ -640,16 +630,13 @@ export default defineComponent({
             { num: "" },
             { num: "" },
           ];
-          self.loginInput.response = "";
+          self.gResponse = "";
           self.q.cookies.remove("UserID");
           self.q.cookies.remove("AppSession");
           self.q.cookies.remove("Session");
           self.phone = "";
           self.logined = false;
-          self.refreshRecaptcha = false;
-          self.$nextTick(() => {
-            self.refreshRecaptcha = true;
-          }, 500);
+          self.initGrecaptcha();
           self.emailDialog = false;
         });
     },

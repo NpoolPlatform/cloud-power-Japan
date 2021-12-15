@@ -39,6 +39,7 @@
             />
           </div>
           <q-btn
+            v-if="!logined"
             class="btn-register"
             style="width: 140px; margin-right: 10px; text-transform: unset"
             flat
