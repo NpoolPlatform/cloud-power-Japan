@@ -188,7 +188,7 @@ export default defineComponent({
           failCodeError(
             notif,
             error,
-            "",
+            self.$t("ForgetPassword.Fail"),
             self.$t("CodeFail.Fail1"),
             self.$t("CodeFail.Fail2")
           );

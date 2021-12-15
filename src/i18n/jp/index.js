@@ -164,6 +164,7 @@ export default {
     PhoneInputWarning: "電話番号を入力してください。",
     UsePhone: "電話番号でリセット",
     UseEmail: "Email アドレスでリセット",
+    Fail: "パスワードのリセットに失敗する",
   },
 
   Homepage: {

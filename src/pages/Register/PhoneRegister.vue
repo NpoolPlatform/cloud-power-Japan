@@ -412,7 +412,7 @@ export default defineComponent({
           failCodeError(
             undefined,
             error,
-            "",
+            self.$t("Register.Fail"),
             self.$t("CodeFail.Fail1"),
             self.$t("CodeFail.Fail2")
           );

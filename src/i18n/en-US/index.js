@@ -582,6 +582,7 @@ export default {
     PhoneInputWarning: "Please enter your phone number",
     UsePhone: "Use Phone Number",
     UseEmail: "Use Email Address",
+    Fail: "fail to reset password",
   },
 
   GoogleAuthentication: {
