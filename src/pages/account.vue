@@ -995,7 +995,6 @@ export default defineComponent({
   created: function () {
     var userid = this.q.cookies.get("UserID");
     if (userid === null || userid === undefined || userid === "") {
-      fail(undefined, this.$t("Notify.User.PleaseLogin"), "");
       this.$router.push("/login");
     }
 

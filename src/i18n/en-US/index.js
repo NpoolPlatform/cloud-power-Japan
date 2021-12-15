@@ -6,40 +6,40 @@ export default {
   },
   Header: {
     Home: "Home",
-    Blog: "BLOG",
-    Support: "SUPPORT & FAQ",
+    Blog: "Blog",
+    Support: "Support & FAQ",
     Contact: "Contact",
-    Signin: "Sign in",
+    Signin: "Sign In",
   },
 
   CodeFail: {
-    Fail1: "input code error",
-    Fail2: "your verify code is expired or wrong, please input again",
+    Fail1: "Input Code Error",
+    Fail2: "Verification code wrong or expired",
   },
 
   AccountNotify: {
     EnableEmail: {
-      VerifyCode: "please input your verify code",
-      Success: "successfully enable email address",
-      Fail: "fail to enable email address: ",
+      VerifyCode: "Please input your verification code",
+      Success: "Successful to enable email address",
+      Fail: "Fail to enable email address: ",
     },
     EnablePhone: {
-      Phone: "please input your phone number",
-      VerifyCode: "please input your verify code",
-      Success: "successfully enable phone number",
-      Fail: "fail to enable phone number: ",
+      Phone: "Please input your phone number",
+      VerifyCode: "Please input your verification code",
+      Success: "Successful to enable phone number",
+      Fail: "Fail to enable phone number: ",
     },
     UpdateEmail: {
-      VerifyCode: "please input your verify code",
-      Success: "successfully update user email address",
-      Fail: "fail to update email address: ",
+      VerifyCode: "Please input your veriverificationfy code",
+      Success: "Successful to update user email address",
+      Fail: "Fail to update email address: ",
     },
     UpdatePhone: {
-      OldPhone: "please input your old phone number",
-      Phone: "please input your phone number",
-      VerifyCode: "please input your verify code",
-      Success: "successfully update user phone",
-      Fail: "fail to update phone number: ",
+      OldPhone: "Please input your old phone number",
+      Phone: "Please input your phone number",
+      VerifyCode: "Please input your verification code",
+      Success: "Successful to update user phone",
+      Fail: "Fail to update phone number: ",
     },
   },
 
@@ -68,8 +68,8 @@ export default {
   },
 
   Invitation: {
-    Title: "INFLUENCER PROGRAM",
-    Wait: "Please wait... ...",
+    Title: "Influencer Program",
+    Wait: "Please wait ...",
   },
 
   Homepage: {
@@ -215,7 +215,7 @@ export default {
     Login: "Login",
     LoginTitle: "User Login",
     GooglrCodeInputWarning: "Please enter your google auth code",
-    VerifyCodeInput: "Please enter your verify code",
+    VerifyCodeInput: "Please enter your verification code",
     RegisterEmail: "Email Register",
     RegisterPhone: "Phone Register",
     PhoneInput: "Phone Number",
@@ -303,8 +303,8 @@ export default {
         Title: "Update Email",
         OldEmailInput: "Please enter your old email address",
         EmailWarning: "Please enter a correct email address",
-        VerifyCode: "Email Verify Code",
-        VerifyCodeWarning: "please enter a verify code",
+        VerifyCode: "Email verification code",
+        VerifyCodeWarning: "please enter a verification code",
         EmailInput: "Please enter your new email address",
         Btn: "Update Email",
       },
@@ -312,8 +312,8 @@ export default {
         Title: "Enable Email",
         EmailInput: "Email Address",
         EmailInputWarning: "Please enter a correct email address",
-        VerifyCode: "Email Verify Code",
-        VerifyCodeWarning: "please enter a verify code",
+        VerifyCode: "Email verification code",
+        VerifyCodeWarning: "please enter a verification code",
         Btn: "Enable Email",
       },
     },
@@ -322,8 +322,8 @@ export default {
         Title: "Update Phone",
         OldPhoneInput: "Please enter your old phone number",
         PhoneWarning: "Please enter a correct phone number",
-        VerifyCode: "Phone Verify Code",
-        VerifyCodeWarning: "please enter a verify code",
+        VerifyCode: "Phone verification code",
+        VerifyCodeWarning: "please enter a verification code",
         PhoneInput: "Please enter your new phone number",
         Btn: "Update Phone",
       },
@@ -331,8 +331,8 @@ export default {
         Title: "Enable Phone",
         PhoneInput: "Phone Number",
         PhoneInputWarning: "Please enter a correct phone number",
-        VerifyCode: "Phone Verify Code",
-        VerifyCodeWarning: "please enter a verify code",
+        VerifyCode: "Phone verification code",
+        VerifyCodeWarning: "please enter a verification code",
         Btn: "Enable Phone",
       },
     },
@@ -384,23 +384,23 @@ export default {
       GALogin: "Google Login Authentication",
       EmailLogin: "Email Login Authentication",
       Submit: "Submit Change",
-      HaveDoneGoogle: "you have finished google authentication!!!",
-      tooltip: "please do google authenticate verify or bind email first!",
-      tooltip2: "you are default to do email login authentication",
+      HaveDoneGoogle: "Successful to set google authentication",
+      tooltip: "Please do google authenticate or bind email",
+      tooltip2: "Login authenticated by email",
     },
     History: {
       Title: "RECENT LOGIN HISTORY",
       Date: "Date/Time",
       IP: "IP Address",
       Location: "Location",
-      Private: "private location",
+      Private: "Private Location",
     },
   },
 
   ReLogin: {
     Title: "Re-login",
     Content: "Change password successfully, please log in again",
-    Fail: "Please enter correct verify code",
+    Fail: "Please enter correct verification code",
   },
 
   ChangePassword: {
@@ -434,33 +434,33 @@ export default {
       PasswordLabel: "Password",
       ConfirmPassword: "Please confirm your password",
       ConfirmPasswordLabel: "Confirm Password",
-      EmailCodeLabel: "Email verify code",
-      EmailCodeInput: "please enter your email verify code",
-      SendCode: "send code",
+      EmailCodeLabel: "Email verification code",
+      EmailCodeInput: "Please enter your email verification code",
+      SendCode: "Send Code",
       GoogleAuthLabel: "Google authentication code",
-      GoogleAuthInput: "please enter your code in your google authenticator",
+      GoogleAuthInput: "Please enter your code in your google authenticator",
       Change: "Change",
-      HaveGoogle: "you need to do google authentication firstly!",
+      HaveGoogle: "Google authentication should be done firstly",
     },
   },
 
   GoogleVerify: {
     Content:
-      "You have choose to verify login by google authenticate. Please enter your verify code in your google authenticator.",
+      "You have choose to verify login by google authenticate. Please enter your verification code in your google authenticator.",
     PleaseWait: "Please wait for verify... ...",
-    Success: "successfully set user google verify",
-    Fail: "fail to set user google verify: ",
+    Success: "Successful to set user google verify",
+    Fail: "Fail to set user google verify: ",
   },
 
   Notify: {
     SendCode: {
       Email: {
-        WaitSend: "sending email... ...",
-        Check: "please check your email",
+        WaitSend: "Sending email... ...",
+        Check: "Please check your email",
       },
       Phone: {
-        WaitSend: "sending sms text message... ...",
-        Check: "please check your phone message",
+        WaitSend: "Sending sms message... ...",
+        Check: "Please check your phone message",
       },
       Send1: "A verification code has been sent to ",
       Send2: "",
@@ -468,38 +468,38 @@ export default {
     },
 
     GaVerify: {
-      CantNull: "verify code can't be null",
-      Success: "successfully verify google authentication",
-      Fail: "fail to verify google authentication",
-      FailToGetImg: "fail to get google authentication QR code image",
+      CantNull: "Verification code can't be blank",
+      Success: "Successful to verify google authentication",
+      Fail: "Fail to verify google authentication",
+      FailToGetImg: "Fail to get google authentication QR code image",
     },
 
     Goods: {
-      Fail: "fail to get goods info",
+      Fail: "Fail to get goods info",
     },
 
     User: {
-      Fail: "fail to get user info",
-      PleaseLogin: "please login first",
+      Fail: "Fail to get user info",
+      PleaseLogin: "Please login firstly",
     },
 
     ChangePassword: {
-      Fail1: "password and confirm password not same",
-      Fail2: "fail to change password:",
-      Success: "successfully change your pasword",
-      Waiting: "sending verify code ... ...",
+      Fail1: "Password and confirm password not same",
+      Fail2: "Fail to change password:",
+      Success: "Successful to change your pasword",
+      Waiting: "Sending verification code... ...",
     },
 
     SubmitLoginVerify: {
       Success:
         "submit user login verfy with google authentication successfully",
-      Fail: "fail to submit user login verify: ",
+      Fail: "Fail to submit user login verify: ",
     },
 
     ChangeUserInfo: {
-      Success: "successfully update personal details",
+      Success: "Successful to update personal details",
       Waiting: "Saving user details ... ...",
-      Fail: "fail to update user info",
+      Fail: "Fail to update user info",
     },
 
     Login: {
@@ -508,14 +508,14 @@ export default {
       Fail: "Fail to login",
       EmailInputVerify1: "An E-mail just sent to ",
       EmailInputVerify2: "",
-      EmailInputVerify3: "please enter the verify code we sent to your email.",
+      EmailInputVerify3: "Please enter the verification code we sent to your email.",
     },
 
     ForgetPassword: {
       Waiting: "Password set successfully, waiting login... ...",
       Success: "Set new password successfully",
-      Fail1: "password and confirm password is not same",
-      Fail2: "fail to set new password: ",
+      Fail1: "Password and confirm password is not same",
+      Fail2: "Fail to set new password: ",
     },
 
     Logout: {
@@ -524,7 +524,7 @@ export default {
     },
 
     Recaptcha: {
-      Fail: "you must finish google recaptcha robot check firstly!",
+      Fail: "You must finish google recaptcha robot check firstly!",
     },
   },
 
@@ -533,8 +533,8 @@ export default {
     NoAccount: "No account? ",
     Register: "Register now.",
     LoginUsername: "Username / Email",
-    UsernameInputwarning: "please enter your username or email address",
-    PasswordInputWarning: "please enter your password",
+    UsernameInputwarning: "Please enter your username or email address",
+    PasswordInputWarning: "Please enter your password",
   },
 
   ForgetPassword: {
@@ -549,10 +549,10 @@ export default {
       "Please enter a legal password, which should be longer than 8 and less than 16 and contain numbers and letters",
     Confirm: "Confirm New Password",
     ConfirmInputWarning1: "Please enter your confirm password",
-    ConfirmInputWarning2: "password and confirm password not equal",
+    ConfirmInputWarning2: "Password and confirm password not equal",
     ConfirmBtn: "Confirm",
     PhoneInput: "Phone number bind to your account",
-    PhoneInputWarning: "please enter your phone number",
+    PhoneInputWarning: "Please enter your phone number",
     UsePhone: "Use Phone",
     UseEmail: "Use Email",
   },
@@ -562,7 +562,7 @@ export default {
     Content1:
       "Please scan the QR code above by openning your google authenticator software and scan it. And then bind your device in google authenticate softeware",
     Content2:
-      "After scan and bind, you need to click the 'next step' button to enter the verify code shows in your google authenticator software to finish veirfy your google authentication",
+      "After scan and bind, you need to click the 'next step' button to enter the verification code shows in your google authenticator software to finish veirfy your google authentication",
     NextStepBtn: "Next Step",
     CloseBtn: "Close",
     Hint: 'If you fail to scan the QR code above, please enter your "Authenticator" app and choose "Enter a setup key" at the right bottom and then set your "Account name" like "(Procyon:example{\'@\'}example.com)" and copy the google secret above and click "Add"',
