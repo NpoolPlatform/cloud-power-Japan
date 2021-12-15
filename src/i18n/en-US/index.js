@@ -6,40 +6,40 @@ export default {
   },
   Header: {
     Home: "Home",
-    Blog: "BLOG",
-    Support: "SUPPORT & FAQ",
+    Blog: "Blog",
+    Support: "Support & FAQ",
     Contact: "Contact",
-    Signin: "Sign in",
+    Signin: "Sign In",
   },
 
   CodeFail: {
-    Fail1: "input code error",
-    Fail2: "your verify code is expired or wrong, please input again",
+    Fail1: "Input Code Error",
+    Fail2: "Verification code wrong or expired",
   },
 
   AccountNotify: {
     EnableEmail: {
-      VerifyCode: "please input your verify code",
-      Success: "successfully enable email address",
-      Fail: "fail to enable email address: ",
+      VerifyCode: "Please input your verification code",
+      Success: "Successful to enable email address",
+      Fail: "Fail to enable email address: ",
     },
     EnablePhone: {
-      Phone: "please input your phone number",
-      VerifyCode: "please input your verify code",
-      Success: "successfully enable phone number",
-      Fail: "fail to enable phone number: ",
+      Phone: "Please input your phone number",
+      VerifyCode: "Please input your verification code",
+      Success: "Successful to enable phone number",
+      Fail: "Fail to enable phone number: ",
     },
     UpdateEmail: {
-      VerifyCode: "please input your verify code",
-      Success: "successfully update user email address",
-      Fail: "fail to update email address: ",
+      VerifyCode: "Please input your veriverificationfy code",
+      Success: "Successful to update user email address",
+      Fail: "Fail to update email address: ",
     },
     UpdatePhone: {
-      OldPhone: "please input your old phone number",
-      Phone: "please input your phone number",
-      VerifyCode: "please input your verify code",
-      Success: "successfully update user phone",
-      Fail: "fail to update phone number: ",
+      OldPhone: "Please input your old phone number",
+      Phone: "Please input your phone number",
+      VerifyCode: "Please input your verification code",
+      Success: "Successful to update user phone",
+      Fail: "Fail to update phone number: ",
     },
   },
 
@@ -68,8 +68,8 @@ export default {
   },
 
   Invitation: {
-    Title: "INFLUENCER PROGRAM",
-    Wait: "Please wait... ...",
+    Title: "Influencer Program",
+    Wait: "Please wait ...",
   },
 
   Homepage: {
