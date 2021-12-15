@@ -340,25 +340,25 @@ export default {
     Phone: {
       Update: {
         Title: "Update Phone",
-        OldPhoneInput: "Please enter your old phone number",
+        OldPhoneInput: "Enter Old Phone Number",
         PhoneWarning: "Please enter a correct phone number",
         VerifyCode: "Phone verification code",
         VerifyCodeWarning: "please enter a verification code",
-        PhoneInput: "Please enter your new phone number",
+        PhoneInput: "Enter New Phone Number",
         Btn: "Update Phone",
       },
       Enable: {
-        Title: "Enable Phone",
+        Title: "Mobile Authentication",
         PhoneInput: "Phone Number",
         PhoneInputWarning: "Please enter a correct phone number",
         VerifyCode: "Phone verification code",
         VerifyCodeWarning: "please enter a verification code",
-        Btn: "Enable Phone",
+        Btn: "Register Phone Number",
       },
     },
     Title: "Account",
     PersonalDetails: {
-      Title: "PERSONAL DETAILS",
+      Title: "Personal Details (for KYC process)",
       Title2: "ADDRESS",
       Username: "Username",
       Gender: "Gender",
@@ -400,11 +400,12 @@ export default {
       NotVerify: "Not verified",
       Enable: "Enabled",
       NotEnable: "Not Enabled",
+      GoogleVerify: "Google Authentication",
       LoginVerification: "Login Verification",
       LoginVerificationContent:
         "Enalbe verification methods to add verification when login",
       GALogin: "Google Login Authentication",
-      EmailLogin: "Email Login Authentication",
+      EmailLogin: "E-mail Login Verification",
       Submit: "Submit Change",
       HaveDoneGoogle: "Successful to set google authentication",
       tooltip: "Please do google authenticate or bind email",
@@ -412,7 +413,7 @@ export default {
     },
     History: {
       Title: "RECENT LOGIN HISTORY",
-      Date: "Date/Time",
+      Date: "Date",
       IP: "IP Address",
       Location: "Location",
       Private: "Private Location",
@@ -508,7 +509,7 @@ export default {
     ChangePassword: {
       Fail1: "Password and confirm password not same",
       Fail2: "Fail to change password:",
-      Success: "Successful to change your pasword",
+      Success: "Your password has been reset",
       Waiting: "Sending verification code... ...",
     },
 
@@ -586,9 +587,15 @@ export default {
   GoogleAuthentication: {
     Title1: "Google Authenticate",
     Content1:
-      "Please scan the QR code above by openning your google authenticator software and scan it. And then bind your device in google authenticate softeware",
+      "Please can the QR code above through the Google Authenticator app on your smartphone.",
     Content2:
-      "After scan and bind, you need to click the 'next step' button to enter the verification code shows in your google authenticator software to finish veirfy your google authentication",
+      'After scanning and connecting the app to your Procyon account, click the "next step" button below on this page to enter the verification code shown in your Google Authenticator app to finish verifying your Google Authenticator app.',
+    Content3:
+      "If you are unable to scan the QR code above on your Google Authenticator app, please follow the steps below:",
+    L1: "1. Open your Google Authenticator app on your smartphone",
+    L2: '2. Choose "Enter a setup key" at the bottom right of the screen ',
+    L3: '3. Set the "Account Name" as, for example, [Procyon: example@gmail.com] ',
+    L4: '4. Copy the Google Secret above and click "Add."',
     NextStepBtn: "Next Step",
     CloseBtn: "Close",
     Hint: 'If you fail to scan the QR code above, please enter your "Authenticator" app and choose "Enter a setup key" at the right bottom and then set your "Account name" like "(Procyon:example{\'@\'}example.com)" and copy the google secret above and click "Add"',

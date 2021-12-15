@@ -105,7 +105,7 @@
       </div>
 
       <div class="title">{{ $t("Mining.Column3.Title") }}</div>
-      <div>
+      <div v-if="showTable">
         <div>
           <q-table
             flat
@@ -130,7 +130,7 @@
 import { useQuasar } from "quasar";
 import { useStore } from "vuex";
 import { useRouter } from "vue-router";
-import { ref, onBeforeMount, onMounted, computed } from "vue";
+import { ref, onBeforeMount, onMounted, computed, watch } from "vue";
 import { api } from "src/boot/axios";
 import { fail } from "src/notify/notify";
 import { timestampToDate } from "src/utils/utils";
@@ -139,7 +139,7 @@ import { useI18n } from "vue-i18n";
 const q = useQuasar();
 const $store = useStore();
 const $router = useRouter();
-const { t } = useI18n({ useScope: "global" });
+const { t, locale } = useI18n({ useScope: "global" });
 
 const spacemeshImg = require("/src/assets/product-spacemesh.svg");
 const plusImg = require("/src/assets/icon-plus.svg");
@@ -149,6 +149,9 @@ const visible = ref(true);
 const totalAmount = ref("");
 const totalCapacity = ref("");
 
+const showTable = ref(true);
+const lang = computed(() => locale.value);
+
 const userid = q.cookies.get("UserID");
 const appid = q.cookies.get("AppID");
 
@@ -157,6 +160,12 @@ const orders = computed({
   set: (val) => {
     $store.commit("orders/updateOrders", val);
   },
+});
+
+watch(locale, (n, o) => {
+  if (n !== o) {
+    location.reload();
+  }
 });
 
 const getOrderGood = (order) => {
@@ -201,7 +210,6 @@ const getOrdersDetail = () => {
       resp.data.Details.forEach((order) => {
         getOrderGood(order);
       });
-      console.log("my order is", myOrders.value);
       return;
     })
     .catch((error) => {

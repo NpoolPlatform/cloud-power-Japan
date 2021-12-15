@@ -440,17 +440,15 @@
             Google Secret: {{ userSecret }}
           </q-card-section>
 
-          <q-card-section class="text-red">
-            ({{ $t("GoogleAuthentication.Hint") }})
+          <q-card-section class="text-black">
+            <p>{{ $t("GoogleAuthentication.Content1") }}</p>
+            <p>{{ $t("GoogleAuthentication.Content2") }}</p>
+            <p>{{ $t("GoogleAuthentication.Content3") }}</p>
+            <p>{{ $t("GoogleAuthentication.L1") }}</p>
+            <p>{{ $t("GoogleAuthentication.L2") }}</p>
+            <p>{{ $t("GoogleAuthentication.L3") }}</p>
+            <p>{{ $t("GoogleAuthentication.L4") }}</p>
           </q-card-section>
-
-          <q-card-section class="text-black">{{
-            $t("GoogleAuthentication.Content1")
-          }}</q-card-section>
-
-          <q-card-section class="text-black">{{
-            $t("GoogleAuthentication.Content2")
-          }}</q-card-section>
 
           <q-card-actions align="right" class="text-primary">
             <q-btn
@@ -663,7 +661,14 @@
 
 <script>
 import { api } from "src/boot/axios";
-import { defineComponent, computed, ref, reactive, onMounted } from "vue";
+import {
+  defineComponent,
+  computed,
+  ref,
+  reactive,
+  onMounted,
+  watch,
+} from "vue";
 import { useStore } from "vuex";
 import { success, fail, waiting } from "../notify/notify";
 import { throttle, useQuasar } from "quasar";
@@ -691,7 +696,13 @@ export default defineComponent({
       },
     });
 
-    const { t } = useI18n({ useScope: "global" });
+    const { t, locale } = useI18n({ useScope: "global" });
+
+    watch(locale, (n, o) => {
+      if (n !== o) {
+        location.reload();
+      }
+    });
 
     const getUserBasicInfo = () => {
       var failToGetUserinfo = t("Notify.User.Fail");

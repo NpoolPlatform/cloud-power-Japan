@@ -117,7 +117,7 @@ export default defineComponent({
         if (
           n === "/wallet" ||
           n === "/account" ||
-          n === "/order" ||
+          n === "/dashboard" ||
           n === "/invitation"
         ) {
           this.open = true;
@@ -152,9 +152,13 @@ export default defineComponent({
       }
     }
 
+    console.log("before if", this.$store.state.verify.hasInvitationCode);
+    console.log("cookies is", this.q.cookies);
+
     if (this.q.cookies.has("UserID") && this.q.cookies.has("AppSession")) {
       this.loginVerify = true;
       this.getUserInvitationCode();
+      console.log(this.$store.state.verify.hasInvitationCode);
     }
   },
 

@@ -256,6 +256,26 @@ export default defineComponent({
       },
     });
 
+    const getUserInvitationCode = () => {
+      var userid = q.cookies.get("UserID");
+      var appid = q.cookies.get("AppID");
+      api
+        .post(
+          "/cloud-hashing-inspire/v1/get/user/invitation/code/by/app/user",
+          {
+            AppID: appid,
+            UserID: userid,
+          }
+        )
+        .then((resp) => {
+          if (resp.data.Info === null) {
+            $store.commit("verify/setHasInvitationCode", false);
+            return;
+          }
+          $store.commit("verify/setHasInvitationCode", true);
+        });
+    };
+
     const gResponse = ref("");
 
     const initGrecaptcha = () => {
@@ -326,6 +346,7 @@ export default defineComponent({
       logined,
       gResponse,
       initGrecaptcha,
+      getUserInvitationCode,
     };
   },
 
@@ -589,6 +610,7 @@ export default defineComponent({
         this.loginVerify = true;
         this.logined = true;
         this.gaDialog = false;
+        this.getUserInvitationCode();
 
         this.$router.push({
           path: "/",
@@ -627,6 +649,7 @@ export default defineComponent({
           self.logined = true;
           self.visible = false;
           self.emailDialog = false;
+          self.getUserInvitationCode();
 
           self.$router.push({
             path: "/",

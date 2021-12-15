@@ -1,5 +1,5 @@
 <template>
-  <div class="content">
+  <div class="content" style="margin: 0 72px 100px 72px">
     <div class="title">{{ $t("Invitation.Title") }}</div>
 
     <q-tree
