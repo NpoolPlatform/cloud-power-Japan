@@ -308,10 +308,16 @@ a:not([class]):hover {
   margin: 16px;
 }
 
+.q-card__section--vert {
+  margin: 8px 16px;
+  padding: 0;
+}
+
 .product-price span {
   color: #e1eeef;
   font-weight: 700;
   font-size: 200%;
+  margin-right: 4px;
 }
 
 .product-line {

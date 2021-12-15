@@ -264,30 +264,8 @@ export default defineComponent({
     const $store = useStore();
     const q = useQuasar();
 
-    const hasInvitationCode = ref(false);
-
-    const getUserInvitationCode = () => {
-      var userid = q.cookies.get("UserID");
-      var appid = q.cookies.get("AppID");
-      api
-        .post(
-          "/cloud-hashing-inspire/v1/get/user/invitation/code/by/app/user",
-          {
-            AppID: appid,
-            UserID: userid,
-          }
-        )
-        .then((resp) => {
-          if (resp.data.Info === null) {
-            hasInvitationCode.value = false;
-            return;
-          }
-          hasInvitationCode.value = true;
-        });
-    };
-
-    onMounted(() => {
-      getUserInvitationCode();
+    const hasInvitationCode = computed({
+      get: () => $store.state.verify.hasInvitationCode,
     });
 
     const openSide = computed({

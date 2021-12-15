@@ -12,6 +12,11 @@ export default {
     Signin: "ログイン",
   },
 
+  CodeFail: {
+    Fail1: "入力コードエラー",
+    Fail2: "ベリファイコードの有効期限が切れているか、間違っています。",
+  },
+
   Warning: {
     Warning: "お知らせ",
     Content: "いつもProcyonをご利用いただき誠にありがとうございます。",
@@ -124,6 +129,7 @@ export default {
     ConfirmBtn: "確認",
     AcceptBtn: "確認",
     CancelBtn: "キャンセル",
+    AgreeWarning: '同意の上、"アカウント登録"をクリックしてください。',
     Fail: "アカウント登録の失敗",
     Success: "アカウントの登録が完了しました!",
   },

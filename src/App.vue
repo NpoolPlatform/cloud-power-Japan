@@ -33,6 +33,29 @@ export default defineComponent({
       },
     });
 
+    const getUserInvitationCode = () => {
+      var userid = q.cookies.get("UserID");
+      var appid = q.cookies.get("AppID");
+      api
+        .post(
+          "/cloud-hashing-inspire/v1/get/user/invitation/code/by/app/user",
+          {
+            AppID: appid,
+            UserID: userid,
+          }
+        )
+        .then((resp) => {
+          console.log("api resp");
+          if (resp.data.Info === null) {
+            console.log("invitation code is null");
+            $store.commit("verify/setHasInvitationCode", false);
+            return;
+          }
+          console.log("invitation code not null");
+          $store.commit("verify/setHasInvitationCode", true);
+        });
+    };
+
     const open = computed({
       get: () => $store.state.router.router.open,
       set: (val) => {
@@ -50,6 +73,21 @@ export default defineComponent({
         $store.commit("verify/updateLoginVerify", val);
       },
     });
+
+    const verifyCode = computed({
+      get: () => $store.state.verify.verifyCode,
+      set: (val) => {
+        $store.commit("verify/updateVerifyCode", val);
+      },
+    });
+
+    const oldVerifyCode = computed({
+      get: () => $store.state.verify.oldVerifyCode,
+      set: (val) => {
+        $store.commit("verify/updateOldVerifyCode", val);
+      },
+    });
+
     return {
       q,
       user,
@@ -57,6 +95,9 @@ export default defineComponent({
       open,
       locale,
       loginVerify,
+      oldVerifyCode,
+      verifyCode,
+      getUserInvitationCode,
     };
   },
 
@@ -74,6 +115,11 @@ export default defineComponent({
           this.open = true;
         } else {
           this.open = false;
+        }
+
+        if (n !== o) {
+          this.verifyCode = "";
+          this.oldVerifyCode = "";
         }
       },
     },
@@ -101,6 +147,8 @@ export default defineComponent({
     if (this.q.cookies.has("UserID")) {
       this.loginVerify = true;
     }
+
+    this.getUserInvitationCode();
   },
 
   mounted: function () {

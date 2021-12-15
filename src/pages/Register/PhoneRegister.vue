@@ -25,7 +25,7 @@
               class="register-input"
               outlined
               bg-color="blue-grey-1"
-              v-model="registerInput.password"
+              v-model="password"
               :label="$t('Register.Password')"
               :type="isPwd ? 'password' : 'text'"
               lazy-rules
@@ -45,7 +45,7 @@
               class="register-input"
               outlined
               bg-color="blue-grey-1"
-              v-model="registerInput.confirmPassword"
+              v-model="confirmPassword"
               :label="$t('Register.Confirm')"
               :type="isCPwd ? 'password' : 'text'"
               lazy-rules
@@ -266,11 +266,18 @@
 </template>
 
 <script>
-import { defineComponent, ref, reactive, computed, onMounted } from "vue";
+import {
+  defineComponent,
+  ref,
+  reactive,
+  computed,
+  onMounted,
+  watch,
+} from "vue";
 import { api } from "boot/axios";
 import { success, fail, waiting } from "../../notify/notify";
 import { useI18n } from "vue-i18n";
-import { parsePassword, sha256Password } from "src/utils/utils";
+import { failCodeError, parsePassword, sha256Password } from "src/utils/utils";
 import { throttle } from "quasar";
 import SendCodeInput from "src/components/SendCodeInput.vue";
 import CountryCode from "../../components/CountryCode.vue";
@@ -302,12 +309,11 @@ export default defineComponent({
 
     const password = ref("");
     const confirmPassword = ref("");
+
     const invitationCode = ref("");
     const registerInput = reactive({
       phone: phone.value,
       verifyCode,
-      password,
-      confirmPassword,
       invitationCode,
     });
 
@@ -328,6 +334,14 @@ export default defineComponent({
       (val) =>
         (val && val == password.value) || t("Register.ConfirmInputWarning2"),
     ]);
+
+    watch([password, confirmPassword], ([p, cp], [prep, precp]) => {
+      if (p === cp) {
+        passRef.value.validate();
+        confirmPassRef.value.validate();
+      }
+    });
+
     const agree = ref(false);
 
     return {
@@ -346,6 +360,8 @@ export default defineComponent({
       showPolicy: ref(false),
       agreeRef: ref(null),
       agreeRules: ref([(val) => val || t("Register.AgreeWarning")]),
+      password,
+      confirmPassword,
     };
   },
 
@@ -369,29 +385,33 @@ export default defineComponent({
         return;
       }
 
-      var thiz = this;
-      var failToRegister = this.$t("Register.Fail");
+      var self = this;
       var successToRegister = this.$t("Register.Success");
-      var password = sha256Password(this.registerInput.password);
+      var password = sha256Password(this.password);
 
       api
         .post("/cloud-hashing-apis/v1/signup", {
           Password: password,
-          PhoneNumber: thiz.phone,
-          VerificationCode: thiz.registerInput.verifyCode,
-          InvitationCode: thiz.registerInput.invitationCode,
+          PhoneNumber: self.phone,
+          VerificationCode: self.registerInput.verifyCode,
+          InvitationCode: self.registerInput.invitationCode,
         })
         .then(function (resp) {
-          thiz.verifyCode = "";
+          self.verifyCode = "";
           success(undefined, successToRegister);
-          thiz.phone = "";
+          self.phone = "";
 
-          thiz.$router.push({
+          self.$router.push({
             path: "/login",
           });
         })
         .catch(function (error) {
-          fail(undefined, failToRegister, error);
+          failCodeError(
+            undefined,
+            error,
+            self.$t("CodeFail.Fail1"),
+            self.$t("CodeFail.Fail2")
+          );
         });
     },
   },

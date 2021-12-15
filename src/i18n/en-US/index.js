@@ -12,6 +12,11 @@ export default {
     Signin: "Sign in",
   },
 
+  CodeFail: {
+    Fail1: "input code error",
+    Fail2: "your verify code is expired or wrong, please input again",
+  },
+
   AccountNotify: {
     EnableEmail: {
       VerifyCode: "please input your verify code",
