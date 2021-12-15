@@ -1,5 +1,5 @@
 <template>
-  <div class="main-body">
+  <div class="main-body" :style="fontStyle">
     <router-view />
   </div>
 </template>
@@ -18,12 +18,22 @@ export default defineComponent({
   setup() {
     const q = useQuasar();
     const $store = useStore();
+
+    const fontStyle = computed({
+      get: () => $store.state.style.fontStyle,
+      set: (val) => {
+        $store.commit("style/updateFontStyle", val);
+      },
+    });
+
     const { locale } = useI18n({ useScope: "global" });
     var lang = q.lang.getLocale();
     if (lang.indexOf("en") > -1) {
       locale.value = "en-US";
+      fontStyle.value = "font-family: Barlow";
     } else {
       locale.value = "ja-JP";
+      fontStyle.value = "font-family: 'Noto Sans JP'";
     }
 
     const user = computed({
@@ -45,13 +55,10 @@ export default defineComponent({
           }
         )
         .then((resp) => {
-          console.log("api resp");
           if (resp.data.Info === null) {
-            console.log("invitation code is null");
             $store.commit("verify/setHasInvitationCode", false);
             return;
           }
-          console.log("invitation code not null");
           $store.commit("verify/setHasInvitationCode", true);
         });
     };
@@ -98,6 +105,7 @@ export default defineComponent({
       oldVerifyCode,
       verifyCode,
       getUserInvitationCode,
+      fontStyle,
     };
   },
 
@@ -144,11 +152,10 @@ export default defineComponent({
       }
     }
 
-    if (this.q.cookies.has("UserID")) {
+    if (this.q.cookies.has("UserID") && this.q.cookies.has("AppSession")) {
       this.loginVerify = true;
+      this.getUserInvitationCode();
     }
-
-    this.getUserInvitationCode();
   },
 
   mounted: function () {
@@ -203,7 +210,7 @@ export default defineComponent({
 </script>
 
 <style scoped>
-@import url('https://fonts.googleapis.com/css2?family=Barlow:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Noto+Sans+JP:wght@100;300;400;500;700;900&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Barlow:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Noto+Sans+JP:wght@100;300;400;500;700;900&display=swap");
 .main-body {
   background-image: url("./assets/procyon-logo-opacity0.025.svg");
   background-position: 90% -360px;
@@ -214,6 +221,5 @@ export default defineComponent({
   right: 0;
   height: auto;
   width: 100%;
-  font-family: 'Noto Sans JP';
 }
 </style>

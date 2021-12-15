@@ -31,7 +31,7 @@
               push
               glossy
               toggle-color="orange-9"
-              @click="changeLang"
+              @click="changeLang(locale)"
               :options="[
                 { label: $t('Footer.Forth.En'), value: 'en-US' },
                 { label: $t('Footer.Forth.Jp'), value: 'ja-JP' },
@@ -59,6 +59,7 @@
               class="avator"
               :src="userImg"
               @click="showList = !showList"
+              style="cursor: pointer"
             ></q-img>
 
             <div class="list-box" v-if="showList">
@@ -67,29 +68,16 @@
                   clickable
                   v-close-popup
                   @click="
-                    $router.push('/account');
+                    $router.push('/dashboard');
                     showList = !showList;
                   "
                 >
                   <q-item-section>
-                    <q-item-label>{{ $t("Drawer.Account") }}</q-item-label>
+                    <q-item-label>{{ $t("Drawer.Dashboard") }}</q-item-label>
                   </q-item-section>
                 </q-item>
 
-                <q-item
-                  clickable
-                  v-close-popup
-                  @click="
-                    $router.push('/order');
-                    showList = !showList;
-                  "
-                >
-                  <q-item-section>
-                    <q-item-label>{{ $t("Drawer.Order") }}</q-item-label>
-                  </q-item-section>
-                </q-item>
-
-                <q-item
+                <!-- <q-item
                   clickable
                   v-close-popup
                   @click="
@@ -100,7 +88,7 @@
                   <q-item-section>
                     <q-item-label>{{ $t("Drawer.Wallet") }}</q-item-label>
                   </q-item-section>
-                </q-item>
+                </q-item> -->
 
                 <q-item
                   v-if="hasInvitationCode"
@@ -113,6 +101,19 @@
                 >
                   <q-item-section>
                     <q-item-label>{{ $t("Drawer.Invitation") }}</q-item-label>
+                  </q-item-section>
+                </q-item>
+
+                <q-item
+                  clickable
+                  v-close-popup
+                  @click="
+                    $router.push('/account');
+                    showList = !showList;
+                  "
+                >
+                  <q-item-section>
+                    <q-item-label>{{ $t("Drawer.Account") }}</q-item-label>
                   </q-item-section>
                 </q-item>
 
@@ -131,7 +132,6 @@
     <q-drawer
       style="
         background: linear-gradient(to bottom right, #1f293a 0, #23292b 100%);
-        box-shadow: 0px 0px 60px 15px #051319;
         z-index: -1;
       "
       class="drawer-style text-white"
@@ -139,24 +139,20 @@
       v-model="openSide"
     >
       <div class="drawer-items">
-        <router-link href class="drawer-item" :to="{ path: '/account' }">
+        <router-link href class="drawer-item" :to="{ path: '/dashboard' }">
           <div class="row">
-            <q-img :src="accountImg" class="drawer-item-img"></q-img>
-            <p class="drawer-item-span">{{ $t("Drawer.Account") }}</p>
+            <q-img fit="none" :src="miningImg" class="drawer-item-img"></q-img>
+            <span class="drawer-item-span">{{ $t("Drawer.Dashboard") }}</span>
           </div>
         </router-link>
-        <router-link href class="drawer-item" :to="{ path: '/order' }">
+
+        <!-- <router-link href class="drawer-item" :to="{ path: '/wallet' }">
           <div class="row">
-            <q-img :src="miningImg" class="drawer-item-img"></q-img>
-            <span class="drawer-item-span">{{ $t("Drawer.Order") }}</span>
-          </div>
-        </router-link>
-        <router-link href class="drawer-item" :to="{ path: '/wallet' }">
-          <div class="row">
-            <q-img :src="walletImg" class="drawer-item-img"></q-img>
+            <q-img fit="none" :src="walletImg" class="drawer-item-img"></q-img>
             <span class="drawer-item-span">{{ $t("Drawer.Wallet") }}</span>
           </div>
-        </router-link>
+        </router-link> -->
+
         <router-link
           href
           class="drawer-item"
@@ -164,8 +160,20 @@
           v-if="hasInvitationCode"
         >
           <div class="row">
-            <q-img :src="affiliatesImg" class="drawer-item-img"></q-img>
+            <q-img
+              fit="none"
+              :src="affiliatesImg"
+              class="drawer-item-img object-style"
+              style="object-fit: none !important"
+            ></q-img>
             <span class="drawer-item-span">{{ $t("Drawer.Invitation") }}</span>
+          </div>
+        </router-link>
+
+        <router-link href class="drawer-item" :to="{ path: '/account' }">
+          <div class="row">
+            <q-img fit="none" :src="accountImg" class="drawer-item-img"></q-img>
+            <p class="drawer-item-span">{{ $t("Drawer.Account") }}</p>
           </div>
         </router-link>
       </div>
@@ -195,7 +203,7 @@
                   push
                   glossy
                   toggle-color="orange-9"
-                  @click="changeLang"
+                  @click="changeLang(locale)"
                   :options="[
                     { label: $t('Footer.Forth.En'), value: 'en-US' },
                     { label: $t('Footer.Forth.Jp'), value: 'ja-JP' },
@@ -269,6 +277,13 @@ export default defineComponent({
       get: () => $store.state.verify.hasInvitationCode,
     });
 
+    const fontStyle = computed({
+      get: () => $store.state.style.fontStyle,
+      set: (val) => {
+        $store.commit("style/updateFontStyle", val);
+      },
+    });
+
     const openSide = computed({
       get: () => $store.state.router.router.open,
       set: (val) => {
@@ -283,14 +298,12 @@ export default defineComponent({
       },
     });
 
-    const changeLang = () => {
-      // var msg = t("Loading.Msg");
-      // q.loading.show({
-      //   message: msg,
-      //   html: true,
-      // });
-      // location.reload();
-      // q.loading.hide();
+    const changeLang = (locale) => {
+      if (locale === "en-US") {
+        fontStyle.value = "font-family: Barlow";
+      } else {
+        fontStyle.value = "font-family: 'Noto Sans JP'";
+      }
       refresh.value = true;
     };
 
@@ -315,6 +328,7 @@ export default defineComponent({
       changeLang,
       loginVerify,
       hasInvitationCode,
+      fontStyle,
     };
   },
 
@@ -406,6 +420,10 @@ export default defineComponent({
 .q-field__suffix {
   font-size: 18px;
   color: white;
+}
+
+.object-style {
+  object-fit: none !important;
 }
 </style>
 

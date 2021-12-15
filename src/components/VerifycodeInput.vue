@@ -1,6 +1,8 @@
 <template>
   <div>
-    <div class="google-content">{{ $t("GoogleVerify.Content") }}</div>
+    <div class="google-content" style="color: #e1eeef">
+      {{ $t("GoogleVerify.Content") }}
+    </div>
     <div class="row-center captcha_input_wrapper">
       <input
         v-for="(item, index) in captchas"

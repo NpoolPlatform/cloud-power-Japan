@@ -38,6 +38,10 @@ export function updateCountry(state, val) {
   state.user.info.UserBasicInfo.Country = val;
 }
 
+export function updatePostalCode(state, val) {
+  state.user.info.UserBasicInfo.PostalCode = val;
+}
+
 export function updateGA(state, val) {
   state.user.info.UserAppInfo.UserApplicationInfo.GAVerify = val;
 }

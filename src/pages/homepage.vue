@@ -99,7 +99,8 @@
           <p>
             {{ $t("Homepage.Why.Content6")
             }}<strong>{{ $t("Homepage.Why.Content7") }}</strong
-            >{{ $t("Homepage.Why.Content8") }}{{ $t("Homepage.Why.Content9") }}
+            >{{ $t("Homepage.Why.Content8")
+            }}<strong>{{ $t("Homepage.Why.Content9") }}</strong>
           </p>
         </div>
       </div>
@@ -113,7 +114,9 @@
             <div class="feature-item-title">
               {{ $t("Homepage.Feature.VCBacking") }}
             </div>
-            <p>{{ $t("Homepage.Feature.VCBackingContent") }}</p>
+            <p style="text-align: left">
+              {{ $t("Homepage.Feature.VCBackingContent") }}
+            </p>
           </div>
 
           <div class="feature-content-item">
@@ -121,7 +124,9 @@
             <div class="feature-item-title">
               {{ $t("Homepage.Feature.TopTeam") }}
             </div>
-            <p>{{ $t("Homepage.Feature.TopTeamContent") }}</p>
+            <p style="text-align: left">
+              {{ $t("Homepage.Feature.TopTeamContent") }}
+            </p>
           </div>
 
           <div class="feature-content-item">
@@ -129,7 +134,9 @@
             <div class="feature-item-title">
               {{ $t("Homepage.Feature.Technology") }}
             </div>
-            <p>{{ $t("Homepage.Feature.TechnologyContent") }}</p>
+            <p style="text-align: left">
+              {{ $t("Homepage.Feature.TechnologyContent") }}
+            </p>
           </div>
         </div>
       </div>

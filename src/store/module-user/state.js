@@ -24,6 +24,7 @@ export default function () {
           LastName: "",
           StreetAddress1: "",
           StreetAddress2: "",
+          PostalCode: "",
         },
         UserAppInfo: {
           UserApplicationInfo: {

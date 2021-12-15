@@ -7,13 +7,17 @@
           <h2>
             {{ $t("Faq.C") }}
             <a href="mailto:support@procyon.vip">{{ $t("Faq.Contact") }}</a
-            >{{ $t("Faq.ContactComma") }} {{ $t("Faq.Contactt")
+            >{{ $t("Faq.ContactComma") }}
+          </h2>
+          <h2>
+            {{ $t("Faq.Contactt")
             }}<a href="https://lin.ee/g4JEj66"
               ><img
                 src="https://scdn.line-apps.com/n/line_add_friends/btn/ja.png"
                 alt="友だち追加"
                 height="36"
                 border="0"
+                style="margin-left: 8px; vertical-align: text-top"
             /></a>
           </h2>
         </div>

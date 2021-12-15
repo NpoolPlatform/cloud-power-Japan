@@ -98,7 +98,7 @@
                   @click="showPolicy = true"
                   style="cursor: pointer"
                   >{{ $t("Register.User") }}</span
-                >
+                >{{ $t("Register.Behind") }}
               </span>
             </q-field>
 
@@ -117,16 +117,16 @@
       </q-card>
 
       <q-dialog v-model="showPolicy">
-        <q-card>
+        <q-card style="color: #e1eeef; background-color: #23292b">
           <q-card-section>
-            <div class="text-h6 text-black" style="margin-left: 10px">
+            <div class="text-h6" style="margin-left: 10px">
               {{ $t("Legal.Title2") }}
             </div>
           </q-card-section>
 
           <q-separator />
 
-          <q-card-section class="text-black" style="margin: 10px 50px">
+          <q-card-section style="margin: 10px 50px">
             <p>{{ $t("Legal.P1") }}</p>
             <h5>{{ $t("Legal.H1") }}</h5>
             <p>{{ $t("Legal.P2") }}</p>
@@ -337,6 +337,9 @@ export default defineComponent({
 
     const passwordRule = ref([
       (val) => parsePassword(val) || t("Register.PasswordInputWarning"),
+      (val) =>
+        (val && val === confirmPassword.value) ||
+        t("Register.ConfirmInputWarning2"),
     ]);
 
     const confirmPassRule = ref([
@@ -420,6 +423,7 @@ export default defineComponent({
           failCodeError(
             undefined,
             error,
+            "",
             self.$t("CodeFail.Fail1"),
             self.$t("CodeFail.Fail2")
           );

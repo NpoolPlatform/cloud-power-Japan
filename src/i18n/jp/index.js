@@ -54,7 +54,7 @@ export default {
   },
 
   Drawer: {
-    Order: "注文履歴",
+    Dashboard: "DASHBOARD",
     Wallet: "ウォレット",
     Account: "アカウント",
     Logout: "ログアウト",
@@ -64,7 +64,7 @@ export default {
   AccountNotify: {
     EnableEmail: {
       VerifyCode: "お客様の認証コードを入力してください。",
-      Success: "を正常に有効にする電子メールアドレス",
+      Success: "を正常に有効にするEmail アドレス",
       Fail: "メールアドレスを有効にするのに失敗しました。",
     },
     EnablePhone: {
@@ -97,32 +97,33 @@ export default {
   },
 
   Register: {
-    Title: "ユーザー登録",
-    Username: "メールアドレス",
+    Title: "アカウント登録",
+    Username: "Email アドレス",
     UsernameInputwarning: "正しいEmailアドレスを記入ください",
     SendCode: "コード送信",
     EmailVerifyCode: "Email アドレスの認証コード",
-    EmailVerifyCodeInpuWarning: "認証コードを記入ください",
+    EmailVerifyCodeInpuWarning: "認証コードが違います",
     Password: "パスワード",
     PasswordInputWarning:
-      "合法的なパスワードを入力してください。パスワードは8以上16以下の長さで、数字と文字を含んでいなければなりません",
-    Confirm: "パスワードの確認",
+      "パスワードは8以上16以下の長さで、数字と文字を含んでいなければなりません。",
+    Confirm: "パスワードを再入力",
     ConfirmInputWarning1: "パスワードを確認してください",
     ConfirmInputWarning2: "パスワードと確認用パスワードが一致しない",
     InvitationCode: "招待コード",
-    Agree1: "を読み、同意しました",
-    Policy: " プライバシー・ポリシー",
-    And: " そして",
+    Agree1: "",
+    Policy: "プライバシー・ポリシー",
+    And: "そして",
     User: "ユーザー同意書",
+    Behind: "を読み、同意しました。",
     Register: "アカウント登録",
     Have: "既にアカウントをお持ちの方?",
-    Click: "ここをクリックしてサインインしてください。",
+    Click: "ここをクリックしサインインしてください。",
     Login: "ログイン",
     LoginTitle: "ユーザーログイン",
     GooglrCodeInputWarning: "あなたのGoogle認証コードを入力してください",
-    VerifyCodeInput: "認証コードを入力してください。",
-    RegisterEmail: "メールボックスの登録",
-    RegisterPhone: "モバイル登録",
+    VerifyCodeInput: "認証コードを入力",
+    RegisterEmail: "メールアドレスで登録",
+    RegisterPhone: "電話番号で登録",
     PhoneInput: "電話番号",
     PhoneInputWarning: "電話番号は空ではありません。",
     InvitationWarning: "招待コードが必要です。",
@@ -141,11 +142,14 @@ export default {
     LoginUsername: "ユーザー名 / メールアドレス",
     UsernameInputwarning: "ユーザー名またはメールアドレスを入力してください",
     PasswordInputWarning: "パスワードを入力してください。",
+    PhoneLogin: "電話番号でログイン",
+    EmailLogin: "メールでログイン",
+    EmailVerifyTitle: "メール認証",
   },
 
   ForgetPassword: {
-    Title: "パスワードを忘れた場合",
-    Username: "Username / ",
+    Title: "パスワードをリセット",
+    Username: "Email アドレス",
     UsernameInputwarning: "正しいEmailアドレスを記入ください",
     SendCode: "コードを送信",
     EmailVerifyCode: "Email アドレスの認証コード",
@@ -158,8 +162,8 @@ export default {
     ConfirmBtn: "確認",
     PhoneInput: "アカウントに登録されている電話番号",
     PhoneInputWarning: "電話番号を入力してください。",
-    UsePhone: "ユーズドフォン",
-    UseEmail: "メールを使う",
+    UsePhone: "電話番号でリセット",
+    UseEmail: "Email アドレスでリセット",
   },
 
   Homepage: {
@@ -251,15 +255,16 @@ export default {
 
   Mining: {
     Column1: {
-      Title: "合計",
-      Total: "合計金額",
+      Title: "収益合計",
+      Total: "収益合計",
+      Yesterday: "昨業績",
+      Current: "現在残高",
     },
 
     Column2: {
       Title: "MINING DASHBOARD",
-      Earning: "合計: ",
-      Discount: "ディスカウント: ",
-      Deduction: "控除について：",
+      Earning: "収益 ",
+      Last: "過去24時間 ",
       Capacity: "容量: ",
       DailyOutput: "毎日の出力（30日平均）",
       TechnicalServiceFee: "技術サービス料:",
@@ -270,6 +275,24 @@ export default {
       Export: "日別出力(CSV)のエクスポート",
       Purchase: "購入容量",
     },
+
+    Column3: {
+      Title: "注文履歴",
+      Date: "日付",
+      Product: "製品",
+      Amount: "量",
+      Price: "価格",
+      Discount: "割引",
+      Techfee: "技術料",
+      Period: "採掘期間",
+      Total: "合計",
+    },
+  },
+
+  Gender: {
+    Male: "男性",
+    Female: "女性",
+    Other: "その他",
   },
 
   Wallet: {
@@ -317,7 +340,7 @@ export default {
         EmailWarning: "正しいEメールアドレスを入力してください。",
         VerifyCode: "メールでのコード確認",
         VerifyCodeWarning: "検証コードを入力してください。",
-        EmailInput: "新しい電子メールアドレスを入力してください",
+        EmailInput: "新しいEmail アドレスを入力してください",
         Btn: "メールの更新",
       },
       Enable: {
@@ -351,6 +374,7 @@ export default {
     Title: "アカウント情報",
     PersonalDetails: {
       Title: "個人情報",
+      Title2: "アドレス",
       Username: "ユーザー名",
       Gender: "性別",
       FirstName: "名前",
@@ -360,6 +384,7 @@ export default {
       City: "シティ",
       Province: "州・県",
       Country: "国名",
+      PostalCode: "郵便番号",
       Save: "変更の保存",
     },
     SecuritySetting: {
@@ -422,12 +447,11 @@ export default {
     OldPassword: "旧パスワード",
     OldPasswordWarning: "旧パスワードを入力してください。",
     Password: "新しいパスワード",
-    PasswordInputWarning:
-      "合法的なパスワードを入力してください。パスワードは8以上16以下の長さで、数字と文字を含んでいなければなりません。",
+    PasswordInputWarning: "パスワードが違います。。",
     ConfirmPassword: "パスワードの確認",
     ConfirmPasswordInputWarning: "確認用パスワードを入力してください。",
     Email: {
-      EmailInput: "電子メールアドレス",
+      EmailInput: "Email アドレス",
       EmailInputWarning: "Eメールアドレスを入力してください。",
     },
     Phone: {
@@ -440,7 +464,7 @@ export default {
   Dialog: {
     ChangePassword: {
       EmailLabel: "Email アドレス",
-      EmailInput: "電子メールアドレスを入力してください。",
+      EmailInput: "Email アドレスを入力してください。",
       EmailCodeLabel: "メール認証コード",
       EmailCodeInput: "あなたのEメール認証コードを入力してください。",
       SendCode: "送信コード",
@@ -518,9 +542,10 @@ export default {
       Wait: "ログインを待つ... ...",
       Success: "ログイン成功",
       Fail: "ログインに失敗する",
-      EmailInputVerify1: "",
-      EmailInputVerify2: "に送ったばかりのメール",
-      EmailInputVerify3: "メールで送られてきた認証コードを入力してください。",
+      EmailInputVerify1: "認証コードが、",
+      EmailInputVerify2: "",
+      EmailInputVerify3:
+        "へ送信されました。認証コードのご確認をお願い申し上げます。",
     },
 
     ForgetPassword: {
@@ -536,7 +561,7 @@ export default {
     },
 
     Recaptcha: {
-      Fail: "グーグルマンチェックを先に済ませる必要があります!",
+      Fail: "「私はロボットではありません」をクリックください。",
     },
   },
 
@@ -606,7 +631,7 @@ export default {
       A9: "2012年からは、Coinbase傘下のVC部門であるCoinbase Venturesが設立され、2021年3月からは、取引高では米国最大、世界第3位の取引所とされています。",
       A10: "また、2020年6月12日、日本のモバイルゲームおよびベンチャーキャピタル大手の株式会社gumiは、ブロックチェーンに特化した子会社であるgumi Cryptos Capitalを通じて、Spacemeshの親会社Unruly Technologies Ltd.とのパートナーシップを発表し、日本での市場参入を支援するという前代未聞の発表を行いました。",
       Q4: "Spacemeshのネットワークはいつ正式にスタートしますか？",
-      A11: "Spacemeshからの公式な発表によると、Spacemeshのメインネットでのローンチは、2022年1月〜4月を予定していますが、具体的な時期はまだ決まっていません。Spacemeshメインネットでのローンチに関する最新情報は、進捗があり次第、当社Procyonのユーザー皆様にお知らせします。",
+      A11: "メインネットの開始（マイニングの開始）はテストネット次第となります。テストネットの最後のバージョンが、そのままメインネットに移行します。それまではSpacemeshネットワークにおいてのバグやセキュリティ、信頼性が確保できているかをテストを通して確認し続ける必要があります。バグが起これば、再度テストネットのバージョンをアップデートして、また1からテストという具合に、どのテストネットのバージョンが最後のテストネットのバージョンとなり、メインネットに移行するかは誰にも分かりません。例えば、アプリでバグが起きたら、開発側が原因を調べ、バグを修正し、バージョンアップさせます。ユーザーはその後、再度ダウンロードする必要があります。そのようなプロセスと似ています。ですので、結論から言うと、時期を詳細に確定させることは誰にもできません。テストネットのネットワーク具合次第ですというのが答えとなります。このプロセスはどのマイニングでも同じですので、それを経由して初めてメインネットが開始できます。現状としては出てくるバグを改善し、バージョンアップを繰り返していますので、タイムスケジュールとしてはおそらく1月後半から4月後半というアバウトな答え方しかできず、それも前後する可能性はあることは事前に理解しておいて下さいませ。ただ、あと1ヶ月ほどすれば、もう少し詳しいタイムラインは見えてくるかと思います。マイニング報酬に関しては、メインネットが開始し、マイニングが始まれば次の日には着金します。おそらく、上場に関してはメインネット開始から1〜2週間以内という予測です。上場すれば、マイニングできたSMHを上場先に送金すれば利益確定していただけます。",
       Q5: "いつからSpacemeshのマイニング報酬をもらえますか？",
       A12: "Spacemeshマイニングの初バッチでTBを購入された方は、Spacemeshのメインネットワークが開始された日から報酬を受け取ることができます。",
       Q6: "Spacemeshはどの取引所に上場されますか？",
@@ -727,7 +752,7 @@ export default {
     ppp3: "2. ユーザーが提出した登録書類について、ユーザーは：（1）合法、真実、正確、詳細な個人資料を提供する；（2）内容に変更がある場合、適時に登録書類を更新する。ユーザーが真実、正確かつ完全でない情報を提供した場合、当社は、当社の判断に基づき、お客様との取引の全部もしくは一部を停止し、または登録を抹消することがあります。これにより生じた損害については、当社は一切責任を負わないものとします。",
 
     he1: "ユーザーの権利",
-    pa1: "1. 利用者のユーザー名、パスワードと安全性:（1）ユーザーはProcyonの登録について選択する権利があり、Procyon登録ユーザーになる場合、自分で口座を作ることができます。ユーザー名の命名と使用は関連法律法規を遵守し、ネットワークコンプライアンスに適合しなければなりません。口座にはいかなる侮辱、脅威、猥褻、罵倒など他人の合法的権益を侵害する文字を含むことはできません。（2）ユーザーが登録に成功すれば、Procyonの登録ユーザーとなり、アカウント（携帯番号またはメールアドレス）とパスワードを取得し、口座とパスワードでシステムに登録した後に発生したすべての活動とイベントに対して責任を負い、口座を使用時言語、行為などの直接または間接による法的責任を負う。（3）ユーザーはProcyonのアカウントとパスワード、ショートメッセージの検証コード、Googleの検証コードを適切に保管する義務があり、ユーザー名とパスワード、Google二段階認証の安全に対して全責任を負う。ユーザーの原因でユーザー名やパスワード、Google二段階認証が漏れた場合の法的結果は、ユーザー本人が責任を負うものとし、ユーザー自身がこれらの情報を漏らしたことによる財産損失についてProcyonは責任を負いません。（4）パスワードをなくした場合、電子メールで送信されたリンクを登録してパスワードをリセットすることができます。ユーザーが口座を不正に使用したり、他のセキュリティホールがあることを発見したら、直ちにProcyonに知らせるべきです。",
+    pa1: "1. 利用者のユーザー名、パスワードと安全性：（1）ユーザーはProcyonの登録について選択する権利があり、Procyon登録ユーザーになる場合、自分で口座を作ることができます。ユーザー名の命名と使用は関連法律法規を遵守し、ネットワークコンプライアンスに適合しなければなりません。口座にはいかなる侮辱、脅威、猥褻、罵倒など他人の合法的権益を侵害する文字を含むことはできません。（2）ユーザーが登録に成功すれば、Procyonの登録ユーザーとなり、アカウント（携帯番号またはメールアドレス）とパスワードを取得し、口座とパスワードでシステムに登録した後に発生したすべての活動とイベントに対して責任を負い、口座を使用時言語、行為などの直接または間接による法的責任を負う。（3）ユーザーはProcyonのアカウントとパスワード、ショートメッセージの検証コード、Googleの検証コードを適切に保管する義務があり、ユーザー名とパスワード、Google二段階認証の安全に対して全責任を負う。ユーザーの原因でユーザー名やパスワード、Google二段階認証が漏れた場合の法的結果は、ユーザー本人が責任を負うものとし、ユーザー自身がこれらの情報を漏らしたことによる財産損失についてProcyonは責任を負いません。（4）パスワードをなくした場合、電子メールで送信されたリンクを登録してパスワードをリセットすることができます。ユーザーが口座を不正に使用したり、他のセキュリティホールがあることを発見したら、直ちにProcyonに知らせるべきです。",
     pa2: "2. Procyonの承諾：法律規程により、またはユーザーの事前許可なしに、Procyonはいかなる第三者にユーザーのパスワード、名前、携帯番号などの非公開情報を開示しません。",
     pa3: "3. ユーザーはProcyonが提供した各オンライン、オフライン活動に参加する権利があります。",
     pa4: "4. ユーザーはProcyonのウェブサイトの規定に基づいて、Procyonが提供するその他の各種サービスを利用する権利があります。",

@@ -10,6 +10,7 @@ const routes = [
       { path: "wallet", component: () => import("pages/wallet.vue") },
       { path: "account", component: () => import("pages/account.vue") },
       { path: "invitation", component: () => import("pages/invitation.vue") },
+      { path: "dashboard", component: () => import("pages/dashboard.vue") },
       {
         path: "forgetpassword",
         component: () => import("pages/forgetpassword/index.vue"),

@@ -7,6 +7,7 @@ import goods from "./module-goods";
 import orders from "./module-order";
 import lang from "./module-lang";
 import verify from "./module-verify";
+import style from "./module-style";
 
 /*
  * If not building with SSR mode, you can
@@ -26,6 +27,7 @@ export default store(function (/* { ssrContext } */) {
       orders,
       lang,
       verify,
+      style,
     },
 
     // enable strict mode (adds overhead!)

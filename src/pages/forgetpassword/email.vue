@@ -40,11 +40,7 @@
               :label="$t('ForgetPassword.Password')"
               :type="isPwd ? 'password' : 'text'"
               lazy-rules
-              :rules="[
-                (val) =>
-                  parsePassword(val) ||
-                  $t('ForgetPassword.PasswordInputWarning'),
-              ]"
+              :rules="passwordRule"
               ref="passwordRef"
             >
               <template v-slot:append>
@@ -136,6 +132,13 @@ export default defineComponent({
     const passwordRef = ref(null);
     const confirmPasswordRef = ref(null);
 
+    const passwordRule = ref([
+      (val) => parsePassword(val) || t("Register.PasswordInputWarning"),
+      (val) =>
+        (val && val === confirmPassword.value) ||
+        t("Register.ConfirmInputWarning2"),
+    ]);
+
     const confirmPassRule = ref([
       (val) => parsePassword(val) || t("Register.ConfirmInputWarning1"),
       (val) =>
@@ -160,6 +163,7 @@ export default defineComponent({
       parseEmail,
       password,
       confirmPassword,
+      passwordRule,
     };
   },
 
@@ -209,6 +213,7 @@ export default defineComponent({
           failCodeError(
             notif,
             error,
+            "",
             self.$t("CodeFail.Fail1"),
             self.$t("CodeFail.Fail2")
           );

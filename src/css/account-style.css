@@ -68,7 +68,8 @@
 
 .setting-box {
   width: 90%;
-  height: 250px;
+  height: auto;
+  min-height: 265px;
 }
 
 .dialog-box {
@@ -126,7 +127,7 @@
 .detail-column {
   display: flex;
   justify-content: space-between;
-  align-items: flex-end;
+  align-items: flex-start;
   margin: 20px;
 }
 
@@ -154,7 +155,7 @@
 
 .setting-column {
   display: flex;
-  justify-content: space-between;
+  justify-content: left;
   width: 100%;
 }
 
@@ -187,10 +188,7 @@
 }
 
 .setting-btn-position {
-  position: absolute;
-  bottom: 15px;
   width: 100%;
-  left: 0px;
   text-align: center;
 }
 
@@ -225,6 +223,7 @@
 .verify-img {
   width: 24px;
   height: 24px;
+  vertical-align: top;
 }
 
 .verify-content {

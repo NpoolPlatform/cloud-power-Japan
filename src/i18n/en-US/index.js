@@ -209,17 +209,18 @@ export default {
     Policy: " Privacy Policy",
     And: " and",
     User: " User Agreements",
-    Register: "Register",
+    Behind: "",
+    Register: "REGISTER",
     Have: "Already have an account?",
     Click: "Click here to sign in.",
     Login: "Login",
     LoginTitle: "User Login",
     GooglrCodeInputWarning: "Please enter your google auth code",
     VerifyCodeInput: "Please enter your verification code",
-    RegisterEmail: "Email Register",
-    RegisterPhone: "Phone Register",
+    RegisterEmail: "Email Registration",
+    RegisterPhone: "Phone Number Registration",
     PhoneInput: "Phone Number",
-    PhoneInputWarning: "phone number cannot be null",
+    PhoneInputWarning: "phone number cannot be blank",
     InvitationWarning: "Invitation code is must",
     ConfirmBtn: "Confirm",
     AcceptBtn: "Accept",
@@ -230,7 +231,7 @@ export default {
   },
 
   Drawer: {
-    Order: "ORDER",
+    Dashboard: "DASHBOARD",
     Wallet: "WALLET",
     Account: "ACCOUNT",
     Logout: "LOGOUT",
@@ -239,16 +240,17 @@ export default {
 
   Mining: {
     Column1: {
-      Title: "Total",
-      Total: "TOTAL Amount",
+      Title: "Total EARNINIGS",
+      Total: "TOTAL EARNINGS",
+      Yesterday: "YESTERDAT'S EARNINGS",
+      Current: "CURRENT BALANCE",
     },
 
     Column2: {
       Title: "MINING DASHBOARD",
-      Earning: "Total: ",
-      Discount: "Discount: ",
-      Deduction: "Deduction: ",
+      Earning: "Earnings: ",
       Capacity: "Capacity: ",
+      Last: "Last 24 hours: ",
       DailyOutput: "Daily Output (30 day avg.)",
       TechnicalServiceFee: "Technical Service Fee:",
       NetDailyOutput: "Net daily output (30 day avg.):",
@@ -257,6 +259,18 @@ export default {
       NetworkDailyOutput: "Network Daily Ouput:",
       Export: "Export Daily Output(CSV)",
       Purchase: "Purchase Capacity",
+    },
+
+    Column3: {
+      Title: "ORDER HISTORY",
+      Date: "Date",
+      Product: "Product",
+      Amount: "Amount",
+      Price: "Price",
+      Discount: "Discount",
+      Techfee: "Tech Fee",
+      Period: "Mining Period",
+      Total: "Total",
     },
   },
 
@@ -294,6 +308,12 @@ export default {
       subtitle3: "WHERE CAN I GET A SPACEMESH WALLER?",
       sub3: "Spacemesh will	listed on big exchanges such as Coinbase and Binance. Be sure to use a Spacemesh wallet address to transfer your funds. Using an incorrect address will result in a loss of your SMH!",
     },
+  },
+
+  Gender: {
+    Male: "Male",
+    Female: "Female",
+    Other: "Other",
   },
 
   Account: {
@@ -338,7 +358,8 @@ export default {
     },
     Title: "Account",
     PersonalDetails: {
-      Title: "Personal Details",
+      Title: "PERSONAL DETAILS",
+      Title2: "ADDRESS",
       Username: "Username",
       Gender: "Gender",
       FirstName: "First Name",
@@ -348,6 +369,7 @@ export default {
       City: "City",
       Province: "Province / Prefecture",
       Country: "Country",
+      PostalCode: "Postal Code",
       Save: "Save Changes",
     },
     SecuritySetting: {
@@ -374,7 +396,7 @@ export default {
       IDVerification: "ID Verification",
       IDVerificationContent: "Upload a photo ID to verify your identity.",
       IDVerificationBtn: "Verify ID",
-      Verify: " is verified",
+      Verify: " Verified",
       NotVerify: "Not verified",
       Enable: "Enabled",
       NotEnable: "Not Enabled",
@@ -508,7 +530,8 @@ export default {
       Fail: "Fail to login",
       EmailInputVerify1: "An E-mail just sent to ",
       EmailInputVerify2: "",
-      EmailInputVerify3: "Please enter the verification code we sent to your email.",
+      EmailInputVerify3:
+        "Please enter the verification code we sent to your email.",
     },
 
     ForgetPassword: {
@@ -535,10 +558,13 @@ export default {
     LoginUsername: "Username / Email",
     UsernameInputwarning: "Please enter your username or email address",
     PasswordInputWarning: "Please enter your password",
+    PhoneLogin: "Phone Login",
+    EmailLogin: "Email Login",
+    EmailVerifyTitle: "Email Verification",
   },
 
   ForgetPassword: {
-    Title: "Forgot Password",
+    Title: "Reset Password",
     Username: "Email Address",
     UsernameInputwarning: "Please enter your correct email address",
     SendCode: "Send Code",
@@ -553,8 +579,8 @@ export default {
     ConfirmBtn: "Confirm",
     PhoneInput: "Phone number bind to your account",
     PhoneInputWarning: "Please enter your phone number",
-    UsePhone: "Use Phone",
-    UseEmail: "Use Email",
+    UsePhone: "Use Phone Number",
+    UseEmail: "Use Email Address",
   },
 
   GoogleAuthentication: {
@@ -622,7 +648,7 @@ export default {
       A9: "Since 2012, Coinbase Ventures, a VC arm under Coinbase, and as of March 2021 is considered the largest exchange in the U.S by trading volume and 3rd largest worldwide.",
       A10: "Furthermore, in an unprecedented announcement on June 12th, 2020, Japanese mobile game and venture capital giant gumi Inc., through its blockchain-focused subsidiary gumi Cryptos Capital, unveiled their partnership with Spacemesh’s parent company, Unruly Technologies Ltd., to assist with market entry in Japan.",
       Q4: "When will the Spacemesh network officially launch?",
-      A11: "At the moment, the Spacemesh mainnet launch is scheduled for early 2022, but no specific date has been decided as of yet. We will notify all registered users of any updates regarding the Spacemesh mainnet launch as soon as new information becomes available.",
+      A11: 'The Spacemesh mainnet launch (the start of mining) will depend on the testnet. The last version of the testnet will go directly to the mainnet. Until then, constant testing is needed to make sure that the Spacemesh network is bug-free, secure, and reliable before it officially launches. If a bug in the system occurs, the testnet version will be updated again and testing will start again. For example, if a bug occurs in an application, the developer will investigate the cause, fix the bug, and upgrade the version. The user will then have to download the latest version. Spacemesh\'s testnet follows a very similar process. Due to this, no one can give an exact date of when the mainnet will launch, not even Spacemesh official. The answer to the question "When will the mainnet launch?" is that it depends on the network conditions of the testnet. This process is the same for all mining; the mainnet can start only after going through such rigorous testing and updating. As for the schedule, at the moment we can only give you an approximate answer of late January to late April, but please understand in advance that it may vary due to the reasons outlined above. As for mining rewards, once the mainnet starts and mining begins, rewards will be distributed the next day. Additionally, the listing of SMH on exchanges is expected to occur within a week or two of the mainnet launch. Once it is listed on exchanges, you can send the SMH that you have mined to the listed exchange of your choice to secure profits.',
       Q5: "When will I start receiving Spacemesh mining rewards?",
       A12: "If you purchased TB from the exclusive first mining batch, you will begin receiving rewards the day the Spacemesh main network launches.",
       Q6: "On which exchanges will Spacemesh be listed?",
@@ -750,7 +776,7 @@ export default {
     pa4: "4. Users are entitled to enjoy other services provided by Procyon according to the regulations on the website of Procyon.",
 
     he2: "User's obligations",
-    pa5: "1. Users of the website may not endanger state security, divulge state secrets, infringe upon the lawful rights and interests of the collective and citizens of the state, or make, reproduce or disseminate the following information: (1) incitement to resist or undermine the implementation of the constitution, laws and administrative regulations; (2) inciting ethnic hatred, ethnic discrimination and undermining ethnic unity;(3) fabricating or distorting facts, spreading rumors and disturbing public order; (4) promoting feudal superstition, obscenity, pornography, gambling, violence, murder, terror or abetting crimes; (5) publicly insulting others or fabricating facts to slander others, or carrying out other malicious attacks; (6) other violations of the constitution, laws and administrative rules and regulations;(7) engaging in commercial advertising.",
+    pa5: "1. Users of the website may not endanger state security, divulge state secrets, infringe upon the lawful rights and interests of the collective and citizens of the state, or make, reproduce or disseminate the following information: (1) incitement to resist or undermine the implementation of the constitution, laws and administrative regulations; (2) inciting ethnic hatred, ethnic discrimination and undermining ethnic unity; (3) fabricating or distorting facts, spreading rumors and disturbing public order; (4) promoting feudal superstition, obscenity, pornography, gambling, violence, murder, terror or abetting crimes; (5) publicly insulting others or fabricating facts to slander others, or carrying out other malicious attacks; (6) other violations of the constitution, laws and administrative rules and regulations; (7) engaging in commercial advertising.",
     pa6: "2. Users shall not maliciously register the website account of Procyon by any means, including but not limited to multiple account registration for the purpose of profit making, speculation, cash, awards, etc. Users shall not embezzle other users’ accounts. If the user violates the above provisions, Procyon shall be entitled to directly take all necessary measures to cancel the benefits obtained due to the violation and to pursue the legal action against the user through litigation.",
     pa7: "3. Users are prohibited from using Procyon in any form as a place, platform or medium for various illegal activities. Without the authorization or permission of Procyon, users shall not use the name of this website to engage in any commercial activities, nor shall they use Procyon as a place, platform or medium for commercial activities in any form.",
 

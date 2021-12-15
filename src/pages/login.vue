@@ -16,7 +16,7 @@
               showEmail = false;
               showPhone = true;
             "
-            >{{ $t("ChangePassword.UsePhone") }}</a
+            >{{ $t("Login.PhoneLogin") }}</a
           >
         </q-card-section>
         <q-card-section>
@@ -93,7 +93,7 @@
               showEmail = true;
               showPhone = false;
             "
-            >{{ $t("ChangePassword.UseEmail") }}</a
+            >{{ $t("Login.EmailLogin") }}</a
           >
         </q-card-section>
         <q-card-section>
@@ -148,9 +148,9 @@
     </div>
 
     <q-dialog v-model="gaDialog" persistent>
-      <q-card>
+      <q-card style="color: #e1eeef; background: #23292b; padding: 24px">
         <q-card-section style="margin-left: 10px">
-          <span class="card-title text-black">Google Verify</span>
+          <span class="card-title">Google Verify</span>
         </q-card-section>
         <q-card-section>
           <verifycode-input @callback="verifyCallback"></verifycode-input>
@@ -159,12 +159,21 @@
     </q-dialog>
 
     <q-dialog v-model="emailDialog" persistent @hide="whenHide">
-      <q-card style="width: 600px; height: auto; margin: 20px">
+      <q-card
+        style="
+          width: 600px;
+          height: auto;
+          margin: 20px;
+          color: #e1eeef;
+          background: #23292b;
+          padding: 24px;
+        "
+      >
         <q-card-section style="margin-left: 10px">
-          <span class="card-title text-black">Email Verify</span>
+          <span class="card-title">{{ $t("Login.EmailVerifyTitle") }}</span>
         </q-card-section>
 
-        <q-card-section class="google-content">
+        <q-card-section class="google-content" style="color: #e1eeef">
           {{ $t("Notify.Login.EmailInputVerify1")
           }}{{ user.info.UserBasicInfo.EmailAddress }},
           {{ $t("Notify.Login.EmailInputVerify2")
@@ -481,7 +490,7 @@ export default defineComponent({
         })
         .then((resp) => {
           self.user = {
-            logined: true,
+            logined: false,
             info: resp.data.Info,
           };
           success(notif, self.$t("Notify.Login.Success"));
@@ -497,6 +506,7 @@ export default defineComponent({
             return;
           } else {
             self.loginVerify = true;
+            self.logined = true;
             self.$router.push({
               path: "/",
             });
@@ -507,6 +517,8 @@ export default defineComponent({
           fail(notif, self.$t("Notify.Login.Fail"), error);
           self.loginInput.username = "";
           self.loginInput.password = "";
+          self.logined = false;
+          self.loginVerify = false;
           self.gResponse = "";
           self.initGrecaptcha();
         });
@@ -536,7 +548,7 @@ export default defineComponent({
         })
         .then((resp) => {
           self.user = {
-            logined: true,
+            logined: false,
             info: resp.data.Info,
           };
           success(notif, self.$t("Notify.Login.Success"));
@@ -552,6 +564,7 @@ export default defineComponent({
             self.sendCode();
             return;
           } else {
+            self.logined = true;
             self.loginVerify = true;
             self.$router.push({
               path: "/",
@@ -561,6 +574,8 @@ export default defineComponent({
         })
         .catch((error) => {
           fail(notif, self.$t("Notify.Login.Fail"), error);
+          self.logined = false;
+          self.loginVerify = false;
           self.phone = "";
           self.loginInput.password = "";
           self.gResponse = "";
@@ -571,8 +586,9 @@ export default defineComponent({
     verifyCallback: function (resp) {
       var self = this;
       if (resp === "pass") {
-        this.gaDialog = false;
         this.loginVerify = true;
+        this.logined = true;
+        this.gaDialog = false;
 
         this.$router.push({
           path: "/",
@@ -580,12 +596,13 @@ export default defineComponent({
       } else {
         fail(undefined, "please inoput correct verify code", "login again");
         self.gResponse = "";
+        self.logined = false;
+        self.loginVerify = false;
         self.q.cookies.remove("UserID");
         self.q.cookies.remove("AppSession");
         self.q.cookies.remove("Session");
         self.phone = "";
         self.verifyCode = "";
-        self.logined = false;
         self.initGrecaptcha();
         self.gaDialog = false;
       }
@@ -606,9 +623,10 @@ export default defineComponent({
           Code: code,
         })
         .then((resp) => {
-          self.emailDialog = false;
           self.loginVerify = true;
+          self.logined = true;
           self.visible = false;
+          self.emailDialog = false;
 
           self.$router.push({
             path: "/",
@@ -616,10 +634,14 @@ export default defineComponent({
         })
         .catch((error) => {
           failCodeError(
+            undefined,
             error,
+            "verify email code error",
             self.$t("CodeFail.Fail1"),
             self.$t("CodeFail.Fail2")
           );
+          self.logined = false;
+          self.loginVerify = false;
           self.visible = false;
           self.verifyCode = "";
           self.captchas = [
@@ -635,7 +657,6 @@ export default defineComponent({
           self.q.cookies.remove("AppSession");
           self.q.cookies.remove("Session");
           self.phone = "";
-          self.logined = false;
           self.initGrecaptcha();
           self.emailDialog = false;
         });

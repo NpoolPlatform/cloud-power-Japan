@@ -211,7 +211,7 @@ export default defineComponent({
   margin: 10px 0;
 }
 
-/* .q-field--labeled .q-field__native {
-  padding-top: 12px;
-} */
+.q-field--filled .q-field__control {
+  border-radius: 4px;
+}
 </style>

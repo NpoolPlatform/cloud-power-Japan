@@ -23,19 +23,18 @@
             ></q-input>
           </div>
 
-          <div class="input-style">
+          <div class="input-style" style="align-items: flex-start">
             <q-item-label>{{
               $t("Account.PersonalDetails.Gender")
             }}</q-item-label>
-            <q-input
+            <q-select
+              popup-content-style="background: #e1eeef; color: black;"
               style="width: 90%; margin: 10px 20px 0 0"
+              bg-color="blue-grey-1"
               outlined
               v-model="gender"
-              bg-color="blue-grey-1"
-              ref="genderRef"
-              lazy-rules
-              :rules="genderRules"
-            ></q-input>
+              :options="genderOptions"
+            />
           </div>
         </div>
 
@@ -63,6 +62,10 @@
               bg-color="blue-grey-1"
             ></q-input>
           </div>
+        </div>
+
+        <div class="title" style="margin: 50px 0 0 0">
+          {{ $t("Account.PersonalDetails.Title2") }}
         </div>
 
         <div class="detail-column">
@@ -120,6 +123,18 @@
         <div class="detail-column">
           <div class="input-style">
             <q-item-label>{{
+              $t("Account.PersonalDetails.PostalCode")
+            }}</q-item-label>
+            <q-input
+              style="width: 90%; margin: 10px 20px 0 0"
+              outlined
+              v-model="postalCode"
+              bg-color="blue-grey-1"
+            ></q-input>
+          </div>
+
+          <div class="input-style">
+            <q-item-label>{{
               $t("Account.PersonalDetails.Country")
             }}</q-item-label>
             <q-input
@@ -129,7 +144,9 @@
               bg-color="blue-grey-1"
             ></q-input>
           </div>
+        </div>
 
+        <div class="detail-column" style="margin-top: 50px">
           <div class="input-style">
             <q-btn
               style="width: 90%; margin: 10px 20px 0 0"
@@ -158,7 +175,7 @@
 
       <div>
         <div class="title">{{ $t("Account.SecuritySetting.Title") }}</div>
-        <div>
+        <div class="setting-flex">
           <div class="setting-column">
             <div class="setting-box">
               <div class="setting-header">
@@ -167,10 +184,13 @@
                   $t("Account.SecuritySetting.ChangePassword")
                 }}</span>
               </div>
-              <div class="setting-content">
-                {{ $t("Account.SecuritySetting.ChangePasswordContent") }}
+              <div>
+                <div class="setting-content">
+                  {{ $t("Account.SecuritySetting.ChangePasswordContent") }}
+                </div>
               </div>
-              <q-space style="margin-bottom: 60px"></q-space>
+              <q-space style="margin-bottom: 100px"></q-space>
+
               <div class="setting-btn-position">
                 <q-btn
                   class="account-btn setting-btn"
@@ -187,22 +207,24 @@
                   $t("Account.SecuritySetting.Email")
                 }}</span>
               </div>
+
               <div class="setting-content">
                 {{ $t("Account.SecuritySetting.EmailContent") }}
+                <div class="verify-content">
+                  <q-img
+                    class="verify-img"
+                    :src="enabledEmail ? passImg : notpassImg"
+                  ></q-img>
+                  <span :v-if="enabledEmail"></span>
+                  {{
+                    enabledEmail
+                      ? $t("Account.SecuritySetting.Verify")
+                      : $t("Account.SecuritySetting.NotVerify")
+                  }}
+                </div>
               </div>
-              <div class="verify-content">
-                <q-img
-                  class="verify-img"
-                  :src="enabledEmail ? passImg : notpassImg"
-                ></q-img>
-                <span :v-if="enabledEmail"></span>
-                {{
-                  enabledEmail
-                    ? $t("Account.SecuritySetting.Verify")
-                    : $t("Account.SecuritySetting.NotVerify")
-                }}
-              </div>
-              <q-space style="margin-bottom: 60px"></q-space>
+              <q-space style="margin-bottom: 55px"></q-space>
+
               <div class="setting-btn-position">
                 <q-btn
                   v-if="!enabledEmail"
@@ -229,22 +251,24 @@
                   $t("Account.SecuritySetting.Mobile")
                 }}</span>
               </div>
+
               <div class="setting-content">
                 {{ $t("Account.SecuritySetting.MobileContent") }}
+                <div class="verify-content">
+                  <q-img
+                    class="verify-img"
+                    :src="enabledMobile ? passImg : notpassImg"
+                  ></q-img>
+                  <span :v-if="enabledMobile"></span>
+                  {{
+                    enabledMobile
+                      ? $t("Account.SecuritySetting.Verify")
+                      : $t("Account.SecuritySetting.NotVerify")
+                  }}
+                </div>
               </div>
-              <div class="verify-content">
-                <q-img
-                  class="verify-img"
-                  :src="enabledMobile ? passImg : notpassImg"
-                ></q-img>
-                <span :v-if="enabledMobile"></span>
-                {{
-                  enabledMobile
-                    ? $t("Account.SecuritySetting.Verify")
-                    : $t("Account.SecuritySetting.NotVerify")
-                }}
-              </div>
-              <q-space style="margin-bottom: 26px"></q-space>
+              <q-space style="margin-bottom: 55px"></q-space>
+
               <div class="setting-btn-position">
                 <q-btn
                   v-if="!enabledMobile"
@@ -271,20 +295,21 @@
               </div>
               <div class="setting-content">
                 {{ $t("Account.SecuritySetting.GoogleContent") }}
+                <div class="verify-content">
+                  <q-img
+                    class="verify-img"
+                    :src="enableGoogleAuthentication ? passImg : notpassImg"
+                  ></q-img>
+                  <span :v-if="enableGoogleAuthentication"></span>
+                  {{
+                    enableGoogleAuthentication
+                      ? $t("Account.SecuritySetting.Verify")
+                      : $t("Account.SecuritySetting.NotVerify")
+                  }}
+                </div>
               </div>
-              <div class="verify-content">
-                <q-img
-                  class="verify-img"
-                  :src="enableGoogleAuthentication ? passImg : notpassImg"
-                ></q-img>
-                <span :v-if="enableGoogleAuthentication"></span>
-                {{
-                  enableGoogleAuthentication
-                    ? $t("Account.SecuritySetting.Verify")
-                    : $t("Account.SecuritySetting.NotVerify")
-                }}
-              </div>
-              <q-space style="margin-bottom: 20px"></q-space>
+              <q-space style="margin-bottom: 30px"></q-space>
+
               <div class="setting-btn-position">
                 <q-tooltip
                   class="text-body2"
@@ -314,20 +339,21 @@
               </div>
               <div class="setting-content">
                 {{ $t("Account.SecuritySetting.IDVerificationContent") }}
+                <div class="verify-content">
+                  <q-img
+                    class="verify-img"
+                    :src="enabledID ? passImg : notpassImg"
+                  ></q-img>
+                  <span :v-if="enabledID"></span>
+                  {{
+                    enabledID
+                      ? $t("Account.SecuritySetting.Verify")
+                      : $t("Account.SecuritySetting.NotVerify")
+                  }}
+                </div>
               </div>
-              <div class="verify-content">
-                <q-img
-                  class="verify-img"
-                  :src="enabledID ? passImg : notpassImg"
-                ></q-img>
-                <span :v-if="enabledID"></span>
-                {{
-                  enabledID
-                    ? $t("Account.SecuritySetting.Verify")
-                    : $t("Account.SecuritySetting.NotVerify")
-                }}
-              </div>
-              <q-space style="margin-bottom: 60px"></q-space>
+              <q-space style="margin-bottom: 55px"></q-space>
+
               <div class="setting-btn-position">
                 <q-btn disable color="grey" class="account-btn setting-btn">{{
                   $t("Account.SecuritySetting.IDVerificationBtn")
@@ -344,35 +370,36 @@
               </div>
               <div class="setting-content">
                 {{ $t("Account.SecuritySetting.LoginVerificationContent") }}
+                <div class="verify-content">
+                  <q-tooltip
+                    anchor="top middle"
+                    self="bottom middle"
+                    :offset="[10, 10]"
+                    v-if="!enableGoogleAuthentication && !enabledEmail"
+                    >{{ $t("Account.SecuritySetting.tooltip") }}</q-tooltip
+                  >
+                  <q-option-group
+                    v-if="!enabledEmail && !userGALogin"
+                    v-model="emptyNull"
+                    :options="loginOptions"
+                    color="light-green-10"
+                    inline
+                    :disable="!enableGoogleAuthentication && !enabledEmail"
+                  >
+                  </q-option-group>
+                  <q-option-group
+                    v-else
+                    v-model="userGALogin"
+                    :options="loginOptions"
+                    color="light-green-10"
+                    inline
+                    :disable="!enableGoogleAuthentication && !enabledEmail"
+                  >
+                  </q-option-group>
+                </div>
               </div>
-              <div class="verify-content">
-                <q-tooltip
-                  anchor="top middle"
-                  self="bottom middle"
-                  :offset="[10, 10]"
-                  v-if="!enableGoogleAuthentication && !enabledEmail"
-                  >{{ $t("Account.SecuritySetting.tooltip") }}</q-tooltip
-                >
-                <q-option-group
-                  v-if="!enabledEmail && !userGALogin"
-                  v-model="emptyNull"
-                  :options="loginOptions"
-                  color="primary"
-                  inline
-                  :disable="!enableGoogleAuthentication && !enabledEmail"
-                >
-                </q-option-group>
-                <q-option-group
-                  v-else
-                  v-model="userGALogin"
-                  :options="loginOptions"
-                  color="primary"
-                  inline
-                  :disable="!enableGoogleAuthentication && !enabledEmail"
-                >
-                </q-option-group>
-              </div>
-              <q-space style="margin-bottom: 25px"></q-space>
+              <q-space style="margin-bottom: 40px"></q-space>
+
               <div class="setting-btn-position">
                 <q-tooltip
                   anchor="top middle"
@@ -692,6 +719,12 @@ export default defineComponent({
       getUserBasicInfo();
     });
 
+    const genderOptions = [
+      t("Gender.Male"),
+      t("Gender.Female"),
+      t("Gender.Other"),
+    ];
+
     const email = computed({
       get: () => $store.state.user.user.info.UserBasicInfo.EmailAddress,
       set: (val) => {
@@ -783,6 +816,12 @@ export default defineComponent({
       get: () => $store.state.user.user.info.UserBasicInfo.Country,
       set: (val) => {
         $store.commit("user/updateCountry", val);
+      },
+    });
+    const postalCode = computed({
+      get: () => $store.state.user.user.info.UserBasicInfo.PostalCode,
+      set: (val) => {
+        $store.commit("user/updatePostalCode", val);
       },
     });
 
@@ -901,6 +940,7 @@ export default defineComponent({
       city,
       province,
       country,
+      postalCode,
       username,
       gender,
       enableGoogleAuthentication,
@@ -935,7 +975,8 @@ export default defineComponent({
       genderRef: ref(null),
       genderRules,
       showDetails: ref(true),
-      emptyNull: ref(""),
+      emptyNull: ref(false),
+      genderOptions,
     };
   },
 
@@ -1427,5 +1468,10 @@ export default defineComponent({
   opacity: 0.7;
   height: 2px;
   width: 100%;
+}
+
+.setting-flex {
+  display: flex;
+  flex-wrap: wrap;
 }
 </style>

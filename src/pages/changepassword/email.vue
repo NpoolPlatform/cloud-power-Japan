@@ -157,6 +157,9 @@ export default defineComponent({
 
     const passwordRule = ref([
       (val) => parsePassword(val) || t("ChangePassword.PasswordInputWarning"),
+      (val) =>
+        (val && val === confirmPassword.value) ||
+        t("Register.ConfirmInputWarning2"),
     ]);
 
     const confirmPassRule = ref([
