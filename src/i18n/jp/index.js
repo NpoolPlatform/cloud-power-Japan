@@ -255,6 +255,7 @@ export default {
   },
 
   Mining: {
+    Day: "日",
     Column1: {
       Title: "マイニング報酬合計",
       Total: "マイニング報酬合計",

@@ -353,7 +353,7 @@ h3.mining-title {
 
 .mining-summary .buttons {
   display: flex;
-  justify-content: flex-end;
+  justify-content: space-between;
 }
 
 .buttons button,

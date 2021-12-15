@@ -239,6 +239,7 @@ export default {
   },
 
   Mining: {
+    Day: "days",
     Column1: {
       Title: "Total EARNINIGS",
       Total: "TOTAL EARNINGS",

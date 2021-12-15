@@ -320,6 +320,7 @@ export default defineComponent({
         $store.commit("verify/updateLoginVerify", val);
       },
     });
+
     return {
       q,
       locale,
@@ -358,6 +359,8 @@ export default defineComponent({
       handler: function (n, o) {
         var lang = this.q.cookies.get("lang");
         if (lang !== n) {
+          this.q.cookies.set("lang", n);
+        } else {
           this.q.cookies.set("lang", n);
         }
       },

@@ -1246,7 +1246,9 @@ export default defineComponent({
         })
         .catch((error) => {
           failCodeError(
+            undefined,
             error,
+            self.$t("AccountNotify.EnableEmail.Fail"),
             self.$t("CodeFail.Fail1"),
             self.$t("CodeFail.Fail2")
           );
@@ -1281,7 +1283,9 @@ export default defineComponent({
         })
         .catch((error) => {
           failCodeError(
+            undefined,
             error,
+            self.$t("AccountNotify.EnablePhone.Fail"),
             self.$t("CodeFail.Fail1"),
             self.$t("CodeFail.Fail2")
           );
@@ -1316,7 +1320,9 @@ export default defineComponent({
         })
         .catch((error) => {
           failCodeError(
+            undefined,
             error,
+            self.$t("AccountNotify.UpdateEmail.Fail"),
             self.$t("CodeFail.Fail1"),
             self.$t("CodeFail.Fail2")
           );
@@ -1359,7 +1365,9 @@ export default defineComponent({
         })
         .catch((error) => {
           failCodeError(
+            undefined,
             error,
+            self.$t("AccountNotify.UpdatePhone.Fail"),
             self.$t("CodeFail.Fail1"),
             self.$t("CodeFail.Fail2")
           );

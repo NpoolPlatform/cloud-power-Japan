@@ -27,14 +27,6 @@ export default defineComponent({
     });
 
     const { locale } = useI18n({ useScope: "global" });
-    var lang = q.lang.getLocale();
-    if (lang.indexOf("en") > -1) {
-      locale.value = "en-US";
-      fontStyle.value = "font-family: Barlow";
-    } else {
-      locale.value = "ja-JP";
-      fontStyle.value = "font-family: 'Noto Sans JP'";
-    }
 
     const user = computed({
       get: () => $store.state.user.user,
@@ -136,14 +128,19 @@ export default defineComponent({
   created: function () {
     var appID = "ff2c5d50-be56-413e-aba5-9c7ad888a769";
     this.q.cookies.set("AppID", appID);
+
+    var lang = this.q.lang.getLocale();
+    if (lang.indexOf("en")) {
+      this.locale = "en-US";
+    } else {
+      this.locale = "ja-JP";
+    }
+
     var hasLang = this.q.cookies.has("lang");
     if (hasLang) {
       var lang = this.q.cookies.get("lang");
       switch (lang) {
         case "en-US":
-          this.locale = lang;
-          break;
-        case "ja-JP":
           this.locale = lang;
           break;
         default:
@@ -152,13 +149,15 @@ export default defineComponent({
       }
     }
 
-    console.log("before if", this.$store.state.verify.hasInvitationCode);
-    console.log("cookies is", this.q.cookies);
+    if (this.locale.indexOf("en") > -1) {
+      this.fontStyle = "font-family: Barlow";
+    } else {
+      this.fontStyle = "font-family: 'Noto Sans JP'";
+    }
 
     if (this.q.cookies.has("UserID") && this.q.cookies.has("AppSession")) {
       this.loginVerify = true;
       this.getUserInvitationCode();
-      console.log(this.$store.state.verify.hasInvitationCode);
     }
   },
 

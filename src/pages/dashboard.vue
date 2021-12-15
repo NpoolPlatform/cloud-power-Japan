@@ -82,7 +82,7 @@
             <span class="label">{{
               $t("Mining.Column2.TotalDaysMining")
             }}</span>
-            <span class="value">* days</span>
+            <span class="value">{{ durationDays }}{{ $t("Mining.Day") }}</span>
           </div>
 
           <div class="line">
@@ -99,8 +99,12 @@
         </div>
 
         <div class="buttons">
-          <button class="export">{{ $t("Mining.Column2.Export") }}</button>
-          <button class="purchase">{{ $t("Mining.Column2.Purchase") }}</button>
+          <button disabled class="export">
+            {{ $t("Mining.Column2.Export") }}
+          </button>
+          <button disabled class="purchase">
+            {{ $t("Mining.Column2.Purchase") }}
+          </button>
         </div>
       </div>
 
@@ -148,6 +152,7 @@ const orderGoods = ref({});
 const visible = ref(true);
 const totalAmount = ref("");
 const totalCapacity = ref("");
+const durationDays = ref("");
 
 const showTable = ref(true);
 const lang = computed(() => locale.value);
@@ -183,7 +188,7 @@ const getOrderGood = (order) => {
         discount:
           (
             Number(order.Discount) +
-            (Number(order.SpecialReduction) /
+            (Number(order.SpecialReductionAmount) /
               (Number(order.Units) * Number(good.Price))) *
               100
           ).toString() + "%",
@@ -191,6 +196,7 @@ const getOrderGood = (order) => {
         period: good.DurationDays,
         total: order.Payment.Amount,
       };
+      durationDays.value = good.DurationDays;
       totalAmount.value += order.Payment.Amount;
       totalCapacity.value += order.Units;
       myOrders.value.push(myOrder);
