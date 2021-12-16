@@ -154,7 +154,7 @@
         </q-card-section>
         <q-card-section>
           <verifycode-input
-            font-color="white"
+            font-color="#e1eeef"
             @callback="verifyCallback"
           ></verifycode-input>
         </q-card-section>
