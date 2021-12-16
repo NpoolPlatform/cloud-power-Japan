@@ -477,7 +477,9 @@
       <q-dialog v-model="secondDialog">
         <q-card>
           <q-card-section>
-            <span class="card-title text-black">Google Verify</span>
+            <span class="card-title text-black">{{
+              $t("GoogleAuthentication.Title1")
+            }}</span>
           </q-card-section>
           <q-card-section>
             <verifycode-input @callback="verifyCallback"></verifycode-input>

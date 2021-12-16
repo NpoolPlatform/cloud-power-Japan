@@ -594,7 +594,7 @@ export default {
     Content3: "上記のQRコードを読み取れない場合は、下記手順をお試しください。",
     L1: "①『Authenticator』アプリを起動",
     L2: "②右下の 『セットアップキーを入力』を選択",
-    L3: '③『アカウント』を"Procyon:example@example.com"と設定',
+    L3: "③『アカウント』を\"Procyon:example{'@'}example.com\"と設定",
     L4: '④上記のGoogle Gecretをコピーして "追加"をクリック',
     NextStepBtn: "次の段階",
     CloseBtn: "閉じる",

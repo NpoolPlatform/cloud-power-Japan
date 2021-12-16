@@ -287,7 +287,6 @@ export default defineComponent({
           })
           .then(function (token) {
             gResponse.value = token;
-            console.log("token is", token);
           });
       });
     };

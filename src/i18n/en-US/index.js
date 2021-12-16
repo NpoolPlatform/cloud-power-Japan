@@ -611,7 +611,7 @@ export default {
       "If you are unable to scan the QR code above on your Google Authenticator app, please follow the steps below:",
     L1: "1. Open your Google Authenticator app on your smartphone",
     L2: '2. Choose "Enter a setup key" at the bottom right of the screen ',
-    L3: '3. Set the "Account Name" as, for example, [Procyon: example@gmail.com] ',
+    L3: "3. Set the \"Account Name\" as, for example, [Procyon: example{'@'}gmail.com]",
     L4: '4. Copy the Google Secret above and click "Add."',
     NextStepBtn: "Next Step",
     CloseBtn: "Close",

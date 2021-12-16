@@ -109,8 +109,8 @@
       </div>
 
       <div class="title">{{ $t("Mining.Column3.Title") }}</div>
-      <div v-if="showTable" class="table-box">
-        <div class="my-table">
+      <div v-if="showTable">
+        <div>
           <q-table
             flat
             class="table-box"

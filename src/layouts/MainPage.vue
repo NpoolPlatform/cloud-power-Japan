@@ -1,7 +1,7 @@
 <template>
   <q-layout view="hHh lpR fFf">
     <div>
-      <q-header reveal class="page-header" :style="toggle">
+      <q-header reveal class="page-header">
         <div class="header-left">
           <router-link :to="{ path: '/' }">
             <q-img :src="url" class="header-title"></q-img>
@@ -128,16 +128,8 @@
       </q-header>
     </div>
 
-    <q-drawer
-      style="
-        background: linear-gradient(to bottom right, #1f293a 0, #23292b 100%);
-        z-index: -1;
-      "
-      class="drawer-style text-white"
-      :width="200"
-      v-model="openSide"
-    >
-      <div class="drawer-items">
+    <q-drawer show-if-above :width="200" v-model="openSide">
+      <div class="drawer-items text-white">
         <router-link href class="drawer-item" :to="{ path: '/dashboard' }">
           <div class="row">
             <q-img fit="none" :src="miningImg" class="drawer-item-img"></q-img>
@@ -442,5 +434,9 @@ q-img:hover {
     #ff964a 0,
     #ce5417 100%
   ) !important;
+}
+
+q-drawer {
+  background: none;
 }
 </style>

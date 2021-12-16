@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="google-content" style="color: #e1eeef">
+    <div class="google-content" style="color: black">
       {{ $t("GoogleVerify.Content") }}
     </div>
     <div class="row-center captcha_input_wrapper">
