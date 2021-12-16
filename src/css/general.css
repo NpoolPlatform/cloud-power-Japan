@@ -38,6 +38,7 @@ button {
   text-shadow: 1px 1px 1px #ce5417;
   transition: all ease-in-out 0.1s;
   text-align: center;
+  text-transform: capitalize;
 }
 
 button:hover {

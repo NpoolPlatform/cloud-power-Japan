@@ -58,6 +58,7 @@
     rgba(225, 238, 239, 0.2) 0,
     rgba(161, 208, 208, 0.2) 100%
   );
+  /* background-color: black; */
   box-shadow: 16px 16px 20px 0 #23292b;
   border-radius: 12px;
   color: #e1eeef;
@@ -107,6 +108,7 @@
   padding: 8px 20px;
   height: auto;
   width: 300px;
+  text-transform: capitalize;
 }
 
 .dialog-section-style {
@@ -145,6 +147,7 @@
   padding: 8px 20px;
   height: auto;
   width: 400px;
+  text-transform: capitalize;
 }
 
 .dialog-btn-style:hover,
@@ -170,7 +173,9 @@
   font-weight: 600;
   font-size: 18px;
   line-height: 22px;
-  width: 368px;
+  width: 80%;
+  max-width: 360px;
+  text-transform: capitalize;
 }
 
 .setting-subtitle {
@@ -190,6 +195,9 @@
 .setting-btn-position {
   width: 100%;
   text-align: center;
+  position: absolute;
+  bottom: 24px;
+  left: 0;
 }
 
 .dialog-header::after,

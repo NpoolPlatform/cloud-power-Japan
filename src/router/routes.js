@@ -9,7 +9,7 @@ const routes = [
       { path: "order", component: () => import("pages/mining.vue") },
       { path: "wallet", component: () => import("pages/wallet.vue") },
       { path: "account", component: () => import("pages/account.vue") },
-      { path: "invitation", component: () => import("pages/invitation.vue") },
+      { path: "affiliates", component: () => import("pages/invitation.vue") },
       { path: "dashboard", component: () => import("pages/dashboard.vue") },
       {
         path: "forgetpassword",

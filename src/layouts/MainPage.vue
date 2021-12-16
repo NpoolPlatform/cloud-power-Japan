@@ -6,7 +6,6 @@
           <router-link :to="{ path: '/' }">
             <q-img :src="url" class="header-title"></q-img>
           </router-link>
-          <div v-if="openSide" class="hr"></div>
         </div>
 
         <div class="header-right">
@@ -95,7 +94,7 @@
                   clickable
                   v-close-popup
                   @click="
-                    $router.push('/invitation');
+                    $router.push('/affiliates');
                     showList = !showList;
                   "
                 >
@@ -156,7 +155,7 @@
         <router-link
           href
           class="drawer-item"
-          :to="{ path: '/invitation' }"
+          :to="{ path: '/affiliates' }"
           v-if="hasInvitationCode"
         >
           <div class="row">
@@ -233,15 +232,9 @@
             <div class="content-items">
               <h4>{{ $t("Footer.Third.Title") }}</h4>
               <div class="item-links">
-                <router-link
-                  class="footer-link nav-link"
-                  :to="{ path: '/faq' }"
-                  >{{ $t("Footer.Third.Faqs") }}</router-link
-                >
-                <router-link
-                  class="footer-link nav-link"
-                  :to="{ path: '/faq' }"
-                  >{{ $t("Footer.Third.Support") }}</router-link
+                <router-link class="footer-link nav-link" :to="{ path: '/faq' }"
+                  >{{ $t("Footer.Third.Faqs") }} &
+                  {{ $t("Footer.Third.Support") }}</router-link
                 >
                 <router-link
                   class="footer-link nav-link"
@@ -427,6 +420,14 @@ export default defineComponent({
 
 .object-style {
   object-fit: none !important;
+}
+
+q-img:hover {
+  filter: invert() saturate(0);
+}
+
+.q-body--prevent-scroll {
+  position: static !important;
 }
 </style>
 

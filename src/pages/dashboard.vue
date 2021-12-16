@@ -109,19 +109,33 @@
       </div>
 
       <div class="title">{{ $t("Mining.Column3.Title") }}</div>
-      <div v-if="showTable">
-        <div>
+      <div v-if="showTable" class="table-box">
+        <div class="my-table">
           <q-table
             flat
             class="table-box"
             :rows="myOrders"
             :columns="orderColumns"
             row-key="name"
+            color="#e1eeef"
+            :no-data-label="$t('NoData')"
           >
           </q-table>
           <q-inner-loading :showing="visible">
             <q-spinner-gears size="50px" color="primary" />
           </q-inner-loading>
+        </div>
+
+        <div
+          class="buttons"
+          style="display: flex; justify-content: space-between; margin: 0 20px"
+        >
+          <button disabled class="export">
+            {{ $t("Mining.Column2.Export") }}
+          </button>
+          <button disabled class="purchase">
+            {{ $t("Mining.Column2.Purchase") }}
+          </button>
         </div>
       </div>
 
@@ -137,7 +151,7 @@ import { useRouter } from "vue-router";
 import { ref, onBeforeMount, onMounted, computed, watch } from "vue";
 import { api } from "src/boot/axios";
 import { fail } from "src/notify/notify";
-import { timestampToDate } from "src/utils/utils";
+import { CheckLogin, timestampToDate } from "src/utils/utils";
 import { useI18n } from "vue-i18n";
 
 const q = useQuasar();
@@ -233,6 +247,7 @@ onBeforeMount(() => {
 });
 
 onMounted(() => {
+  CheckLogin();
   getOrdersDetail();
 });
 
@@ -277,16 +292,22 @@ const orderColumns = [
     name: "period",
     label: t("Mining.Column3.Period"),
     align: "center",
-    field: (row) => row.period,
+    field: (row) => row.period + t("Mining.Day"),
   },
   {
     name: "total",
     label: t("Mining.Column3.Total"),
     align: "center",
-    field: (row) => row.total,
+    field: (row) => row.total + "USDT",
   },
 ];
 </script>
+
+<style scoped>
+.my-table span {
+  color: #e1eeef !important;
+}
+</style>
 
 <style scoped src="../css/mining-style.css"></style>
 <style scoped>
@@ -307,5 +328,9 @@ const orderColumns = [
 <style>
 .q-table--horizontal-separator thead th {
   font-size: 16px;
+}
+
+.q-menu {
+  color: black;
 }
 </style>

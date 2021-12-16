@@ -127,6 +127,7 @@
   padding: 8px 20px;
   margin: 0 10px;
   height: auto;
+  text-transform: capitalize;
 }
 
 .color-btn {

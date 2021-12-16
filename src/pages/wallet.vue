@@ -96,10 +96,15 @@
 </template>
 
 <script>
-import { defineComponent } from "vue";
+import { CheckLogin } from "src/utils/utils";
+import { defineComponent, onMounted } from "vue";
 
 export default defineComponent({
-  setup() {},
+  setup() {
+    onMounted(() => {
+      CheckLogin();
+    });
+  },
 
   data() {
     return {

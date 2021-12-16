@@ -150,7 +150,7 @@
     <q-dialog v-model="gaDialog" persistent>
       <q-card style="color: #e1eeef; background: #23292b; padding: 24px">
         <q-card-section style="margin-left: 10px">
-          <span class="card-title">Google Verify</span>
+          <span class="card-title">{{ $t("GoogleVerify.Title") }}</span>
         </q-card-section>
         <q-card-section>
           <verifycode-input @callback="verifyCallback"></verifycode-input>
@@ -225,7 +225,6 @@ export default defineComponent({
   setup() {
     const { t, locale } = useI18n({ useScope: "global" });
     const q = useQuasar();
-
     const $store = useStore();
 
     const user = computed({
@@ -535,7 +534,27 @@ export default defineComponent({
           return;
         })
         .catch((error) => {
-          fail(notif, self.$t("Notify.Login.Fail"), error);
+          console.log(error.response.data);
+          if (
+            error.response.data.message.indexOf("input password is wrong") !==
+            -1
+          ) {
+            fail(
+              notif,
+              self.$t("Notify.Login.Fail"),
+              self.$t("Login.PasswordError")
+            );
+          } else if (
+            error.response.data.message.indexOf("user not found") !== -1
+          ) {
+            fail(
+              notif,
+              self.$t("Notify.Login.Fail"),
+              self.$t("Login.UserNotFound")
+            );
+          } else {
+            fail(notif, self.$t("Notify.Login.Fail"), error);
+          }
           self.loginInput.username = "";
           self.loginInput.password = "";
           self.logined = false;

@@ -72,6 +72,7 @@ export default defineComponent({
     const store = useStore();
     const phoneRule = ref([
       (val) => parsePhone(val) || t("Register.PhoneInputWarning"),
+      (val) => !val.startsWith("0") || t("Register.PhoneInputWarning2"),
     ]);
     const inputText = ref(t("Account.Phone.Enable.PhoneInput"));
 
@@ -213,5 +214,10 @@ export default defineComponent({
 
 .q-field--filled .q-field__control {
   border-radius: 4px;
+}
+
+.q-field--labeled .q-field__native {
+  padding-top: 0;
+  padding-bottom: 0;
 }
 </style>

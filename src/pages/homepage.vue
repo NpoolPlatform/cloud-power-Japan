@@ -29,7 +29,7 @@
         >
           <q-card-section class="card-header">
             <q-img :src="url" class="header-img"></q-img>
-            <span class="header-title">{{ good.Title }}</span>
+            <span class="header-title">{{ good.CoinInfo.Name }}</span>
           </q-card-section>
 
           <q-card-section class="product-price">
@@ -91,7 +91,9 @@
             >{{ $t("Homepage.Why.Content3")
             }}<strong>{{ $t("Homepage.Why.Content4") }}</strong
             >{{ $t("Homepage.Why.Content4Comma")
-            }}{{ $t("Homepage.Why.Content5") }}
+            }}{{ $t("Homepage.Why.Content5")
+            }}<strong>{{ $t("Homepage.Why.Content55H") }}</strong
+            >{{ $t("Homepage.Why.Content55") }}
           </p>
         </div>
 
@@ -100,7 +102,8 @@
             {{ $t("Homepage.Why.Content6")
             }}<strong>{{ $t("Homepage.Why.Content7") }}</strong
             >{{ $t("Homepage.Why.Content8")
-            }}<strong>{{ $t("Homepage.Why.Content9") }}</strong>
+            }}<strong>{{ $t("Homepage.Why.Content9") }}</strong
+            >{{ $t("Homepage.Why.Content9Comma") }}
           </p>
         </div>
       </div>
@@ -150,7 +153,9 @@
         <p>
           {{ $t("Homepage.What.Content1") }}
           <strong>{{ $t("Homepage.What.Content2") }}</strong
-          >{{ $t("Homepage.What.Content2Comma") }}
+          >{{ $t("Homepage.What.Content2Comma")
+          }}<strong>{{ $t("Homepage.What.Content22H") }}</strong
+          >{{ $t("Homepage.What.Content22") }}
         </p>
         <p>{{ $t("Homepage.What.Content3") }}</p>
         <ul>

@@ -100,7 +100,18 @@
 
         <h3>{{ $t("Faq.Header4.Q4") }}</h3>
 
-        <p>{{ $t("Faq.Header4.A11") }}</p>
+        <p>{{ $t("Faq.Header4.A111") }}</p>
+        <p>{{ $t("Faq.Header4.A112") }}</p>
+        <p>{{ $t("Faq.Header4.A113") }}</p>
+        <p>{{ $t("Faq.Header4.A114") }}</p>
+        <p>{{ $t("Faq.Header4.A115") }}</p>
+        <p>{{ $t("Faq.Header4.A116") }}</p>
+        <p>{{ $t("Faq.Header4.A117") }}</p>
+        <p>{{ $t("Faq.Header4.A118") }}</p>
+        <p>{{ $t("Faq.Header4.A119") }}</p>
+        <p>{{ $t("Faq.Header4.A120") }}</p>
+        <p>{{ $t("Faq.Header4.A121") }}</p>
+        <p>{{ $t("Faq.Header4.A122") }}</p>
 
         <h3>{{ $t("Faq.Header4.Q5") }}</h3>
 

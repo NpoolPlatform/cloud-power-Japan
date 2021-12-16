@@ -119,13 +119,16 @@ export default {
         " exclusive investment opportunities that cannot be found on the open market",
       Content4Comma: ". ",
       Content5: "Our unique positioning is our strength and your gain!",
+      Content55H: "",
+      Content55: "",
       Content6:
         "Japan boasts the highest investment per capita in Asia. The endless possibilities of the",
       Content7: " Japanese market attract many global players",
       Content8:
         ", however Japan suffers from a language and cultural barrier that insulates the country from global markets. This hurdle can result in missed opportunities and a lack of diversity in investment products. At Procyon, ",
       Content9:
-        "we lead our exclusive communities of investors to the global stage.",
+        "we lead our exclusive communities of investors to the global stage",
+      Content9Comma: ".",
     },
 
     What: {
@@ -135,6 +138,8 @@ export default {
       Content2:
         " much greater ROI while the mining difficulty is low and the mining output is high",
       Content2Comma: ".",
+      Content22H: "",
+      Content22: "",
       Content3: "There are two core factors that affect a miner's ROI:",
       Content4: "Mining output",
       Content5: "Token price",
@@ -200,7 +205,7 @@ export default {
     EmailVerifyCodeInpuWarning: "Please enter a verification code",
     Password: "Password",
     PasswordInputWarning:
-      "Please enter a legal password, which should be longer than 8 and less than 16 and contain numbers and letters",
+      "Please enter a legal password, which should be longer than 8 and less than 20 and contain numbers and letters",
     Confirm: "Confirm Password",
     ConfirmInputWarning1: "Please enter your confirm password",
     ConfirmInputWarning2: "password and confirm password not equal",
@@ -210,7 +215,7 @@ export default {
     And: " and",
     User: " User Agreements",
     Behind: "",
-    Register: "REGISTER",
+    Register: "Register",
     Have: "Already have an account?",
     Click: "Click here to sign in.",
     Login: "Login",
@@ -221,6 +226,7 @@ export default {
     RegisterPhone: "Phone Number Registration",
     PhoneInput: "Phone Number",
     PhoneInputWarning: "phone number cannot be blank",
+    PhoneInputWarning2: 'phone number doesn\'t need to start with "0"',
     InvitationWarning: "Invitation code is must",
     ConfirmBtn: "Confirm",
     AcceptBtn: "Accept",
@@ -229,6 +235,8 @@ export default {
     Fail: "Fail to register",
     Success: "Successfully register!",
   },
+
+  NoData: "No data available",
 
   Drawer: {
     Dashboard: "DASHBOARD",
@@ -241,9 +249,9 @@ export default {
   Mining: {
     Day: "days",
     Column1: {
-      Title: "Total EARNINIGS",
-      Total: "TOTAL EARNINGS",
-      Yesterday: "YESTERDAT'S EARNINGS",
+      Title: "Total Earnings",
+      Total: "Total Earnings",
+      Yesterday: "Yesterday's Earnings",
       Current: "CURRENT BALANCE",
     },
 
@@ -254,8 +262,8 @@ export default {
       Last: "Last 24 hours: ",
       DailyOutput: "Daily Output (30 day avg.)",
       TechnicalServiceFee: "Technical Service Fee:",
-      NetDailyOutput: "Net daily output (30 day avg.):",
-      TotalDaysMining: "Total days mining:",
+      NetDailyOutput: "Net Daily Output (30 day avg.):",
+      TotalDaysMining: "Total Days Mining:",
       Hashrate: "Hashrate (30 day avg.):",
       NetworkDailyOutput: "Network Daily Ouput:",
       Export: "Export Daily Output(CSV)",
@@ -352,6 +360,7 @@ export default {
         Title: "Mobile Authentication",
         PhoneInput: "Phone Number",
         PhoneInputWarning: "Please enter a correct phone number",
+        PhoneInputWarning2: 'phone number doesn\'t need to start with "0"',
         VerifyCode: "Phone verification code",
         VerifyCodeWarning: "please enter a verification code",
         Btn: "Register Phone Number",
@@ -360,7 +369,7 @@ export default {
     Title: "Account",
     PersonalDetails: {
       Title: "Personal Details (for KYC process)",
-      Title2: "ADDRESS",
+      Title2: "Address",
       Username: "Username",
       Gender: "Gender",
       FirstName: "First Name",
@@ -374,25 +383,25 @@ export default {
       Save: "Save Changes",
     },
     SecuritySetting: {
-      EmailEnable: "ENABLE E-MAIL ADDRESS",
-      PhoneEnable: "ENABLE PHONE NUMBER",
-      EmailUpdate: "UPDATE E-MAIL ADDRESS",
-      PhoneUpdate: "UPDATE PHONE NUMBER",
+      EmailEnable: "Enable Email Address",
+      PhoneEnable: "Register Phone Number",
+      EmailUpdate: "Update Email Address",
+      PhoneUpdate: "Update Phone Number",
       Title: "SECURITY SETTINGS",
       ChangePassword: "Change Password",
       ChangePasswordContent:
         "Your password must be at least 8 characters in length and must include numbers and letters.",
       ChangePasswordBtn: "Change Password",
       Email: "E-mail Address",
-      EmailContent: "Make sure you e-mail address is up to date.",
+      EmailContent: "Make sure your e-mail address is up to date.",
       EmailBtn: "Update E-mail Address",
       Mobile: "Mobile Authentication",
       MobileContent:
         "Enable mobile authentication to confirm logins, transfers, and changes to security settings.",
       MobileBtn: "Update Phone Number",
-      Google: "Google Authentication",
+      Google: "Google Authenticator",
       GoogleContent:
-        "Two-factor Authetication (2FA) secures your account against by adding confirmation for transfers.",
+        "Two-factor Authentication (2FA) secures your account by adding a second security check when logging in and making transfers.",
       GoogleBtn: "Enable Two-factor Auth",
       IDVerification: "ID Verification",
       IDVerificationContent: "Upload a photo ID to verify your identity.",
@@ -401,10 +410,10 @@ export default {
       NotVerify: "Not verified",
       Enable: "Enabled",
       NotEnable: "Not Enabled",
-      GoogleVerify: "Google Authentication",
+      GoogleVerify: "Google Authenticator",
       LoginVerification: "Login Verification",
       LoginVerificationContent:
-        "Enalbe verification methods to add verification when login",
+        "Select an additional verification method when logging in. Two-factor authentication must be enabled prior to selecting as a login verification method.",
       GALogin: "Google Login Authentication",
       EmailLogin: "E-mail Login Verification",
       Submit: "Submit Change",
@@ -434,7 +443,8 @@ export default {
     OldPassword: "Old Password",
     OldPasswordWarning: "Please enter your old password",
     Password: "New Password",
-    PasswordInputWarning: "Please enter your new password",
+    PasswordInputWarning:
+      "Please enter a legal password, which should be longer than 8 and less than 20 and contain numbers and letters",
     ConfirmPassword: "Confirm Password",
     ConfirmPasswordInputWarning: "Please enter your confirm password",
     Email: {
@@ -444,6 +454,7 @@ export default {
     Phone: {
       PhoneInput: "Phone Number",
       PhoneInputWarning: "Please enter your phone number",
+      PhoneInputWarning2: 'phone number doesn\'t need to start with "0"',
     },
     ConfirmBtn: "CONFIRM",
   },
@@ -469,6 +480,7 @@ export default {
   },
 
   GoogleVerify: {
+    Title: "Google Verification Code",
     Content:
       "You have choose to verify login by google authenticate. Please enter your verification code in your google authenticator.",
     PleaseWait: "Please wait for verify... ...",
@@ -563,6 +575,8 @@ export default {
     PhoneLogin: "Phone Login",
     EmailLogin: "Email Login",
     EmailVerifyTitle: "Email Verification",
+    PasswordError: "Input password wrong",
+    UserNotFound: "input user not found, doesn't exist",
   },
 
   ForgetPassword: {
@@ -574,13 +588,14 @@ export default {
     EmailVerifyCodeInpuWarning: "Please enter your verification code",
     Password: "Enter New Password",
     PasswordInputWarning:
-      "Please enter a legal password, which should be longer than 8 and less than 16 and contain numbers and letters",
+      "Please enter a legal password, which should be longer than 8 and less than 20 and contain numbers and letters",
     Confirm: "Confirm New Password",
     ConfirmInputWarning1: "Please enter your confirm password",
     ConfirmInputWarning2: "Password and confirm password not equal",
     ConfirmBtn: "Confirm",
     PhoneInput: "Phone number bind to your account",
     PhoneInputWarning: "Please enter your phone number",
+    PhoneInputWarning2: 'phone number doesn\'t need to start with "0"',
     UsePhone: "Use Phone Number",
     UseEmail: "Use Email Address",
     Fail: "fail to reset password",
@@ -621,7 +636,7 @@ export default {
     Header2: {
       Title: "PLATFORM FUNCTIONS AND TROUBLESHOOTING",
       Q1: "Does the platform include some sort of wallet function as well? Do I need to open an account?",
-      A1: "Yes. All of your mining rewards will be deposited directly into your Procyon wallet, which is unique to you and automatically created when you register an account on our platform.",
+      A1: "Yes. All of your mining rewards will be deposited directly into your Procyon dashboard, which is unique to you and automatically created when you register an account on our platform.",
       A11: "",
       Q2: "How do I sell my mining rewards or convert them into other currencies?",
       A2: "Mining rewards will be distributed to your Procyon account's wallet, which you can then transfer to the wallet of the cryptocurrency exchange of your choice and freely trade or sell them however you wish.",
@@ -657,7 +672,18 @@ export default {
       A9: "Since 2012, Coinbase Ventures, a VC arm under Coinbase, and as of March 2021 is considered the largest exchange in the U.S by trading volume and 3rd largest worldwide.",
       A10: "Furthermore, in an unprecedented announcement on June 12th, 2020, Japanese mobile game and venture capital giant gumi Inc., through its blockchain-focused subsidiary gumi Cryptos Capital, unveiled their partnership with Spacemesh’s parent company, Unruly Technologies Ltd., to assist with market entry in Japan.",
       Q4: "When will the Spacemesh network officially launch?",
-      A11: 'The Spacemesh mainnet launch (the start of mining) will depend on the testnet. The last version of the testnet will go directly to the mainnet. Until then, constant testing is needed to make sure that the Spacemesh network is bug-free, secure, and reliable before it officially launches. If a bug in the system occurs, the testnet version will be updated again and testing will start again. For example, if a bug occurs in an application, the developer will investigate the cause, fix the bug, and upgrade the version. The user will then have to download the latest version. Spacemesh\'s testnet follows a very similar process. Due to this, no one can give an exact date of when the mainnet will launch, not even Spacemesh official. The answer to the question "When will the mainnet launch?" is that it depends on the network conditions of the testnet. This process is the same for all mining; the mainnet can start only after going through such rigorous testing and updating. As for the schedule, at the moment we can only give you an approximate answer of late January to late April, but please understand in advance that it may vary due to the reasons outlined above. As for mining rewards, once the mainnet starts and mining begins, rewards will be distributed the next day. Additionally, the listing of SMH on exchanges is expected to occur within a week or two of the mainnet launch. Once it is listed on exchanges, you can send the SMH that you have mined to the listed exchange of your choice to secure profits.',
+      A111: "The Spacemesh mainnet launch (the start of mining) will depend on the testnet.",
+      A112: "The last version of the testnet will go directly to the mainnet.",
+      A113: "Until then, constant testing is needed to make sure that the Spacemesh network is bug-free, secure, and reliable before it officially launches.",
+      A114: "If a bug in the system occurs, the testnet version will be updated again and testing will start again.",
+      A115: "For example, if a bug occurs in an application, the developer will investigate the cause, fix the bug, and upgrade the version.",
+      A116: "The user will then have to download the latest version.",
+      A117: 'Spacemesh\'s testnet follows a very similar process. Due to this, no one can give an exact date of when the mainnet will launch, not even Spacemesh official. The answer to the question "When will the mainnet launch?" is that it depends on the network conditions of the testnet.',
+      A118: "This process is the same for all mining; the mainnet can start only after going through such rigorous testing and updating.",
+      A119: "As for the schedule, at the moment we can only give you an approximate answer of late January to late April, but please understand in advance that it may vary due to the reasons outlined above.",
+      A120: "As for mining rewards, once the mainnet starts and mining begins, rewards will be distributed the next day.",
+      A121: "Additionally, the listing of SMH on exchanges is expected to occur within a week or two of the mainnet launch.",
+      A122: "Once it is listed on exchanges, you can send the SMH that you have mined to the listed exchange of your choice to secure profits.",
       Q5: "When will I start receiving Spacemesh mining rewards?",
       A12: "If you purchased TB from the exclusive first mining batch, you will begin receiving rewards the day the Spacemesh main network launches.",
       Q6: "On which exchanges will Spacemesh be listed?",
@@ -670,7 +696,7 @@ export default {
       A1: "'Mining' is the term used to describe how cryptocurrencies are produced. In order to \"mine\" a cryptocurrency, computers must solve complex mathematicl equations and if successful, the operators of the computers (also known as mining machines) are given cryptocurrency as a reward.",
       A2: "Much like mining for gold, it takes effort to procure (in the case of cryptocurrencies, computing power or hard disk space), there is a finite supply, and the more that is mined, or the more people attempt to mine it at the same time, the more difficult it is to mine more (this is known as Mining Difficulty, explained below).",
       Q2: "What is a mining pool?",
-      A3: "A 'mining pool' is a large-scale cryptocurrency mining operation that combines a large number of mining machines together to increase their probability of finding a 'block' on the blockchain and thus gaining cryptocurrencies as a reward (explained below).",
+      A3: "A 'mining pool' is a large-scale cryptocurrency mining operation that combines a large number of mining machines together to increase their probability of finding a 'block' on the blockchain and thus gaining cryptocurrencies as a reward.",
       Q3: "What is a Block?",
       A4: "A block is like a page in a bank transaction ledger, which records all past and present transactions on a blockchain and can not be changed. Computers around the world are constantly recording these transactions, and when a block is completed, rewards are given out as an incentive for miners to continue validating the blockchain.",
       A5: "The more computing power you have, the greater your chances of gaining block rewards become.",

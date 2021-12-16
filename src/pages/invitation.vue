@@ -43,9 +43,9 @@
 <script setup>
 import { computed, ref, onMounted } from "vue";
 import { useQuasar } from "quasar";
-import { useRouter } from "vue-router";
 import { useStore } from "vuex";
 import { api } from "src/boot/axios";
+import { CheckAffiliate, CheckLogin } from "src/utils/utils";
 
 const q = useQuasar();
 const userid = q.cookies.get("UserID");
@@ -53,10 +53,8 @@ const visible = ref(true);
 
 onMounted(() => {
   visible.value = true;
-  if (userid === "" || userid === null || userid === undefined) {
-    var $router = useRouter();
-    $router.push("/login");
-  }
+  CheckLogin();
+  CheckAffiliate();
   getInvitationList();
 });
 

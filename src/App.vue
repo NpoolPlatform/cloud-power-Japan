@@ -225,4 +225,8 @@ export default defineComponent({
   height: auto;
   width: 100%;
 }
+
+.main-body q-btn {
+  text-transform: capitalize;
+}
 </style>

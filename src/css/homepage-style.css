@@ -146,6 +146,7 @@ a:not([class]):hover {
   /* font-family: "Barlow", sans-serif; */
   font-weight: 600;
   transition: all ease-in-out 0.1s;
+  text-transform: capitalize;
 }
 
 .alt {
@@ -264,7 +265,7 @@ a:not([class]):hover {
   align-items: center;
   display: flex;
   justify-content: center;
-  padding: 0 0 24px 0;
+  padding: 0 0 10px 0;
   position: relative;
   width: 100%;
 }
@@ -341,6 +342,7 @@ a:not([class]):hover {
   margin: 24px 0 0 0;
   height: auto;
   width: 100%;
+  text-transform: capitalize;
 }
 
 /* Feature */

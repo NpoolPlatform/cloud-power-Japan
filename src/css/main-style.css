@@ -27,6 +27,7 @@
   /* font-family: "Barlow", sans-serif; */
   font-weight: 600;
   transition: all ease-in-out 0.1s;
+  text-transform: capitalize;
 }
 
 .header-title {
@@ -109,7 +110,7 @@
   padding: 16px 0;
   width: 100%;
   z-index: 1;
-  height: 312px;
+  height: auto;
   display: block;
   position: fixed;
 }
@@ -222,7 +223,7 @@ div.content-h4 {
   border-radius: 0 12px 12px 0;
   cursor: pointer;
   font-size: 18px;
-  padding: 18px 12px 18px 40px;
+  padding: 18px 12px 18px 30px;
   position: relative;
   text-transform: uppercase;
   transition: all ease-in-out 0.1s;
@@ -249,16 +250,48 @@ div.content-h4 {
   color: #092023;
 }
 
-.drawer-item:hover q-img {
-  filter: invert() hue-rotate(180deg);
+.drawer-item:hover q-img:hover {
+  filter: invert() saturate(0) !important;
 }
 
 .drawer-item-img {
   margin: 0 8px 0 0;
   width: 24px;
   height: 24px;
+  vertical-align: text-top;
 }
 
+.drawer-item::before {
+  background: linear-gradient(
+    to right,
+    transparent 0,
+    #e1eeef 30%,
+    transparent 90%
+  );
+  display: block;
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 1px;
+  width: 100%;
+}
+
+.drawer-item:last-of-type::after {
+  background: linear-gradient(
+    to right,
+    transparent 0,
+    #e1eeef 30%,
+    transparent 90%
+  );
+  display: block;
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  height: 1px;
+  width: 100%;
+}
 .hr {
   height: 1px;
   margin-top: 10px;

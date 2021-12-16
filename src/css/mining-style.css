@@ -198,6 +198,7 @@
   display: flex;
   justify-content: flex-end;
   margin-top: 20px;
+  text-transform: capitalize;
 }
 
 .export,
@@ -363,6 +364,7 @@ h3.mining-title {
   height: auto;
   margin: 24px 0 0 12px;
   padding: 8px 20px;
+  text-transform: capitalize;
 }
 
 .buttons button:hover,

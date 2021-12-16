@@ -84,6 +84,7 @@
   text-align: center;
   width: 100%;
   margin: 10px 0;
+  text-transform: capitalize;
 }
 
 .register-btn:hover {
@@ -95,8 +96,8 @@
   font-size: 14px;
   font-weight: 400;
   opacity: 0.7;
-  text-align: center;
-  color: black;
+  text-align: left;
+  color: #e1eeef;
 }
 
 .link {

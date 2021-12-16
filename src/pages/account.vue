@@ -3,7 +3,7 @@
     <div class="content">
       <div class="title">{{ $t("Account.Title") }}</div>
       <div class="details-box" v-if="showDetails">
-        <div class="title" style="margin: 0 0">
+        <div class="sub-title" style="margin: 0 0">
           {{ $t("Account.PersonalDetails.Title") }}
         </div>
 
@@ -64,8 +64,34 @@
           </div>
         </div>
 
-        <div class="title" style="margin: 50px 0 0 0">
+        <div class="sub-title" style="margin: 50px 0 0 0">
           {{ $t("Account.PersonalDetails.Title2") }}
+        </div>
+
+        <div class="detail-column">
+          <div class="input-style">
+            <q-item-label>{{
+              $t("Account.PersonalDetails.PostalCode")
+            }}</q-item-label>
+            <q-input
+              style="width: 90%; margin: 10px 20px 0 0"
+              outlined
+              v-model="postalCode"
+              bg-color="blue-grey-1"
+            ></q-input>
+          </div>
+
+          <div class="input-style">
+            <q-item-label>{{
+              $t("Account.PersonalDetails.Province")
+            }}</q-item-label>
+            <q-input
+              style="width: 90%; margin: 10px 20px 0 0"
+              outlined
+              v-model="province"
+              bg-color="blue-grey-1"
+            ></q-input>
+          </div>
         </div>
 
         <div class="detail-column">
@@ -103,32 +129,6 @@
               style="width: 90%; margin: 10px 20px 0 0"
               outlined
               v-model="city"
-              bg-color="blue-grey-1"
-            ></q-input>
-          </div>
-
-          <div class="input-style">
-            <q-item-label>{{
-              $t("Account.PersonalDetails.Province")
-            }}</q-item-label>
-            <q-input
-              style="width: 90%; margin: 10px 20px 0 0"
-              outlined
-              v-model="province"
-              bg-color="blue-grey-1"
-            ></q-input>
-          </div>
-        </div>
-
-        <div class="detail-column">
-          <div class="input-style">
-            <q-item-label>{{
-              $t("Account.PersonalDetails.PostalCode")
-            }}</q-item-label>
-            <q-input
-              style="width: 90%; margin: 10px 20px 0 0"
-              outlined
-              v-model="postalCode"
               bg-color="blue-grey-1"
             ></q-input>
           </div>
@@ -274,6 +274,7 @@
                   v-if="!enabledMobile"
                   @click="phoneEnableDialog = true"
                   class="account-btn setting-btn"
+                  style="text-transform: capitalize"
                   >{{ $t("Account.SecuritySetting.PhoneEnable") }}</q-btn
                 >
 
@@ -281,6 +282,7 @@
                   v-if="enabledMobile"
                   @click="phoneUpdateDialog = true"
                   class="account-btn setting-btn"
+                  style="text-transform: capitalize"
                   >{{ $t("Account.SecuritySetting.PhoneUpdate") }}</q-btn
                 >
               </div>
@@ -382,7 +384,7 @@
                     v-if="!enabledEmail && !userGALogin"
                     v-model="emptyNull"
                     :options="loginOptions"
-                    color="light-green-10"
+                    color="teal"
                     inline
                     :disable="!enableGoogleAuthentication && !enabledEmail"
                   >
@@ -391,7 +393,7 @@
                     v-else
                     v-model="userGALogin"
                     :options="loginOptions"
-                    color="light-green-10"
+                    color="teal"
                     inline
                     :disable="!enableGoogleAuthentication && !enabledEmail"
                   >
@@ -674,6 +676,7 @@ import { success, fail, waiting } from "../notify/notify";
 import { throttle, useQuasar } from "quasar";
 import VerifycodeInput from "src/components/VerifycodeInput.vue";
 import {
+  CheckLogin,
   failCodeError,
   parseEmail,
   parseUsername,
@@ -721,9 +724,7 @@ export default defineComponent({
             logined: true,
           };
         })
-        .catch((error) => {
-          fail(undefined, failToGetUserinfo, error);
-        });
+        .catch((error) => {});
     };
 
     onMounted(() => {
@@ -1060,6 +1061,7 @@ export default defineComponent({
   },
 
   mounted: function () {
+    CheckLogin();
     this.getUserInvitationCode();
   },
 
@@ -1402,7 +1404,15 @@ export default defineComponent({
 </script>
 
 <style scoped src="../css/account-style.css"></style>
+<style>
+.text-teal {
+  color: #11afaf !important;
+}
+</style>
 <style scoped>
+.bg-brand {
+  background: #11afaf !important;
+}
 .register-input {
   border-radius: 12px;
   color: #27424c;
@@ -1492,5 +1502,26 @@ export default defineComponent({
 .setting-flex {
   display: flex;
   flex-wrap: wrap;
+}
+
+.sub-title {
+  font-size: 24px;
+  position: relative;
+}
+
+.sub-title::after {
+  background: linear-gradient(
+    to right,
+    transparent 0,
+    #e1eeef 10%,
+    transparent 30%
+  );
+  display: block;
+  content: "";
+  position: absolute;
+  left: -16px;
+  bottom: -4px;
+  height: 1px;
+  width: 100%;
 }
 </style>

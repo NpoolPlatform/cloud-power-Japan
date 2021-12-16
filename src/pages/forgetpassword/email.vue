@@ -3,9 +3,9 @@
     <div class="content">
       <q-card class="register-card">
         <q-card-section class="card-title">
-          <span>{{ $t("ForgetPassword.Title") }}</span>
+          <span style="font-size: 24px">{{ $t("ForgetPassword.Title") }}</span>
           <router-link
-            style="font-size: 16px; font-weight: 200; margin-right: 10px"
+            style="font-size: 14px; font-weight: 200; margin-right: 10px"
             class="link"
             :to="{ path: '/forgetpassword/phone' }"
             >{{ $t("ForgetPassword.UsePhone") }}</router-link

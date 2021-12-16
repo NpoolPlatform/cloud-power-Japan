@@ -2,6 +2,9 @@ import { api } from "src/boot/axios";
 import { success, fail, waiting } from "../notify/notify";
 import sha256 from "crypto-js/sha256";
 import { useI18n } from "vue-i18n";
+import { useQuasar } from "quasar";
+import { useRouter } from "vue-router";
+import { useStore } from "vuex";
 
 export function sendCode(email) {
   if (email === "") {
@@ -71,7 +74,7 @@ export function parsePassword(password) {
     return false;
   }
 
-  if (password.length > 16 || password.length < 8) {
+  if (password.length > 21 || password.length < 8) {
     return false;
   }
 
@@ -144,5 +147,21 @@ export function failCodeError(notif, error, reason, reason1, reason2) {
     fail(notif, reason1, reason2);
   } else {
     fail(notif, reason, error.response.data.message);
+  }
+}
+
+export function CheckLogin() {
+  const q = useQuasar();
+  const router = useRouter();
+  if (!q.cookies.has("UserID") || !q.cookies.has("AppSession")) {
+    router.push("/home");
+  }
+}
+
+export function CheckAffiliate() {
+  const router = useRouter();
+  const store = useStore();
+  if (!store.state.verify.hasInvitationCode) {
+    router.push("/");
   }
 }
