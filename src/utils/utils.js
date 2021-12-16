@@ -74,7 +74,7 @@ export function parsePassword(password) {
     return false;
   }
 
-  if (password.length > 21 || password.length < 8) {
+  if (password.length >= 21 || password.length < 8) {
     return false;
   }
 
