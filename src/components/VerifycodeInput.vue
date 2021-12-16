@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="google-content" style="color: black">
+    <div class="google-content" :style="{ color: fontColor }">
       {{ $t("GoogleVerify.Content") }}
     </div>
     <div class="row-center captcha_input_wrapper">
@@ -32,6 +32,11 @@ import { api } from "src/boot/axios";
 
 export default {
   emits: ["callback"],
+
+  props: {
+    fontColor: String,
+  },
+
   data() {
     return {
       // 当前输入框

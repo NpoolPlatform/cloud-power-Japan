@@ -153,7 +153,10 @@
           <span class="card-title">{{ $t("GoogleVerify.Title") }}</span>
         </q-card-section>
         <q-card-section>
-          <verifycode-input @callback="verifyCallback"></verifycode-input>
+          <verifycode-input
+            font-color="white"
+            @callback="verifyCallback"
+          ></verifycode-input>
         </q-card-section>
       </q-card>
     </q-dialog>
