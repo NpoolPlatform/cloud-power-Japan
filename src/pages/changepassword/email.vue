@@ -17,7 +17,7 @@
               class="register-input"
               outlined
               bg-color="blue-grey-1"
-              v-model="changePasswordInput.email"
+              v-model="myEmail"
               :label="$t('ChangePassword.Email.EmailInput')"
               lazy-rules
               :rules="[
@@ -26,10 +26,11 @@
                   $t('ChangePassword.Email.EmailInputWarning'),
               ]"
               ref="emailRef"
+              disable
             ></q-input>
 
             <send-code-input
-              :verifyParam="changePasswordInput.email"
+              :verifyParam="myEmail"
               verifyType="email"
             ></send-code-input>
 
@@ -142,6 +143,10 @@ export default defineComponent({
       verifyCode.value = "";
     });
 
+    const myEmail = computed(
+      () => $store.state.user.user.info.UserBasicInfo.EmailAddress
+    );
+
     const emailRef = ref(null);
     const oldPasswordRef = ref(null);
     const passwordRef = ref(null);
@@ -189,6 +194,7 @@ export default defineComponent({
       password,
       confirmPassword,
       q,
+      myEmail,
     };
   },
 
@@ -226,7 +232,7 @@ export default defineComponent({
 
       api
         .post("/user-management/v1/change/password", {
-          VerifyParam: self.changePasswordInput.email,
+          VerifyParam: self.myEmail,
           Password: password,
           OldPassword: sha256Password(self.changePasswordInput.oldPassword),
           VerifyType: "email",

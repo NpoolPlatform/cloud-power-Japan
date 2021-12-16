@@ -303,12 +303,6 @@ const orderColumns = [
 ];
 </script>
 
-<style scoped>
-.my-table span {
-  color: #e1eeef !important;
-}
-</style>
-
 <style scoped src="../css/mining-style.css"></style>
 <style scoped>
 .table-box {
@@ -322,6 +316,10 @@ const orderColumns = [
   color: #e1eeef;
   padding: 24px;
   margin: 24px;
+}
+
+.my-table span {
+  color: #e1eeef !important;
 }
 </style>
 

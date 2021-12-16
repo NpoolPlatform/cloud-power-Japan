@@ -1,53 +1,47 @@
 <template>
   <div>
-    <div class="phone-code-style">
-      <q-input
-        class="register-input"
-        style="font-size: 18px; text-align: center"
-        filled
-        bg-color="blue-grey-1"
-        v-model="phoneNumber"
-        :label="inputText"
-        ref="phoneRef"
-        lazy-rules
-        :rules="phoneRule"
-      >
-        <template v-slot:prepend>
-          <q-select
-            class="select-input"
-            filled
-            bg-color="blue-grey-1"
-            v-model="countryCode"
-            :options="myCountries"
-            color="black"
-            options-selected-class="text-deep-orange"
-            popup-content-class="popup-content-style"
-            @popup-hide="myCountries = countries"
-          >
-            <template v-slot:before-options>
-              <div>
-                <q-input
-                  bg-color="white"
-                  filled
-                  v-model="searchInput"
-                ></q-input>
-              </div>
-            </template>
-            <template v-slot:option="scope">
-              <q-item v-bind="scope.itemProps">
-                <!-- <q-item-section avatar>
+    <div>
+      <div class="phone-code-style"></div>
+      <div class="row phone-code-style phone-number">
+        <q-input
+          class="register-input phone-number"
+          style="font-size: 18px; text-align: center"
+          v-model="phoneNumber"
+          :label="inputText"
+          ref="phoneRef"
+          lazy-rules
+          :rules="phoneRule"
+        >
+        </q-input>
+
+        <q-select
+          v-model="countryCode"
+          :options="myCountries"
+          color="black"
+          options-selected-class="text-deep-orange"
+          popup-content-style="height: 300px; width: 250px;color: black;"
+          @popup-hide="myCountries = countries"
+          class="select-input"
+        >
+          <template v-slot:before-options>
+            <div>
+              <q-input bg-color="white" filled v-model="searchInput"></q-input>
+            </div>
+          </template>
+          <template v-slot:option="scope">
+            <q-item v-bind="scope.itemProps">
+              <!-- <q-item-section avatar>
             <q-icon :name="scope.opt.icon" />
           </q-item-section> -->
-                <q-item-section>
-                  <q-item-label
-                    >{{ scope.opt.name }}({{ scope.opt.label }})</q-item-label
-                  >
-                </q-item-section>
-              </q-item>
-            </template>
-          </q-select>
-        </template>
-      </q-input>
+              <q-item-section>
+                <q-item-label
+                  >{{ scope.opt.name }}({{ scope.opt.label }})</q-item-label
+                >
+              </q-item-section>
+            </q-item>
+          </template>
+        </q-select>
+      </div>
     </div>
   </div>
 </template>
@@ -176,13 +170,20 @@ export default defineComponent({
 </script>
 
 <style scoped>
-.search-input-style {
-  position: fixed;
-  top: 0;
+.phone-code-style {
+  background-color: #eceff1;
+  border-radius: 4px;
+  height: 56px;
+  margin-bottom: 30px;
 }
-</style>
 
-<style>
+.select-input {
+  width: 120px;
+  font-size: 18px;
+  background: none;
+  padding-left: 20px;
+}
+
 .popup-content-style {
   height: auto;
   max-height: 300px;
@@ -190,34 +191,21 @@ export default defineComponent({
   color: black;
 }
 
-.select-input {
-  width: 120px;
-  font-size: 18px;
-  background: none;
-}
-
-.phone-code-style {
-  display: flex;
-}
-
 .input-phone-style {
   width: 300px;
 }
 
 .register-input {
-  border-radius: 12px;
   color: #27424c;
   font-size: 14px;
   width: 100%;
-  margin: 10px 0;
+  padding-left: 120px;
+  padding-right: 10px;
 }
 
-.q-field--filled .q-field__control {
-  border-radius: 4px;
-}
-
-.q-field--labeled .q-field__native {
-  padding-top: 0;
-  padding-bottom: 0;
+.phone-number {
+  position: absolute;
+  top: 0;
+  width: 100%;
 }
 </style>

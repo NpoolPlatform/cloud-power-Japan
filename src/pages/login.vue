@@ -613,7 +613,26 @@ export default defineComponent({
           return;
         })
         .catch((error) => {
-          fail(notif, self.$t("Notify.Login.Fail"), error);
+          if (
+            error.response.data.message.indexOf("input password is wrong") !==
+            -1
+          ) {
+            fail(
+              notif,
+              self.$t("Notify.Login.Fail"),
+              self.$t("Login.PasswordError")
+            );
+          } else if (
+            error.response.data.message.indexOf("user not found") !== -1
+          ) {
+            fail(
+              notif,
+              self.$t("Notify.Login.Fail"),
+              self.$t("Login.UserNotFound")
+            );
+          } else {
+            fail(notif, self.$t("Notify.Login.Fail"), error);
+          }
           self.logined = false;
           self.loginVerify = false;
           self.phone = "";

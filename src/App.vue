@@ -110,7 +110,7 @@ export default defineComponent({
           n === "/wallet" ||
           n === "/account" ||
           n === "/dashboard" ||
-          n === "/invitation"
+          n === "/affiliates"
         ) {
           this.open = true;
         } else {
