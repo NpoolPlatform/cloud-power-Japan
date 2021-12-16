@@ -128,7 +128,7 @@
       </q-header>
     </div>
 
-    <q-drawer show-if-above :width="200" v-model="openSide">
+    <q-drawer :width="200" v-model="openSide" style="background: transparent">
       <div class="drawer-items text-white">
         <router-link href class="drawer-item" :to="{ path: '/dashboard' }">
           <div class="row">
@@ -421,11 +421,23 @@ q-img:hover {
 .q-body--prevent-scroll {
   position: static !important;
 }
+
+aside {
+  background: none !important;
+}
+
+/* .q-drawer {
+  background: none !important;
+} */
 </style>
 
 <style scoped>
 .q-btn-group--glossy > .q-btn-item {
   background-image: linear-gradient(to bottom right, #6b787c 0, #3d4c52 100%);
+}
+
+aside {
+  background: none !important;
 }
 
 .bg-orange-9 {
@@ -434,9 +446,5 @@ q-img:hover {
     #ff964a 0,
     #ce5417 100%
   ) !important;
-}
-
-q-drawer {
-  background: none;
 }
 </style>
