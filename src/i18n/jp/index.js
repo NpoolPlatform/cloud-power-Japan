@@ -104,8 +104,7 @@ export default {
     EmailVerifyCode: "メールアドレスの認証コード",
     EmailVerifyCodeInpuWarning: "認証コードが違います",
     Password: "パスワード",
-    PasswordInputWarning:
-      "パスワードは8以上20以下の長さで、数字と文字を含んでいなければなりません。",
+    PasswordInputWarning: "8〜20文字で、数字も含めてください",
     Confirm: "パスワードを再入力",
     ConfirmInputWarning1: "パスワードを確認してください",
     ConfirmInputWarning2: "パスワードとパスワードの確認が一致していません。",
@@ -159,8 +158,7 @@ export default {
     EmailVerifyCode: "メールアドレスの認証コード",
     EmailVerifyCodeInpuWarning: "認証コードを記入ください",
     Password: "新しいパスワードを入力",
-    PasswordInputWarning:
-      "パスワードは8以上20以下の長さで、数字と文字を含んでいなければなりません。",
+    PasswordInputWarning: "8〜20文字で、数字も含めてください",
     Confirm: "新しいパスワードを再入力",
     ConfirmInputWarning1: "パスワードを確認してください。",
     ConfirmInputWarning2: "パスワードとパスワードの確認が一致していません。",
@@ -464,8 +462,7 @@ export default {
     OldPassword: "旧パスワード",
     OldPasswordWarning: "旧パスワードを入力してください。",
     Password: "新しいパスワード",
-    PasswordInputWarning:
-      "パスワードは8以上20以下の長さで、数字と文字を含んでいなければなりません。",
+    PasswordInputWarning: "8〜20文字で、数字も含めてください",
     ConfirmPassword: "パスワードの確認",
     ConfirmPasswordInputWarning: "確認用パスワードを入力してください。",
     Email: {

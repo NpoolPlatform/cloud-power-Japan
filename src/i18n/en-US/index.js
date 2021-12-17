@@ -187,7 +187,7 @@ export default {
     Password: "Password",
     PasswordInputWarning: "Please enter your password",
     ConfirmPassword: "ConfirmPassword",
-    ConfirmInputWarning1: "Please enter your confirm password",
+    ConfirmInputWarning1: "Please confirm your password",
     ConfirmBtn: "Confirm",
   },
 
@@ -204,8 +204,7 @@ export default {
     EmailVerifyCode: "E-mail Verification Code",
     EmailVerifyCodeInpuWarning: "Please enter a verification code",
     Password: "Password",
-    PasswordInputWarning:
-      "Please enter a legal password, which should be longer than 8 and less than 20 and contain numbers and letters",
+    PasswordInputWarning: "Please enter a password 8-20 alphanumeric characters",
     Confirm: "Confirm Password",
     ConfirmInputWarning1: "Please enter your confirm password",
     ConfirmInputWarning2: "Password and confirm password not equal",
@@ -227,7 +226,7 @@ export default {
     PhoneInput: "Phone Number",
     PhoneInputWarning: "Phone number cannot be blank",
     PhoneInputWarning2: 'Phone number doesn\'t need to start with "0"',
-    InvitationWarning: "Invitation code is must",
+    InvitationWarning: "Invitation code is required",
     ConfirmBtn: "Confirm",
     AcceptBtn: "Accept",
     CancelBtn: "Cancel",
@@ -446,7 +445,7 @@ export default {
     PasswordInputWarning:
       "Please enter a legal password, which should be longer than 8 and less than 20 and contain numbers and letters",
     ConfirmPassword: "Confirm Password",
-    ConfirmPasswordInputWarning: "Please enter your confirm password",
+    ConfirmPasswordInputWarning: "Please confirm your password",
     Email: {
       EmailInput: "E-Mail Address",
       EmailInputWarning: "Please enter your email address",
@@ -587,10 +586,9 @@ export default {
     EmailVerifyCode: "Email Verification Code",
     EmailVerifyCodeInpuWarning: "Please enter your verification code",
     Password: "Enter New Password",
-    PasswordInputWarning:
-      "Please enter a legal password, which should be longer than 8 and less than 20 and contain numbers and letters",
+    PasswordInputWarning: "Please enter a password 8-20 alphanumeric characters",
     Confirm: "Confirm New Password",
-    ConfirmInputWarning1: "Please enter your confirm password",
+    ConfirmInputWarning1: "Please confirm your password",
     ConfirmInputWarning2: "Password and confirm password not equal",
     ConfirmBtn: "Confirm",
     PhoneInput: "Phone number bind to your account",
