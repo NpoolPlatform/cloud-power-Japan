@@ -16,7 +16,7 @@
                 <span style="font-size: 20px; font-weight: 600">{{
                   prop.node.username
                 }}</span>
-                <div class="header-right">
+                <div class="header-right" v-if="false">
                   <span>TIER</span>
                   <span
                     style="color: #54e280; font-weight: bold; margin-left: 5px"
