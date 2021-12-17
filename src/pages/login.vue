@@ -196,6 +196,7 @@
               class="captcha_input_box row-center"
               type="tel"
               maxlength="1"
+              @paste="onPasteCode"
             />
           </div>
 
@@ -564,6 +565,14 @@ export default defineComponent({
           self.gResponse = "";
           self.initGrecaptcha();
         });
+    },
+
+    onPasteCode: function (evt) {
+      let data = evt.clipboardData.getData("Text")
+      for (let i = 0; i < data.length && i < this.captchas.length; i++) {
+        this.captchas[i].num = data[i]
+        this.inputDirection(i)
+      }
     },
 
     loginByPhone: function () {

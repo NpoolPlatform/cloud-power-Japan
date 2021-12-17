@@ -4,7 +4,7 @@
       {{ $t("GoogleVerify.Content") }}
     </div>
     <div class="row-center captcha_input_wrapper">
-      <input
+      <textarea
         v-for="(item, index) in captchas"
         :key="index"
         v-model="item.num"
@@ -15,6 +15,7 @@
         class="captcha_input_box row-center"
         type="tel"
         maxlength="1"
+        @paste="onPasteCode"
       />
     </div>
     <q-inner-loading
@@ -125,6 +126,13 @@ export default {
           fail(undefined, fail2, error);
           self.$emit("callback", "error");
         });
+    },
+    onPasteCode: function (evt) {
+      let data = evt.clipboardData.getData("Text")
+      for (let i = 0; i < data.length && i < this.captchas.length; i++) {
+        this.captchas[i].num = data[i]
+        this.inputDirection(i)
+      }
     },
   },
 };
