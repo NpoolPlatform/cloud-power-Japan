@@ -4,7 +4,7 @@
       {{ $t("GoogleVerify.Content") }}
     </div>
     <div class="row-center captcha_input_wrapper">
-      <textarea
+      <input
         v-for="(item, index) in captchas"
         :key="index"
         v-model="item.num"
