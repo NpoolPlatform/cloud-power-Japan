@@ -442,8 +442,7 @@ export default {
     OldPassword: "Old Password",
     OldPasswordWarning: "Please enter your old password",
     Password: "New Password",
-    PasswordInputWarning:
-      "Please enter a legal password, which should be longer than 8 and less than 20 and contain numbers and letters",
+    PasswordInputWarning: "Please enter a password 8-20 alphanumeric characters",
     ConfirmPassword: "Confirm Password",
     ConfirmPasswordInputWarning: "Please confirm your password",
     Email: {
