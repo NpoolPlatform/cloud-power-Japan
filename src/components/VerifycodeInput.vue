@@ -133,6 +133,7 @@ export default {
         this.captchas[i].num = data[i]
         this.inputDirection(i)
       }
+      this.inputFinash(5)
     },
   },
 };
@@ -165,4 +166,5 @@ export default {
   color: black;
   font-size: 18px;
 }
+
 </style>

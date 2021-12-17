@@ -573,6 +573,7 @@ export default defineComponent({
         this.captchas[i].num = data[i]
         this.inputDirection(i)
       }
+      this.inputFinash(5)
     },
 
     loginByPhone: function () {
@@ -756,6 +757,7 @@ export default defineComponent({
 .q-field--error .q-field__bottom {
   color: #fc4468;
 }
+
 </style>
 
 <style lang="scss">
@@ -785,4 +787,5 @@ export default defineComponent({
   color: black;
   font-size: 18px;
 }
+
 </style>
