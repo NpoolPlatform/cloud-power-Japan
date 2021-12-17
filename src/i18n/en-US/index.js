@@ -206,7 +206,7 @@ export default {
     Password: "Password",
     PasswordInputWarning: "Please enter a password 8-20 alphanumeric characters",
     Confirm: "Confirm Password",
-    ConfirmInputWarning1: "Please enter your confirm password",
+    ConfirmInputWarning1: "Please confirm your password",
     ConfirmInputWarning2: "Password and confirm password not equal",
     InvitationCode: "Invitation Code",
     Agree1: "I have read and agree to the",
