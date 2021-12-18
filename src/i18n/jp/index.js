@@ -120,7 +120,7 @@ export default {
     Login: "ログイン",
     LoginTitle: "ユーザーログイン",
     GooglrCodeInputWarning: "あなたのGoogle認証コードを入力してください",
-    VerifyCodeInput: "認証コードを入力",
+    VerifyCodeInput: "メールアドレスを変更",
     RegisterEmail: "メールアドレスで登録",
     RegisterPhone: "電話番号で登録",
     PhoneInput: "電話番号",
@@ -353,7 +353,7 @@ export default {
         VerifyCode: "メールでのコード確認",
         VerifyCodeWarning: "検証コードを入力してください。",
         EmailInput: "新しいメールアドレスを入力",
-        Btn: "認証コードを入力",
+        Btn: "メールアドレスを変更",
       },
       Enable: {
         Title: "電子メールの有効化",
