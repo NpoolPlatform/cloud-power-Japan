@@ -120,7 +120,7 @@ export default {
     Login: "ログイン",
     LoginTitle: "ユーザーログイン",
     GooglrCodeInputWarning: "あなたのGoogle認証コードを入力してください",
-    VerifyCodeInput: "メールアドレスを変更",
+    VerifyCodeInput: "認証コードを入力",
     RegisterEmail: "メールアドレスで登録",
     RegisterPhone: "電話番号で登録",
     PhoneInput: "電話番号",
