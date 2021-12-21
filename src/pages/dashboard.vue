@@ -165,7 +165,7 @@ const myOrders = ref([]);
 const orderGoods = ref({});
 const visible = ref(true);
 const totalAmount = ref("");
-const totalCapacity = ref("");
+const totalCapacity = ref(0);
 const durationDays = ref("");
 
 const showTable = ref(true);
@@ -212,7 +212,7 @@ const getOrderGood = (order) => {
       };
       durationDays.value = good.DurationDays;
       totalAmount.value += order.Payment.Amount;
-      totalCapacity.value += order.Units;
+      totalCapacity.value += Number(order.Units);
       myOrders.value.push(myOrder);
 
       visible.value = false;
