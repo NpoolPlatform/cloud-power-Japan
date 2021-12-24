@@ -568,7 +568,7 @@ export default {
     NoAccount: "No account? ",
     Register: "Register now.",
     LoginUsername: "Username / Email",
-    UsernameInputwarning: "Please enter your username or email address",
+    UsernameInputwarning: "Username or Email is not legal",
     PasswordInputWarning: "Please enter your password",
     PhoneLogin: "Phone Login",
     EmailLogin: "Email Login",
