@@ -100,12 +100,14 @@ export function parseUsername(username) {
     return false;
   }
 
-  if (username.length > 32 || username.length < 4) {
+  if (username.indexOf(" ") !== -1) {
     return false;
   }
 
-  if (username.indexOf(" ") !== -1) {
-    return false;
+  if (username.length > 32 || username.length < 4) {
+    if (!parseEmail(username)) {
+      return false;
+    }
   }
 
   var reg = /^[0-9]+.?[0-9]*$/;
